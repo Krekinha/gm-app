@@ -1,0 +1,64 @@
+---
+id: user-preferences-preferir-mcp-chrome-devtools-para-testes-frontend
+type: user_preference
+confidence: 0.95
+created_at: '2025-09-28T09:26:42.053Z'
+updated_at: '2025-09-28T09:26:42.053Z'
+tags:
+  - frontend
+  - testing
+  - chrome-devtools
+  - mcp
+  - validation
+  - autonomous-testing
+source: user_input
+project_root: 'c:\Users\krekm\Dev\repos\nextjs\projetos\gm-app'
+relationships: []
+---
+# Regra: Preferir MCP Chrome DevTools para testes frontend
+
+## Diretriz Principal
+**SEMPRE usar MCP Chrome DevTools para testes e validação de frontend** em vez de outras ferramentas de teste.
+
+## Ferramentas MCP Chrome DevTools Disponíveis
+- `mcp_chrome-devtools_navigate_page` - Navegar para páginas
+- `mcp_chrome-devtools_take_snapshot` - Capturar estado da página
+- `mcp_chrome-devtools_take_screenshot` - Screenshots para documentação visual
+- `mcp_chrome-devtools_click` - Interagir com elementos
+- `mcp_chrome-devtools_type` - Preencher formulários
+- `mcp_chrome-devtools_fill_form` - Preencher múltiplos campos
+- `mcp_chrome-devtools_resize_page` - Testar responsividade
+- `mcp_chrome-devtools_console_messages` - Debug de JavaScript
+- `mcp_chrome-devtools_network_requests` - Monitorar requisições
+- `mcp_chrome-devtools_evaluate_script` - Executar JavaScript customizado
+- `mcp_chrome-devtools_wait_for` - Aguardar elementos/conteúdo
+
+## Quando Usar
+- **Validação de UI/UX**: Verificar se componentes renderizam corretamente
+- **Testes de Interação**: Clicar, preencher formulários, navegar
+- **Testes de Responsividade**: Diferentes tamanhos de tela
+- **Debug de Frontend**: Console errors, network issues
+- **Documentação Visual**: Screenshots para evidência
+- **Testes End-to-End**: Fluxos completos de usuário
+
+## Vantagens
+- **Autonomia**: Validação independente sem dependência do usuário
+- **Precisão**: Interação real com elementos DOM
+- **Completude**: Testa tanto visual quanto funcional
+- **Documentação**: Screenshots e logs para evidência
+- **Integração**: Funciona com aplicações Next.js em desenvolvimento
+
+## Protocolo de Teste
+1. **Navegar**: `mcp_chrome-devtools_navigate_page` para a página
+2. **Capturar Estado**: `mcp_chrome-devtools_take_snapshot` para entender estrutura
+3. **Interagir**: `mcp_chrome-devtools_click`, `mcp_chrome-devtools_type` conforme necessário
+4. **Validar**: `mcp_chrome-devtools_take_screenshot` para documentar resultado
+5. **Debug**: `mcp_chrome-devtools_console_messages` se houver problemas
+
+## Integração com Workflow
+- **Antes de marcar tarefas como concluídas**: SEMPRE validar com Chrome DevTools
+- **Para debugging de frontend**: Usar Chrome DevTools como primeira opção
+- **Para documentação**: Screenshots automáticos dos resultados
+- **Para responsividade**: Testar múltiplos tamanhos de tela
+
+Esta regra garante validação consistente e autônoma de todas as implementações frontend.

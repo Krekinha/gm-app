@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 
 import { Geist, Geist_Mono } from "next/font/google";
 import { IgniterProvider } from '@igniter-js/core/client'
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/app-sidebar"
 
 import "./globals.css"
 
@@ -16,8 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Igniter.js Boilerplate",
-  description: "A customizable boilerplate for Igniter.js applications",
+  title: "GM-App - Sistema de Gestão",
+  description: "Sistema de gestão empresarial com sidebar flutuante",
 };
 
 export default function RootLayout({
@@ -26,12 +28,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="pt-BR" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}
       >
         <IgniterProvider>
-          {children}
+          <SidebarProvider>
+            <AppSidebar />
+            <SidebarInset>
+              {children}
+            </SidebarInset>
+          </SidebarProvider>
         </IgniterProvider>
       </body>
     </html>
