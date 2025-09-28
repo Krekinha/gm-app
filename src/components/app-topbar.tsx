@@ -36,7 +36,7 @@ export function AppTopbar({
       '/dashboard': 'Dashboard',
       '/documentos/funcionarios': 'Funcionários',
       '/documentos/empresa': 'Empresa',
-      '/relatorios/tecnico': 'Relatórios Técnicos'
+      '/relatorios tecnico': 'Relatórios Técnicos'
     }
     
     return routeMap[pathname] || 'Página'
@@ -47,15 +47,15 @@ export function AppTopbar({
     const segments = pathname.split('/').filter(Boolean)
     const breadcrumbs = []
 
-    // Sempre incluir Dashboard como primeiro item
+    // Sempre incluir Home como primeiro item
     breadcrumbs.push({
-      label: 'Dashboard',
-      href: '/dashboard',
-      isActive: pathname === '/dashboard'
+      label: 'Home',
+      href: '/home',
+      isActive: pathname === '/home'
     })
 
     // Se não estiver na página inicial, adicionar breadcrumbs específicos
-    if (pathname !== '/dashboard' && pathname !== '/') {
+    if (pathname !== '/home' && pathname !== '/') {
       let currentPath = ''
       
       segments.forEach((segment, index) => {
@@ -66,8 +66,7 @@ export function AppTopbar({
           'documentos': 'Documentos',
           'funcionarios': 'Funcionários',
           'empresa': 'Empresa',
-          'relatorios': 'Relatórios',
-          'tecnico': 'Técnicos'
+          'relatorio-tecnico': 'Relatório Técnico',
         }
         
         const label = segmentMap[segment] || segment.charAt(0).toUpperCase() + segment.slice(1)
@@ -87,7 +86,7 @@ export function AppTopbar({
   const breadcrumbs = generateBreadcrumbs()
 
   return (
-    <header className="flex h-16 shrink-0 items-center gap-4 border-b border-border bg-background px-4 md:px-6 w-full">
+    <header className="flex h-16 shrink-0 items-center gap-4 border-b-8 border-border bg-background px-4 md:px-6 w-full">
       <SidebarTrigger />
       
       <div className="flex flex-1 items-center justify-between min-w-0">
@@ -111,9 +110,6 @@ export function AppTopbar({
             </BreadcrumbList>
           </Breadcrumb>
           
-          <h1 className="text-xl font-semibold text-foreground">
-            {getPageTitle()}
-          </h1>
         </div>
         
         {showAction && (
