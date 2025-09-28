@@ -1,0 +1,1 @@
+analise o prompt e o contexto pssado pelo usuário e forneça a ele um prompt melhorado sobre a intenção do usuário para fácil entendimento do agente levando em conta o contexto do projeto

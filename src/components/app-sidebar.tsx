@@ -39,7 +39,7 @@ const data = {
       items: [
         {
           title: "Relatório Técnico",
-          url: "/relatorios/tecnico",
+          url: "/relatorios/relatorio-tecnico",
           icon: ClipboardList,
         },
       ],

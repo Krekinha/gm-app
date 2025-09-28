@@ -114,7 +114,7 @@ export default function Home() {
                   <span className="text-sm">Relatórios Técnicos</span>
                 </div>
                 <Button variant="outline" size="sm" asChild>
-                  <a href="/relatorios/tecnico">Acessar</a>
+                  <a href="/relatorios/relatorio-tecnico">Acessar</a>
                 </Button>
               </div>
             </div>
@@ -141,7 +141,7 @@ export default function Home() {
             </Button>
             
             <Button className="w-full justify-start" variant="outline" asChild>
-              <a href="/relatorios/tecnico">
+              <a href="/relatorios/relatorio-tecnico">
                 <BarChart3 className="mr-2 h-4 w-4" />
                 Gerar Relatório
               </a>

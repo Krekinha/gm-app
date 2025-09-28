@@ -33,10 +33,10 @@ export function AppTopbar({
     if (title) return title
     
     const routeMap: Record<string, string> = {
-      '/dashboard': 'Dashboard',
+      '/home': 'Home',
       '/documentos/funcionarios': 'Funcionários',
       '/documentos/empresa': 'Empresa',
-      '/relatorios tecnico': 'Relatórios Técnicos'
+      '/relatorios/relatorio-tecnico': 'Relatório Técnico'
     }
     
     return routeMap[pathname] || 'Página'
@@ -66,6 +66,7 @@ export function AppTopbar({
           'documentos': 'Documentos',
           'funcionarios': 'Funcionários',
           'empresa': 'Empresa',
+          'relatorios': 'Relatórios',
           'relatorio-tecnico': 'Relatório Técnico',
         }
         
@@ -86,7 +87,7 @@ export function AppTopbar({
   const breadcrumbs = generateBreadcrumbs()
 
   return (
-    <header className="flex h-16 shrink-0 items-center gap-4 border-b-8 border-border bg-background px-4 md:px-6 w-full">
+    <header className="flex h-16 shrink-0 items-center gap-4 bg-background px-4  md:px-6 w-full">
       <SidebarTrigger />
       
       <div className="flex flex-1 items-center justify-between min-w-0">
