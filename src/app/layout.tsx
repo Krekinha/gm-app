@@ -32,7 +32,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}
       >
-        <IgniterProvider>
+        <IgniterProvider 
+        // enableRealtime={false} Descomente esta linha para desabilitar a conexão realtime
+  debug={process.env.NODE_ENV === 'development'}>
           <SidebarProvider>
             <AppSidebar />
             <SidebarInset>

@@ -1,0 +1,1 @@
+Investigue o erro (em anexo ou informado no prompt do chat) e indique a ação a ser tomada para resolver.Se precisar testar o frontend utilize as ferramentas do MCP chrome-devtools. Não faça alterações no código ao receber esse comando, apenas informe a solução adequada

@@ -11,10 +11,10 @@ import { store } from './store'
  */
 export const telemetry = createConsoleTelemetryAdapter({
   serviceName: 'sample-next-app',
-  enableEvents: process.env.IGNITER_TELEMETRY_ENABLE_EVENTS === 'true',
-  enableMetrics: process.env.IGNITER_TELEMETRY_ENABLE_METRICS === 'true',
-  enableTracing: process.env.IGNITER_TELEMETRY_ENABLE_TRACING === 'true',
+  enableEvents: false, // Desabilitado para remover mensagens do console
+  enableMetrics: false, // Desabilitado para remover mensagens do console
+  enableTracing: false, // Desabilitado para remover mensagens do console
 }, {
-  enableCliIntegration: process.env.IGNITER_TELEMETRY_ENABLE_CLI_INTEGRATION === 'true',
+  enableCliIntegration: false, // Desabilitado para remover mensagens do console
   store: store
 })

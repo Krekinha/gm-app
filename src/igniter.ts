@@ -15,7 +15,7 @@ export const igniter = Igniter
   .store(store)
   .jobs(REGISTERED_JOBS)
   .logger(logger)
-  .telemetry(telemetry)
+  // .telemetry(telemetry) // Comentado para desabilitar telemetria completamente
   .config({
     baseURL: process.env.NEXT_PUBLIC_IGNITER_API_URL || 'http://localhost:3000',
     basePATH: process.env.NEXT_PUBLIC_IGNITER_API_BASE_PATH || '/api/v1',
