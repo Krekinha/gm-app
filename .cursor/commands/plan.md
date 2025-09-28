@@ -1,0 +1,1 @@
+Planeje como adicionar a funcionalida proposta e quais serão os passos e libs instaladas bem como uma previa do código e de como vai ficar a estrutura de pastas após a implementação

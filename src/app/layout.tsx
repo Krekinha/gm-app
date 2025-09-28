@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { IgniterProvider } from '@igniter-js/core/client'
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
+import { AppTopbar } from "@/components/app-topbar"
 
 import "./globals.css"
 
@@ -38,7 +39,10 @@ export default function RootLayout({
           <SidebarProvider>
             <AppSidebar />
             <SidebarInset>
-              {children}
+              <AppTopbar />
+              <main className="flex-1 overflow-auto p-4">
+                {children}
+              </main>
             </SidebarInset>
           </SidebarProvider>
         </IgniterProvider>
