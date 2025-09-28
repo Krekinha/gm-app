@@ -33,7 +33,7 @@ export function AppTopbar({
     if (title) return title
     
     const routeMap: Record<string, string> = {
-      '/home': 'Home',
+      '/': 'Dashboard',
       '/documentos/funcionarios': 'Funcionários',
       '/documentos/empresa': 'Empresa',
       '/relatorios/relatorio-tecnico': 'Relatório Técnico'
@@ -50,12 +50,12 @@ export function AppTopbar({
     // Sempre incluir Home como primeiro item
     breadcrumbs.push({
       label: 'Home',
-      href: '/home',
-      isActive: pathname === '/home'
+      href: '/',
+      isActive: pathname === '/'
     })
 
     // Se não estiver na página inicial, adicionar breadcrumbs específicos
-    if (pathname !== '/home' && pathname !== '/') {
+    if (pathname !== '/') {
       let currentPath = ''
       
       segments.forEach((segment, index) => {
