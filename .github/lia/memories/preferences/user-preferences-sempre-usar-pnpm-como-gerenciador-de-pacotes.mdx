@@ -1,0 +1,39 @@
+---
+id: user-preferences-sempre-usar-pnpm-como-gerenciador-de-pacotes
+type: user_preference
+confidence: 0.95
+created_at: '2025-09-28T08:57:47.248Z'
+updated_at: '2025-09-28T08:57:47.248Z'
+tags:
+  - user_preference
+  - package-manager
+  - pnpm
+  - development-workflow
+source: user_input
+project_root: 'c:\Users\krekm\Dev\repos\nextjs\projetos\gm-app'
+relationships: []
+---
+# Regra: Sempre usar pnpm
+
+## Diretrizes Obrigatórias
+- **SEMPRE usar `pnpm`** em vez de `npm` ou `yarn`
+- **SEMPRE usar `pnpm`** para comandos shadcn/ui
+- **SEMPRE usar `pnpm`** para instalação de dependências
+- **SEMPRE usar `pnpm`** para scripts de desenvolvimento
+
+## Comandos Padrão
+- `pnpm add [package]` - instalar dependência
+- `pnpm add -D [package]` - instalar dependência de desenvolvimento
+- `pnpm dev` - executar servidor de desenvolvimento
+- `pnpm build` - build de produção
+- `pnpm prisma generate` - gerar cliente Prisma
+
+## Exceções
+- Comandos shadcn/ui: usar `npx shadcn add [component]` (mantém compatibilidade)
+- Comandos específicos do framework: seguir documentação oficial
+
+## Justificativa
+- Projeto configurado com pnpm (packageManager no package.json)
+- Melhor performance e eficiência de espaço
+- Lock file pnpm-lock.yaml já existe
+- Consistência com configuração do projeto
