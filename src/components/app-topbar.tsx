@@ -2,17 +2,9 @@
 
 import { Button } from "@/components/ui/button"
 import { SidebarTrigger } from "@/components/ui/sidebar"
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
 import { Plus } from "lucide-react"
-import { usePathname } from "next/navigation"
 import { Separator } from "@/components/ui/separator"
+import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator } from "./ui/breadcrumb"
 
 interface AppTopbarProps {
   title?: string
@@ -27,103 +19,34 @@ export function AppTopbar({
   onAction, 
   showAction = true 
 }: AppTopbarProps) {
-  const pathname = usePathname()
-  
-  // Mapear rotas para títulos
-  const getPageTitle = () => {
-    if (title) return title
-    
-    const routeMap: Record<string, string> = {
-      '/': 'Dashboard',
-      '/documentos/funcionarios': 'Funcionários',
-      '/documentos/empresa': 'Empresa',
-      '/relatorios/relatorio-tecnico': 'Relatório Técnico'
-    }
-    
-    return routeMap[pathname] || 'Página'
-  }
-
-  // Gerar breadcrumbs baseado na rota atual
-  const generateBreadcrumbs = () => {
-    const segments = pathname.split('/').filter(Boolean)
-    const breadcrumbs = []
-
-    // Sempre incluir Home como primeiro item
-    breadcrumbs.push({
-      label: 'Home',
-      href: '/',
-      isActive: pathname === '/'
-    })
-
-    // Se não estiver na página inicial, adicionar breadcrumbs específicos
-    if (pathname !== '/') {
-      let currentPath = ''
-      
-      segments.forEach((segment, index) => {
-        currentPath += `/${segment}`
-        
-        // Mapear segmentos para labels legíveis
-        const segmentMap: Record<string, string> = {
-          'documentos': 'Documentos',
-          'funcionarios': 'Funcionários',
-          'empresa': 'Empresa',
-          'relatorios': 'Relatórios',
-          'relatorio-tecnico': 'Relatório Técnico',
-        }
-        
-        const label = segmentMap[segment] || segment.charAt(0).toUpperCase() + segment.slice(1)
-        const isLast = index === segments.length - 1
-        
-        breadcrumbs.push({
-          label,
-          href: currentPath,
-          isActive: isLast
-        })
-      })
-    }
-
-    return breadcrumbs
-  }
-
-  const breadcrumbs = generateBreadcrumbs()
 
   return (
-    <header className="flex h-16 shrink-0 items-center gap-2 bg-background px-4  md:px-6 w-full">
+    <header className="flex h-16 shrink-0 items-center gap-2 bg-background px-4 md:px-6 w-full">
       <SidebarTrigger className="-ml-1"/>
       <Separator
-            orientation="vertical"
-            className="mr-2 data-[orientation=vertical]:h-4"
-          />
+        orientation="vertical"
+        className="mr-2 data-[orientation=vertical]:h-4"
+      />
       
-      <div className="flex flex-1 items-center justify-between min-w-0">
-        <div className="flex flex-col gap-1 min-w-0">
-          <Breadcrumb>
+      <div className="flex flex-1 items-center justify-between">
+        
+      <Breadcrumb>
             <BreadcrumbList>
-              {breadcrumbs.map((breadcrumb, index) => (
-                <div key={breadcrumb.href} className="flex items-center">
-                  <BreadcrumbItem>
-                    {breadcrumb.isActive ? (
-                      <BreadcrumbPage>{breadcrumb.label}</BreadcrumbPage>
-                    ) : (
-                      <BreadcrumbLink href={breadcrumb.href}>
-                        {breadcrumb.label}
-                      </BreadcrumbLink>
-                    )}
-                  </BreadcrumbItem>
-                  {index < breadcrumbs.length - 1 && <BreadcrumbSeparator />}
-                </div>
-              ))}
+              <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbLink href="#">
+                  Home
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Group 01</BreadcrumbPage>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Item 01</BreadcrumbPage>
+              </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          
-        </div>
-        
-        {showAction && (
-          <Button onClick={onAction} size="sm" className="gap-2 flex-shrink-0">
-            <Plus className="h-4 w-4" />
-            {actionLabel}
-          </Button>
-        )}
       </div>
     </header>
   )
