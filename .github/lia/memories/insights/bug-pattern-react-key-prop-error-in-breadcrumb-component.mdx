@@ -1,0 +1,61 @@
+---
+id: bug-pattern-react-key-prop-error-in-breadcrumb-component
+type: bug_pattern
+confidence: 0.9
+created_at: '2025-09-29T05:42:46.656Z'
+updated_at: '2025-09-29T05:42:46.656Z'
+tags:
+  - react
+  - key-prop
+  - breadcrumb
+  - frontend
+  - bug
+source: user_input
+project_root: 'c:\Users\krekm\Dev\repos\nextjs\projetos\gm-app'
+relationships: []
+---
+# Bug Pattern: React Key Prop Error
+
+## Problem
+React warning: "Each child in a list should have a unique 'key' prop" in BreadcrumbList component.
+
+## Root Cause
+In `src/components/app-topbar.tsx` line 80-93, the breadcrumbs.map() function returns JSX elements without unique keys.
+
+## Current Code (Problematic)
+```tsx
+{breadcrumbs.map((breadcrumb, index) => (
+  <>
+    <BreadcrumbItem>
+      {/* content */}
+    </BreadcrumbItem>
+    {index < breadcrumbs.length - 1 && <BreadcrumbSeparator />}
+  </>
+))}
+```
+
+## Solution
+Add unique key prop to the root element of each mapped item:
+
+```tsx
+{breadcrumbs.map((breadcrumb, index) => (
+  <React.Fragment key={`${breadcrumb.href}-${index}`}>
+    <BreadcrumbItem>
+      {/* content */}
+    </BreadcrumbItem>
+    {index < breadcrumbs.length - 1 && <BreadcrumbSeparator />}
+  </React.Fragment>
+))}
+```
+
+## Additional Issues Found
+- TypeScript errors with global types
+- Missing type annotations
+- Separator component className prop issue
+
+## Tags
+- react
+- key-prop
+- breadcrumb
+- frontend
+- bug

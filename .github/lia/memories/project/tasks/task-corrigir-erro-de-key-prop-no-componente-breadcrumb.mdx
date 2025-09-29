@@ -1,0 +1,39 @@
+---
+id: task-corrigir-erro-de-key-prop-no-componente-breadcrumb
+type: task
+confidence: 0.9
+created_at: '2025-09-29T05:42:53.291Z'
+updated_at: '2025-09-29T05:42:53.291Z'
+tags:
+  - react
+  - frontend
+  - bug-fix
+  - breadcrumb
+source: user_input
+project_root: 'c:\Users\krekm\Dev\repos\nextjs\projetos\gm-app'
+relationships: []
+---
+# Task: Corrigir erro de key prop no componente Breadcrumb
+
+## Objetivo
+Resolver o warning do React sobre chaves únicas no componente BreadcrumbList do AppTopbar.
+
+## Problema Identificado
+- Warning: "Each child in a list should have a unique 'key' prop"
+- Localização: `src/components/app-topbar.tsx` linha 80-93
+- Causa: Elementos JSX retornados pelo map() sem chaves únicas
+
+## Implementação
+1. Adicionar key prop única para cada item do breadcrumb
+2. Usar React.Fragment com key ao invés de fragmento vazio
+3. Corrigir problemas de TypeScript relacionados
+4. Testar a correção no navegador
+
+## Critérios de Aceitação
+- [ ] Warning de key prop removido do console
+- [ ] Breadcrumb funciona corretamente
+- [ ] Navegação entre páginas mantida
+- [ ] Sem erros de TypeScript
+
+## Referência
+Bug pattern documentado em: bug-pattern-react-key-prop-error-in-breadcrumb-component

@@ -1,0 +1,61 @@
+---
+id: code-pattern-correo-de-key-prop-em-breadcrumb-react
+type: code_pattern
+confidence: 0.95
+created_at: '2025-09-29T05:49:34.132Z'
+updated_at: '2025-09-29T05:49:34.132Z'
+tags:
+  - react
+  - key-prop
+  - breadcrumb
+  - fragment
+  - frontend
+source: user_input
+project_root: 'c:\Users\krekm\Dev\repos\nextjs\projetos\gm-app'
+relationships: []
+---
+# Padrão: Correção de Key Prop em Breadcrumb React
+
+## Problema Resolvido
+Warning do React: "Each child in a list should have a unique 'key' prop" no componente BreadcrumbList.
+
+## Solução Implementada
+```tsx
+// ❌ ANTES (Problemático)
+{breadcrumbs.map((breadcrumb, index) => (
+  <>
+    <BreadcrumbItem>
+      {/* conteúdo */}
+    </BreadcrumbItem>
+    {index < breadcrumbs.length - 1 && <BreadcrumbSeparator />}
+  </>
+))}
+
+// ✅ DEPOIS (Corrigido)
+{breadcrumbs.map((breadcrumb, index) => (
+  <React.Fragment key={`${breadcrumb.href}-${index}`}>
+    <BreadcrumbItem>
+      {/* conteúdo */}
+    </BreadcrumbItem>
+    {index < breadcrumbs.length - 1 && <BreadcrumbSeparator />}
+  </React.Fragment>
+))}
+```
+
+## Mudanças Necessárias
+1. **Importar React**: `import React from "react"`
+2. **Usar React.Fragment**: Substituir fragmento vazio `<>` por `<React.Fragment>`
+3. **Adicionar key única**: `key={`${breadcrumb.href}-${index}`}`
+
+## Validação
+- ✅ Warning removido do console
+- ✅ Breadcrumb funciona corretamente
+- ✅ Navegação entre páginas mantida
+- ✅ Testado no navegador com Playwright
+
+## Tags
+- react
+- key-prop
+- breadcrumb
+- fragment
+- frontend
