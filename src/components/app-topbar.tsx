@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Plus } from "lucide-react"
 import { usePathname } from "next/navigation"
+import { Separator } from "@/components/ui/separator"
 
 interface AppTopbarProps {
   title?: string
@@ -87,11 +88,15 @@ export function AppTopbar({
   const breadcrumbs = generateBreadcrumbs()
 
   return (
-    <header className="flex h-16 shrink-0 items-center gap-4 bg-background px-4  md:px-6 w-full">
-      <SidebarTrigger />
+    <header className="flex h-16 shrink-0 items-center gap-2 bg-background px-4  md:px-6 w-full">
+      <SidebarTrigger className="-ml-1"/>
+      <Separator
+            orientation="vertical"
+            className="mr-2 data-[orientation=vertical]:h-4"
+          />
       
       <div className="flex flex-1 items-center justify-between min-w-0">
-        <div className="flex flex-col gap-1 min-w-0 flex-1">
+        <div className="flex flex-col gap-1 min-w-0">
           <Breadcrumb>
             <BreadcrumbList>
               {breadcrumbs.map((breadcrumb, index) => (
