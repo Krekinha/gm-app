@@ -1,1 +1,1 @@
-export * from './controllers/example.controller'
+export * from "./controllers/example.controller";

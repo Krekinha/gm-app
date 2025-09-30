@@ -1,5 +1,3 @@
-import { Users, UserPlus, FileText } from "lucide-react"
-
 export default function DocumentosFuncionariosPage() {
   return (
     <div className="space-y-4">
@@ -13,7 +11,7 @@ export default function DocumentosFuncionariosPage() {
             Visualizar →
           </button>
         </div>
-        
+
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <h3 className="text-lg font-semibold mb-2">Fichas Funcionais</h3>
           <p className="text-sm text-muted-foreground mb-4">
@@ -23,7 +21,7 @@ export default function DocumentosFuncionariosPage() {
             Visualizar →
           </button>
         </div>
-        
+
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <h3 className="text-lg font-semibold mb-2">Documentos Pessoais</h3>
           <p className="text-sm text-muted-foreground mb-4">
@@ -33,7 +31,7 @@ export default function DocumentosFuncionariosPage() {
             Visualizar →
           </button>
         </div>
-        
+
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <h3 className="text-lg font-semibold mb-2">Avaliações</h3>
           <p className="text-sm text-muted-foreground mb-4">
@@ -43,7 +41,7 @@ export default function DocumentosFuncionariosPage() {
             Visualizar →
           </button>
         </div>
-        
+
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <h3 className="text-lg font-semibold mb-2">Treinamentos</h3>
           <p className="text-sm text-muted-foreground mb-4">
@@ -53,7 +51,7 @@ export default function DocumentosFuncionariosPage() {
             Visualizar →
           </button>
         </div>
-        
+
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <h3 className="text-lg font-semibold mb-2">Folha de Pagamento</h3>
           <p className="text-sm text-muted-foreground mb-4">
@@ -65,5 +63,5 @@ export default function DocumentosFuncionariosPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

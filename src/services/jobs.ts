@@ -1,6 +1,6 @@
-import { store } from '@/services/store'
-import { createBullMQAdapter } from '@igniter-js/adapter-bullmq'
-import { z } from 'zod'
+import { createBullMQAdapter } from "@igniter-js/adapter-bullmq";
+import { z } from "zod";
+import { store } from "@/services/store";
 
 /**
  * Job queue adapter for background processing.
@@ -14,22 +14,20 @@ export const jobs = createBullMQAdapter({
   store,
   autoStartWorker: {
     concurrency: 1,
-    queues: ['*']
-  }
-})
+    queues: ["*"],
+  },
+});
 
 export const REGISTERED_JOBS = jobs.merge({
   system: jobs.router({
     jobs: {
       sampleJob: jobs.register({
-        name: 'sampleJob',
+        name: "sampleJob",
         input: z.object({
-          message: z.string()
+          message: z.string(),
         }),
-        handler: async ({ input }) => {
-          console.log(input.message)
-        }
-      })
-    }
-  })
-})
+        handler: async ({ input }) => {},
+      }),
+    },
+  }),
+});

@@ -1,5 +1,5 @@
-import { igniter } from '@/igniter'
-import { exampleController } from '@/features/example'
+import { exampleController } from "@/features/example";
+import { igniter } from "@/igniter";
 
 /**
  * @description Main application router configuration
@@ -7,8 +7,8 @@ import { exampleController } from '@/features/example'
  */
 export const AppRouter = igniter.router({
   controllers: {
-    example: exampleController
-  }
-})
+    example: exampleController,
+  },
+});
 
-export type AppRouterType = typeof AppRouter
+export type AppRouterType = typeof AppRouter;

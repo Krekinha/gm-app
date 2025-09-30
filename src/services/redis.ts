@@ -1,4 +1,4 @@
-import { Redis } from 'ioredis'
+import { Redis } from "ioredis";
 
 /**
  * Redis client instance for caching, session storage, and pub/sub.
@@ -10,4 +10,4 @@ import { Redis } from 'ioredis'
  */
 export const redis = new Redis(process.env.REDIS_URL!, {
   maxRetriesPerRequest: null,
-})
+});

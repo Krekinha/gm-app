@@ -1,5 +1,5 @@
-import { createMcpAdapter } from '@igniter-js/adapter-mcp-server'
-import { AppRouter } from '@/igniter.router'
+import { createMcpAdapter } from "@igniter-js/adapter-mcp-server";
+import { AppRouter } from "@/igniter.router";
 
 /**
  * MCP server instance for exposing API as a MCP server.
@@ -8,25 +8,25 @@ import { AppRouter } from '@/igniter.router'
  */
 export const { GET, POST, DELETE } = createMcpAdapter(AppRouter, {
   serverInfo: {
-    name: 'Igniter.js MCP Server',
-    version: '1.0.0',
+    name: "Igniter.js MCP Server",
+    version: "1.0.0",
   },
   context: (request: Request) => {
     return {
       context: {
-        user: request.headers.get('user') || 'anonymous',
+        user: request.headers.get("user") || "anonymous",
       },
       tools: [],
       request,
       timestamp: Date.now(),
-    }
+    };
   },
   adapter: {
-    basePath: '/api/mcp',
+    basePath: "/api/mcp",
     verboseLogs: true,
     redis: {
       url: process.env.REDIS_URL!,
-      keyPrefix: 'igniter:mcp:',
+      keyPrefix: "igniter:mcp:",
     },
   },
-})
+});

@@ -1,12 +1,11 @@
+import { IgniterProvider } from "@igniter-js/core/client";
 import type { Metadata } from "next";
-
 import { Geist, Geist_Mono } from "next/font/google";
-import { IgniterProvider } from '@igniter-js/core/client'
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar"
-import { AppSidebar } from "@/components/app-sidebar"
-import { AppTopbar } from "@/components/app-topbar"
+import { AppSidebar } from "@/components/app-sidebar";
+import { AppTopbar } from "@/components/app-topbar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
-import "./globals.css"
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,16 +32,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}
       >
-        <IgniterProvider 
-        // enableRealtime={false} Descomente esta linha para desabilitar a conexão realtime
-  debug={process.env.NODE_ENV === 'development'}>
+        <IgniterProvider
+          // enableRealtime={false} Descomente esta linha para desabilitar a conexão realtime
+          debug={process.env.NODE_ENV === "development"}
+        >
           <SidebarProvider>
             <AppSidebar />
             <SidebarInset>
               <AppTopbar />
-              <main className="flex-1 overflow-auto p-4">
-                {children}
-              </main>
+              <main className="flex-1 overflow-auto p-4">{children}</main>
             </SidebarInset>
           </SidebarProvider>
         </IgniterProvider>

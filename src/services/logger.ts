@@ -1,4 +1,4 @@
-import { createConsoleLogger, IgniterLogLevel } from '@igniter-js/core'
+import { createConsoleLogger, IgniterLogLevel } from "@igniter-js/core";
 
 /**
  * Logger instance for application logging.
@@ -11,4 +11,4 @@ import { createConsoleLogger, IgniterLogLevel } from '@igniter-js/core'
 export const logger = createConsoleLogger({
   level: IgniterLogLevel.INFO,
   showTimestamp: true,
-})
+});

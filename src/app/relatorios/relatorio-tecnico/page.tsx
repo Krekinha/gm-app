@@ -1,4 +1,4 @@
-import { ClipboardList, Download, BarChart3, TrendingUp } from "lucide-react"
+import { BarChart3, ClipboardList, TrendingUp } from "lucide-react";
 
 export default function RelatoriosTecnicoPage() {
   return (
@@ -7,7 +7,9 @@ export default function RelatoriosTecnicoPage() {
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <div className="flex items-center gap-2 mb-2">
             <BarChart3 className="h-5 w-5 text-blue-600" />
-            <h3 className="text-lg font-semibold">Relatório de Produtividade</h3>
+            <h3 className="text-lg font-semibold">
+              Relatório de Produtividade
+            </h3>
           </div>
           <p className="text-sm text-muted-foreground mb-4">
             Análise de produtividade por funcionário e departamento
@@ -21,7 +23,7 @@ export default function RelatoriosTecnicoPage() {
             </button>
           </div>
         </div>
-        
+
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <div className="flex items-center gap-2 mb-2">
             <TrendingUp className="h-5 w-5 text-green-600" />
@@ -39,7 +41,7 @@ export default function RelatoriosTecnicoPage() {
             </button>
           </div>
         </div>
-        
+
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <div className="flex items-center gap-2 mb-2">
             <ClipboardList className="h-5 w-5 text-purple-600" />
@@ -57,11 +59,13 @@ export default function RelatoriosTecnicoPage() {
             </button>
           </div>
         </div>
-        
+
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <div className="flex items-center gap-2 mb-2">
             <BarChart3 className="h-5 w-5 text-orange-600" />
-            <h3 className="text-lg font-semibold">Relatório de Recursos Humanos</h3>
+            <h3 className="text-lg font-semibold">
+              Relatório de Recursos Humanos
+            </h3>
           </div>
           <p className="text-sm text-muted-foreground mb-4">
             Análise de RH, turnover e satisfação dos funcionários
@@ -75,7 +79,7 @@ export default function RelatoriosTecnicoPage() {
             </button>
           </div>
         </div>
-        
+
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <div className="flex items-center gap-2 mb-2">
             <TrendingUp className="h-5 w-5 text-red-600" />
@@ -93,7 +97,7 @@ export default function RelatoriosTecnicoPage() {
             </button>
           </div>
         </div>
-        
+
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <div className="flex items-center gap-2 mb-2">
             <ClipboardList className="h-5 w-5 text-indigo-600" />
@@ -113,5 +117,5 @@ export default function RelatoriosTecnicoPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

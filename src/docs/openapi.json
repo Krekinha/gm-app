@@ -21,9 +21,7 @@
       "get": {
         "summary": "hello",
         "operationId": "hello",
-        "tags": [
-          "example"
-        ],
+        "tags": ["example"],
         "parameters": [],
         "responses": {
           "200": {

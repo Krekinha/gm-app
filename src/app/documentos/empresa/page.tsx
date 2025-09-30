@@ -1,5 +1,3 @@
-import { Building2 } from "lucide-react"
-
 export default function DocumentosEmpresaPage() {
   return (
     <div className="space-y-4">
@@ -13,7 +11,7 @@ export default function DocumentosEmpresaPage() {
             Visualizar →
           </button>
         </div>
-        
+
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <h3 className="text-lg font-semibold mb-2">Contratos</h3>
           <p className="text-sm text-muted-foreground mb-4">
@@ -23,7 +21,7 @@ export default function DocumentosEmpresaPage() {
             Visualizar →
           </button>
         </div>
-        
+
         <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
           <h3 className="text-lg font-semibold mb-2">Licenças</h3>
           <p className="text-sm text-muted-foreground mb-4">
@@ -35,5 +33,5 @@ export default function DocumentosEmpresaPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

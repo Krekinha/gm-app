@@ -1,5 +1,5 @@
-import * as React from "react"
-import { Building2, FileText, Users, ClipboardList } from "lucide-react"
+import { Building2, ClipboardList, FileText, Users } from "lucide-react";
+import type * as React from "react";
 
 import {
   Sidebar,
@@ -12,7 +12,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 // Dados de navegação customizados para GM-App
 const data = {
@@ -45,7 +45,7 @@ const data = {
       ],
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -60,7 +60,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none">
                   <span className="font-medium">GM-App</span>
-                  <span className="text-xs text-muted-foreground">Sistema de Gestão</span>
+                  <span className="text-xs text-muted-foreground">
+                    Sistema de Gestão
+                  </span>
                 </div>
               </a>
             </SidebarMenuButton>
@@ -80,17 +82,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 {item.items?.length ? (
                   <SidebarMenuSub className="ml-0 border-l-0 px-1.5">
                     {item.items.map((subItem) => {
-                      const IconComponent = subItem.icon
+                      const IconComponent = subItem.icon;
                       return (
                         <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton asChild isActive={subItem.isActive}>
-                            <a href={subItem.url} className="flex items-center gap-2">
+                          <SidebarMenuSubButton
+                            asChild
+                            isActive={subItem.isActive}
+                          >
+                            <a
+                              href={subItem.url}
+                              className="flex items-center gap-2"
+                            >
                               <IconComponent className="size-4" />
                               {subItem.title}
                             </a>
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
-                      )
+                      );
                     })}
                   </SidebarMenuSub>
                 ) : null}
@@ -100,5 +108,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  )
+  );
 }
