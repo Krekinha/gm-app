@@ -7,7 +7,10 @@ export default function DocumentosFuncionariosPage() {
           <p className="text-sm text-muted-foreground mb-4">
             Contratos CLT e documentos trabalhistas
           </p>
-          <button className="text-sm text-primary hover:underline">
+          <button
+            type="button"
+            className="text-sm text-primary hover:underline"
+          >
             Visualizar →
           </button>
         </div>
@@ -17,7 +20,10 @@ export default function DocumentosFuncionariosPage() {
           <p className="text-sm text-muted-foreground mb-4">
             Dados pessoais e profissionais dos funcionários
           </p>
-          <button className="text-sm text-primary hover:underline">
+          <button
+            type="button"
+            className="text-sm text-primary hover:underline"
+          >
             Visualizar →
           </button>
         </div>
@@ -27,7 +33,10 @@ export default function DocumentosFuncionariosPage() {
           <p className="text-sm text-muted-foreground mb-4">
             RG, CPF, carteira de trabalho e outros documentos
           </p>
-          <button className="text-sm text-primary hover:underline">
+          <button
+            type="button"
+            className="text-sm text-primary hover:underline"
+          >
             Visualizar →
           </button>
         </div>
@@ -37,7 +46,10 @@ export default function DocumentosFuncionariosPage() {
           <p className="text-sm text-muted-foreground mb-4">
             Avaliações de desempenho e feedback
           </p>
-          <button className="text-sm text-primary hover:underline">
+          <button
+            type="button"
+            className="text-sm text-primary hover:underline"
+          >
             Visualizar →
           </button>
         </div>
@@ -47,7 +59,10 @@ export default function DocumentosFuncionariosPage() {
           <p className="text-sm text-muted-foreground mb-4">
             Certificados e registros de treinamentos
           </p>
-          <button className="text-sm text-primary hover:underline">
+          <button
+            type="button"
+            className="text-sm text-primary hover:underline"
+          >
             Visualizar →
           </button>
         </div>
@@ -57,7 +72,10 @@ export default function DocumentosFuncionariosPage() {
           <p className="text-sm text-muted-foreground mb-4">
             Histórico de pagamentos e benefícios
           </p>
-          <button className="text-sm text-primary hover:underline">
+          <button
+            type="button"
+            className="text-sm text-primary hover:underline"
+          >
             Visualizar →
           </button>
         </div>

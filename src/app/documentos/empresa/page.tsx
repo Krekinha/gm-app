@@ -7,7 +7,10 @@ export default function DocumentosEmpresaPage() {
           <p className="text-sm text-muted-foreground mb-4">
             Documentos constitutivos da empresa
           </p>
-          <button className="text-sm text-primary hover:underline">
+          <button
+            type="button"
+            className="text-sm text-primary hover:underline"
+          >
             Visualizar →
           </button>
         </div>
@@ -17,7 +20,10 @@ export default function DocumentosEmpresaPage() {
           <p className="text-sm text-muted-foreground mb-4">
             Contratos comerciais e de prestação de serviços
           </p>
-          <button className="text-sm text-primary hover:underline">
+          <button
+            type="button"
+            className="text-sm text-primary hover:underline"
+          >
             Visualizar →
           </button>
         </div>
@@ -27,7 +33,10 @@ export default function DocumentosEmpresaPage() {
           <p className="text-sm text-muted-foreground mb-4">
             Licenças e autorizações de funcionamento
           </p>
-          <button className="text-sm text-primary hover:underline">
+          <button
+            type="button"
+            className="text-sm text-primary hover:underline"
+          >
             Visualizar →
           </button>
         </div>

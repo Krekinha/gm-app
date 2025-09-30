@@ -23,7 +23,8 @@
       "correctness": {
         "noUnusedVariables": "warn",
         "noUnusedImports": "warn",
-        "useExhaustiveDependencies": "warn"
+        "useExhaustiveDependencies": "warn",
+        "noNestedComponentDefinitions": "off"
       },
       "style": {
         "useConst": "warn",
@@ -32,7 +33,10 @@
       "suspicious": {
         "noExplicitAny": "warn",
         "noConsole": "warn",
-        "noVar": "error"
+        "noVar": "error",
+        "noDocumentCookie": "warn",
+        "noArrayIndexKey": "warn",
+        "noUnknownAtRules": "off"
       },
       "complexity": {
         "noExtraBooleanCast": "warn",
@@ -40,6 +44,14 @@
       },
       "performance": {
         "noAccumulatingSpread": "warn"
+      },
+      "a11y": {
+        "useFocusableInteractive": "off",
+        "useSemanticElements": "off",
+        "useAriaPropsForRole": "off"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "warn"
       }
     }
   },

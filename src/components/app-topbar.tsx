@@ -23,7 +23,7 @@ interface AppTopbarProps {
 }
 
 export function AppTopbar({
-  title,
+  title: _title,
   actionLabel = "Novo",
   onAction,
   showAction = true,

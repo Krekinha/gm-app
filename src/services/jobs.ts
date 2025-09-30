@@ -26,7 +26,7 @@ export const REGISTERED_JOBS = jobs.merge({
         input: z.object({
           message: z.string(),
         }),
-        handler: async ({ input }) => {},
+        handler: async ({ input: _input }) => {},
       }),
     },
   }),

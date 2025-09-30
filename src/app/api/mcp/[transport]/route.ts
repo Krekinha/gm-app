@@ -25,7 +25,7 @@ export const { GET, POST, DELETE } = createMcpAdapter(AppRouter, {
     basePath: "/api/mcp",
     verboseLogs: true,
     redis: {
-      url: process.env.REDIS_URL!,
+      url: process.env.REDIS_URL || "redis://localhost:6379",
       keyPrefix: "igniter:mcp:",
     },
   },

@@ -1,4 +1,7 @@
+"use client";
+
 import { Building2, ClipboardList, FileText, Users } from "lucide-react";
+import { usePathname } from "next/navigation";
 import type * as React from "react";
 
 import {
@@ -48,6 +51,8 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname();
+
   return (
     <Sidebar variant="floating" {...props}>
       <SidebarHeader>
@@ -83,12 +88,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                   <SidebarMenuSub className="ml-0 border-l-0 px-1.5">
                     {item.items.map((subItem) => {
                       const IconComponent = subItem.icon;
+                      const isActive = pathname === subItem.url;
                       return (
                         <SidebarMenuSubItem key={subItem.title}>
-                          <SidebarMenuSubButton
-                            asChild
-                            isActive={subItem.isActive}
-                          >
+                          <SidebarMenuSubButton asChild isActive={isActive}>
                             <a
                               href={subItem.url}
                               className="flex items-center gap-2"

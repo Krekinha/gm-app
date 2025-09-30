@@ -8,6 +8,9 @@ import { Redis } from "ioredis";
  *
  * @see https://github.com/luin/ioredis
  */
-export const redis = new Redis(process.env.REDIS_URL!, {
-  maxRetriesPerRequest: null,
-});
+export const redis = new Redis(
+  process.env.REDIS_URL || "redis://localhost:6379",
+  {
+    maxRetriesPerRequest: null,
+  }
+);

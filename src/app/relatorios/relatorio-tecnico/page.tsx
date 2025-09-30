@@ -15,10 +15,16 @@ export default function RelatoriosTecnicoPage() {
             Análise de produtividade por funcionário e departamento
           </p>
           <div className="flex gap-2">
-            <button className="text-sm text-primary hover:underline">
+            <button
+              type="button"
+              className="text-sm text-primary hover:underline"
+            >
               Visualizar →
             </button>
-            <button className="text-sm text-green-600 hover:underline">
+            <button
+              type="button"
+              className="text-sm text-green-600 hover:underline"
+            >
               Download PDF
             </button>
           </div>
@@ -33,10 +39,16 @@ export default function RelatoriosTecnicoPage() {
             Análise financeira e indicadores de performance
           </p>
           <div className="flex gap-2">
-            <button className="text-sm text-primary hover:underline">
+            <button
+              type="button"
+              className="text-sm text-primary hover:underline"
+            >
               Visualizar →
             </button>
-            <button className="text-sm text-green-600 hover:underline">
+            <button
+              type="button"
+              className="text-sm text-green-600 hover:underline"
+            >
               Download PDF
             </button>
           </div>
@@ -51,10 +63,16 @@ export default function RelatoriosTecnicoPage() {
             Métricas de qualidade e conformidade
           </p>
           <div className="flex gap-2">
-            <button className="text-sm text-primary hover:underline">
+            <button
+              type="button"
+              className="text-sm text-primary hover:underline"
+            >
               Visualizar →
             </button>
-            <button className="text-sm text-green-600 hover:underline">
+            <button
+              type="button"
+              className="text-sm text-green-600 hover:underline"
+            >
               Download PDF
             </button>
           </div>
@@ -71,10 +89,16 @@ export default function RelatoriosTecnicoPage() {
             Análise de RH, turnover e satisfação dos funcionários
           </p>
           <div className="flex gap-2">
-            <button className="text-sm text-primary hover:underline">
+            <button
+              type="button"
+              className="text-sm text-primary hover:underline"
+            >
               Visualizar →
             </button>
-            <button className="text-sm text-green-600 hover:underline">
+            <button
+              type="button"
+              className="text-sm text-green-600 hover:underline"
+            >
               Download PDF
             </button>
           </div>
@@ -89,10 +113,16 @@ export default function RelatoriosTecnicoPage() {
             Performance de vendas e análise de mercado
           </p>
           <div className="flex gap-2">
-            <button className="text-sm text-primary hover:underline">
+            <button
+              type="button"
+              className="text-sm text-primary hover:underline"
+            >
               Visualizar →
             </button>
-            <button className="text-sm text-green-600 hover:underline">
+            <button
+              type="button"
+              className="text-sm text-green-600 hover:underline"
+            >
               Download PDF
             </button>
           </div>
@@ -107,10 +137,16 @@ export default function RelatoriosTecnicoPage() {
             Análise operacional e eficiência dos processos
           </p>
           <div className="flex gap-2">
-            <button className="text-sm text-primary hover:underline">
+            <button
+              type="button"
+              className="text-sm text-primary hover:underline"
+            >
               Visualizar →
             </button>
-            <button className="text-sm text-green-600 hover:underline">
+            <button
+              type="button"
+              className="text-sm text-green-600 hover:underline"
+            >
               Download PDF
             </button>
           </div>
