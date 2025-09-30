@@ -11,7 +11,7 @@
  *
  * To modify the client API, update your controller files instead.
  *
- * Generated: 2025-08-26T21:26:17.653Z
+ * Generated: 2025-09-30T04:15:59.604Z
  * Framework: nextjs
  * Output: src/
  */
@@ -27,73 +27,6 @@ export const AppRouterSchema = {
         "hello": {
           "path": "/hello",
           "method": "GET",
-          "$Infer": {}
-        }
-      }
-    },
-    "users": {
-      "name": "Users",
-      "path": "/users",
-      "actions": {
-        "list": {
-          "name": "List Users",
-          "method": "GET",
-          "$Infer": {}
-        },
-        "getById": {
-          "name": "Get User by ID",
-          "path": "/:id",
-          "method": "GET",
-          "$Infer": {}
-        },
-        "create": {
-          "name": "Create User",
-          "type": "mutation",
-          "method": "POST",
-          "$Infer": {},
-          "bodySchema": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string"
-              },
-              "email": {
-                "type": "string",
-                "format": "email"
-              }
-            },
-            "required": [
-              "name",
-              "email"
-            ],
-            "additionalProperties": false
-          }
-        },
-        "update": {
-          "name": "Update User",
-          "type": "mutation",
-          "path": "/:id",
-          "method": "PUT",
-          "$Infer": {},
-          "bodySchema": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string"
-              },
-              "email": {
-                "type": "string",
-                "format": "email"
-              }
-            },
-            "additionalProperties": false
-          }
-        },
-        "delete": {
-          "name": "Delete User",
-          "type": "mutation",
-          "path": "/:id",
-          "method": "DELETE",
           "$Infer": {}
         }
       }
