@@ -17,6 +17,7 @@ export interface ContratoPredefinido {
   pedido: string;
   descricaoEscopo: string;
   itensTecnicos: ItemTecnicoPredefinido[];
+  imagemFundoUrl?: string; // URL para pré-carregar imagem de fundo
   dataCriacao: string;
   dataUltimaUso: string;
   usoCount: number;
@@ -55,6 +56,7 @@ export const contratosPredefinidos: ContratoPredefinido[] = [
         descricao: "Teste de funcionamento das tomadas"
       }
     ],
+    imagemFundoUrl: "/relatorio-tecnico/fundo-pdf.jpg",
     dataCriacao: new Date().toISOString(),
     dataUltimaUso: new Date().toISOString(),
     usoCount: 0
@@ -98,6 +100,7 @@ export const contratosPredefinidos: ContratoPredefinido[] = [
         descricao: "Verificação de continuidade dos circuitos"
       }
     ],
+    imagemFundoUrl: "/relatorio-tecnico/fundo-pdf.jpg",
     dataCriacao: new Date().toISOString(),
     dataUltimaUso: new Date().toISOString(),
     usoCount: 0
@@ -153,6 +156,7 @@ export const contratosPredefinidos: ContratoPredefinido[] = [
         descricao: "Teste e comissionamento de todos os sistemas"
       }
     ],
+    imagemFundoUrl: "/relatorio-tecnico/fundo-pdf.jpg",
     dataCriacao: new Date().toISOString(),
     dataUltimaUso: new Date().toISOString(),
     usoCount: 0

@@ -35,6 +35,9 @@ interface ContratoSelectorProps {
     rq: string;
     os: string;
     pedido: string;
+    descricaoEscopo: string;
+    itensTecnicos: ItemTecnico[];
+    imagemFundoUrl?: string;
   }) => void;
   currentData?: {
     contrato: string;
@@ -42,6 +45,9 @@ interface ContratoSelectorProps {
     rq: string;
     os: string;
     pedido: string;
+    descricaoEscopo: string;
+    itensTecnicos: ItemTecnico[];
+    imagemFundoUrl?: string;
   };
 }
 

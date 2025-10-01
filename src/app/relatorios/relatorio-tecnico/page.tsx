@@ -213,7 +213,7 @@ export default function RelatorioTecnicoPage() {
                 <CardTitle>Ações</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex gap-2">
+          <div className="flex gap-2">
                   <Button 
                     onClick={handleGeneratePreview}
                     disabled={isGeneratingPDF}
@@ -231,14 +231,14 @@ export default function RelatorioTecnicoPage() {
                     <Download className="h-4 w-4 mr-2" />
                     Baixar PDF
                   </Button>
-                </div>
+        </div>
 
                 <Separator />
                 
                 <div className="text-sm text-gray-600">
                   <p><strong>Fotos carregadas:</strong> {fotos.length}</p>
                   <p><strong>Itens técnicos:</strong> {formData.itensTecnicos.length}</p>
-                </div>
+          </div>
               </CardContent>
             </Card>
 
@@ -290,6 +290,26 @@ export default function RelatorioTecnicoPage() {
                           })) || [];
                           setValue("itensTecnicos", itensTecnicos);
                           
+                          // Carregar imagem de fundo se disponível
+                          if (contrato.imagemFundoUrl) {
+                            // Converter URL para dataURL
+                            fetch(contrato.imagemFundoUrl)
+                              .then(response => response.blob())
+                              .then(blob => {
+                                return new Promise<string>((resolve) => {
+                                  const reader = new FileReader();
+                                  reader.onload = () => resolve(reader.result as string);
+                                  reader.readAsDataURL(blob);
+                                });
+                              })
+                              .then(dataUrl => {
+                                setValue("imagemFundo", dataUrl);
+                              })
+                              .catch(error => {
+                                console.warn("Erro ao carregar imagem de fundo:", error);
+                              });
+                          }
+                          
                           // Voltar para a aba principal
                           setActiveTab("formulario");
                         }}
@@ -304,15 +324,16 @@ export default function RelatorioTecnicoPage() {
                           os: formData.os,
                           pedido: formData.pedido,
                           descricaoEscopo: formData.descricaoEscopo,
-                          itensTecnicos: formData.itensTecnicos
+                          itensTecnicos: formData.itensTecnicos,
+                          imagemFundoUrl: formData.imagemFundo
                         }}
                       />
-                    </div>
+          </div>
                   </TabsContent>
                 </Tabs>
               </CardContent>
             </Card>
-          </div>
+        </div>
 
           {/* Painel direito - Preview */}
           <div>
