@@ -9,3 +9,37 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+// Modelo para contratos salvos
+model ContratoModelo {
+  id              String   @id @default(cuid())
+  nome            String
+  contrato        String
+  valorInicial    String
+  rq              String
+  os              String
+  pedido          String
+  descricaoEscopo String
+  imagemFundoUrl  String?
+  dataCriacao     DateTime @default(now())
+  dataUltimaUso   DateTime @default(now())
+  usoCount        Int      @default(0)
+
+  // Relacionamento com itens técnicos
+  itensTecnicos ItemTecnico[]
+
+  @@map("contrato_modelos")
+}
+
+// Modelo para itens técnicos dos contratos
+model ItemTecnico {
+  id        String @id @default(cuid())
+  descricao String
+  ordem     Int    @default(0)
+
+  // Relacionamento com contrato
+  contratoModeloId String
+  contratoModelo   ContratoModelo @relation(fields: [contratoModeloId], references: [id], onDelete: Cascade)
+
+  @@map("item_tecnicos")
+}

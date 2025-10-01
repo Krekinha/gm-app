@@ -16,7 +16,7 @@ import {
   Check,
   X
 } from "lucide-react";
-import { 
+import {
   ContratoPredefinido,
   carregarContratosSalvos,
   buscarContratos,
@@ -25,7 +25,7 @@ import {
   registrarUsoContrato,
   adicionarContrato,
   removerContrato
-} from "@/lib/contratos-predefinidos";
+} from "@/lib/contratos-api";
 
 interface ContratoSelectorProps {
   onSelectContrato: (contrato: ContratoPredefinido) => void;
@@ -64,56 +64,91 @@ export function ContratoSelector({
 
   // Carregar contratos ao montar componente
   useEffect(() => {
-    setContratos(carregarContratosSalvos());
+    const carregarContratos = async () => {
+      try {
+        const contratosCarregados = await carregarContratosSalvos();
+        setContratos(contratosCarregados);
+      } catch (error) {
+        console.error('Erro ao carregar contratos:', error);
+        setContratos([]);
+      }
+    };
+    
+    carregarContratos();
   }, []);
 
   // Filtrar contratos baseado na busca e filtro
   const contratosFiltrados = React.useMemo(() => {
     let resultado = contratos;
 
-    // Aplicar filtro
-    switch (filtro) {
-      case "maisUsados":
-        resultado = obterContratosMaisUsados(10);
-        break;
-      case "recentes":
-        resultado = obterContratosRecentes(10);
-        break;
-      default:
-        resultado = contratos;
+    // Aplicar filtro (agora usando os dados já carregados)
+    if (filtro === "maisUsados") {
+      resultado = [...contratos].sort((a, b) => b.usoCount - a.usoCount).slice(0, 10);
+    } else if (filtro === "recentes") {
+      resultado = [...contratos].sort((a, b) => 
+        new Date(b.dataUltimaUso).getTime() - new Date(a.dataUltimaUso).getTime()
+      ).slice(0, 10);
     }
 
     // Aplicar busca
     if (busca.trim()) {
-      resultado = buscarContratos(busca);
+      const termoLower = busca.toLowerCase();
+      resultado = resultado.filter(contrato => 
+        contrato.nome.toLowerCase().includes(termoLower) ||
+        contrato.contrato.toLowerCase().includes(termoLower) ||
+        contrato.rq.toLowerCase().includes(termoLower) ||
+        contrato.os.toLowerCase().includes(termoLower) ||
+        contrato.pedido.toLowerCase().includes(termoLower)
+      );
     }
 
     return resultado;
   }, [contratos, busca, filtro]);
 
-  const handleSelectContrato = (contrato: ContratoPredefinido) => {
-    registrarUsoContrato(contrato.id);
-    onSelectContrato(contrato);
-    setContratos(carregarContratosSalvos()); // Recarregar para atualizar contadores
+  const handleSelectContrato = async (contrato: ContratoPredefinido) => {
+    try {
+      await registrarUsoContrato(contrato.id);
+      onSelectContrato(contrato);
+      // Recarregar contratos para atualizar contadores
+      const contratosAtualizados = await carregarContratosSalvos();
+      setContratos(contratosAtualizados);
+    } catch (error) {
+      console.warn('Erro ao registrar uso do contrato:', error);
+      onSelectContrato(contrato);
+    }
   };
 
-  const handleSaveContrato = () => {
+  const handleSaveContrato = async () => {
     if (!currentData || !nomeNovoContrato.trim()) return;
 
-    const novoContrato = adicionarContrato({
-      nome: nomeNovoContrato.trim(),
-      ...currentData
-    });
+    try {
+      const novoContrato = await adicionarContrato({
+        nome: nomeNovoContrato.trim(),
+        ...currentData
+      });
 
-    setContratos(carregarContratosSalvos());
-    setNomeNovoContrato("");
-    setMostrarSalvar(false);
+      setContratos(await carregarContratosSalvos());
+      setNomeNovoContrato("");
+      setMostrarSalvar(false);
+    } catch (error) {
+      console.error('Erro ao salvar contrato:', error);
+      alert('Erro ao salvar contrato. Tente novamente.');
+    }
   };
 
-  const handleRemoveContrato = (id: string) => {
+  const handleRemoveContrato = async (id: string) => {
     if (confirm("Tem certeza que deseja remover este modelo?")) {
-      removerContrato(id);
-      setContratos(carregarContratosSalvos());
+      try {
+        const sucesso = await removerContrato(id);
+        if (sucesso) {
+          setContratos(await carregarContratosSalvos());
+        } else {
+          alert('Erro ao remover modelo.');
+        }
+      } catch (error) {
+        console.error('Erro ao remover contrato:', error);
+        alert('Erro ao remover modelo. Tente novamente.');
+      }
     }
   };
 
