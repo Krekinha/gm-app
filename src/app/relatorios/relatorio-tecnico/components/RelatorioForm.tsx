@@ -54,6 +54,18 @@ export function RelatorioForm({
           pedido: formData.pedido
         }}
         onChange={(field, value) => setValue(field as keyof RelatorioTecnicoData, value)}
+        onLoadCompleteContrato={(contrato) => {
+          // Carregar escopo
+          setValue("descricaoEscopo", contrato.descricaoEscopo || "");
+          
+          // Carregar itens técnicos
+          const itensTecnicos = contrato.itensTecnicos?.map(item => ({
+            id: item.id,
+            descricao: item.descricao,
+            fotosVinculadas: []
+          })) || [];
+          setValue("itensTecnicos", itensTecnicos);
+        }}
       />
 
       {/* Escopo */}

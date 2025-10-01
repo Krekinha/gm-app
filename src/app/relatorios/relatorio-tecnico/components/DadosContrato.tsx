@@ -25,9 +25,10 @@ interface DadosContratoProps {
     pedido: string;
   };
   onChange: (field: string, value: string) => void;
+  onLoadCompleteContrato?: (contrato: ContratoPredefinido) => void;
 }
 
-export function DadosContrato({ data, onChange }: DadosContratoProps) {
+export function DadosContrato({ data, onChange, onLoadCompleteContrato }: DadosContratoProps) {
   const [activeTab, setActiveTab] = useState("manual");
 
   const handleSelectContrato = (contrato: ContratoPredefinido) => {
@@ -36,6 +37,12 @@ export function DadosContrato({ data, onChange }: DadosContratoProps) {
     onChange("rq", contrato.rq);
     onChange("os", contrato.os);
     onChange("pedido", contrato.pedido);
+    
+    // Carregar dados completos se callback estiver disponível
+    if (onLoadCompleteContrato) {
+      onLoadCompleteContrato(contrato);
+    }
+    
     setActiveTab("manual"); // Volta para a aba manual após seleção
   };
 

@@ -245,6 +245,23 @@ export function ContratoSelector({
                       <div><strong>RQ:</strong> {contrato.rq}</div>
                       <div><strong>OS:</strong> {contrato.os}</div>
                       <div className="col-span-2"><strong>Pedido:</strong> {contrato.pedido}</div>
+                      <div className="col-span-2"><strong>Escopo:</strong> {contrato.descricaoEscopo}</div>
+                      <div className="col-span-2">
+                        <strong>Itens Técnicos:</strong>
+                        <div className="mt-1 space-y-1">
+                          {contrato.itensTecnicos?.slice(0, 3).map((item, index) => (
+                            <div key={item.id} className="text-xs text-gray-500 flex items-start">
+                              <span className="mr-2">•</span>
+                              <span>{item.descricao}</span>
+                            </div>
+                          ))}
+                          {contrato.itensTecnicos && contrato.itensTecnicos.length > 3 && (
+                            <div className="text-xs text-gray-400 italic">
+                              +{contrato.itensTecnicos.length - 3} itens adicionais...
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
                   

@@ -206,6 +206,41 @@ export default function RelatorioTecnicoPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Painel esquerdo - Formulário */}
           <div className="space-y-6">
+            {/* Ações */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Ações</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex gap-2">
+                  <Button 
+                    onClick={handleGeneratePreview}
+                    disabled={isGeneratingPDF}
+                    className="flex-1"
+                  >
+                    <Eye className="h-4 w-4 mr-2" />
+                    {isGeneratingPDF ? "Gerando..." : "Gerar Preview"}
+                  </Button>
+                  
+                  <Button 
+                    onClick={handleDownloadPDF}
+                    variant="outline"
+                    className="flex-1"
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    Baixar PDF
+                  </Button>
+                </div>
+
+                <Separator />
+                
+                <div className="text-sm text-gray-600">
+                  <p><strong>Fotos carregadas:</strong> {fotos.length}</p>
+                  <p><strong>Itens técnicos:</strong> {formData.itensTecnicos.length}</p>
+                </div>
+              </CardContent>
+            </Card>
+
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -240,47 +275,12 @@ export default function RelatorioTecnicoPage() {
                         onRemovePhoto={handleRemovePhoto}
                         maxPhotos={20}
                       />
-          </div>
+                    </div>
                   </TabsContent>
                 </Tabs>
               </CardContent>
             </Card>
-
-            {/* Ações */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Ações</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-          <div className="flex gap-2">
-                  <Button 
-                    onClick={handleGeneratePreview}
-                    disabled={isGeneratingPDF}
-                    className="flex-1"
-                  >
-                    <Eye className="h-4 w-4 mr-2" />
-                    {isGeneratingPDF ? "Gerando..." : "Gerar Preview"}
-                  </Button>
-                  
-                  <Button 
-                    onClick={handleDownloadPDF}
-                    variant="outline"
-                    className="flex-1"
-                  >
-                    <Download className="h-4 w-4 mr-2" />
-                    Baixar PDF
-                  </Button>
-        </div>
-
-                <Separator />
-                
-                <div className="text-sm text-gray-600">
-                  <p><strong>Fotos carregadas:</strong> {fotos.length}</p>
-                  <p><strong>Itens técnicos:</strong> {formData.itensTecnicos.length}</p>
           </div>
-              </CardContent>
-            </Card>
-        </div>
 
           {/* Painel direito - Preview */}
           <div>

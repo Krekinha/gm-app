@@ -2,6 +2,11 @@
  * Sistema de gerenciamento de contratos pré-carregados
  */
 
+export interface ItemTecnicoPredefinido {
+  id: string;
+  descricao: string;
+}
+
 export interface ContratoPredefinido {
   id: string;
   nome: string;
@@ -10,6 +15,8 @@ export interface ContratoPredefinido {
   rq: string;
   os: string;
   pedido: string;
+  descricaoEscopo: string;
+  itensTecnicos: ItemTecnicoPredefinido[];
   dataCriacao: string;
   dataUltimaUso: string;
   usoCount: number;
@@ -25,6 +32,29 @@ export const contratosPredefinidos: ContratoPredefinido[] = [
     rq: "RQ13853907",
     os: "50007",
     pedido: "OC10845507",
+    descricaoEscopo: "Instalação de tomadas e pontos elétricos",
+    itensTecnicos: [
+      {
+        id: "item-1",
+        descricao: "Módulo acrescentado TV"
+      },
+      {
+        id: "item-2",
+        descricao: "Ponto tomada condulete para cafeteira"
+      },
+      {
+        id: "item-3",
+        descricao: "Instalação de tomada dupla no escritório"
+      },
+      {
+        id: "item-4",
+        descricao: "Verificação de aterramento"
+      },
+      {
+        id: "item-5",
+        descricao: "Teste de funcionamento das tomadas"
+      }
+    ],
     dataCriacao: new Date().toISOString(),
     dataUltimaUso: new Date().toISOString(),
     usoCount: 0
@@ -37,6 +67,37 @@ export const contratosPredefinidos: ContratoPredefinido[] = [
     rq: "RQ13853908",
     os: "50008",
     pedido: "OC10845508",
+    descricaoEscopo: "Manutenção preventiva e corretiva do sistema elétrico",
+    itensTecnicos: [
+      {
+        id: "item-1",
+        descricao: "Substituição de disjuntores defeituosos"
+      },
+      {
+        id: "item-2",
+        descricao: "Verificação e ajuste de tensão nos quadros"
+      },
+      {
+        id: "item-3",
+        descricao: "Instalação de iluminação de emergência"
+      },
+      {
+        id: "item-4",
+        descricao: "Teste de funcionamento dos dispositivos de proteção"
+      },
+      {
+        id: "item-5",
+        descricao: "Inspeção visual dos cabos e conexões"
+      },
+      {
+        id: "item-6",
+        descricao: "Medição de resistência de aterramento"
+      },
+      {
+        id: "item-7",
+        descricao: "Verificação de continuidade dos circuitos"
+      }
+    ],
     dataCriacao: new Date().toISOString(),
     dataUltimaUso: new Date().toISOString(),
     usoCount: 0
@@ -49,6 +110,49 @@ export const contratosPredefinidos: ContratoPredefinido[] = [
     rq: "RQ12345678",
     os: "12345",
     pedido: "OC98765432",
+    descricaoEscopo: "Projeto elétrico completo para nova construção",
+    itensTecnicos: [
+      {
+        id: "item-1",
+        descricao: "Instalação do quadro de distribuição principal"
+      },
+      {
+        id: "item-2",
+        descricao: "Cabeamento estruturado para rede de dados"
+      },
+      {
+        id: "item-3",
+        descricao: "Sistema de iluminação LED com dimmer"
+      },
+      {
+        id: "item-4",
+        descricao: "Instalação de ar condicionado central"
+      },
+      {
+        id: "item-5",
+        descricao: "Sistema de segurança e monitoramento"
+      },
+      {
+        id: "item-6",
+        descricao: "Automação residencial básica"
+      },
+      {
+        id: "item-7",
+        descricao: "Instalação de sistema de alarme"
+      },
+      {
+        id: "item-8",
+        descricao: "Configuração de rede Wi-Fi"
+      },
+      {
+        id: "item-9",
+        descricao: "Instalação de sistema de som ambiente"
+      },
+      {
+        id: "item-10",
+        descricao: "Teste e comissionamento de todos os sistemas"
+      }
+    ],
     dataCriacao: new Date().toISOString(),
     dataUltimaUso: new Date().toISOString(),
     usoCount: 0
