@@ -1,6 +1,6 @@
 import jsPDF from "jspdf";
 import { RelatorioTecnicoData, FotoRelatorio, PDFConfig, defaultPDFConfig } from "./relatorio-types";
-import { buscarEmpresaPorCnpj } from "./empresa-database";
+import { buscarEmpresaPadrao } from "./empresa-database";
 
 /**
  * Utilitários para geração de PDF do relatório técnico
@@ -23,16 +23,16 @@ export async function generateRelatorioPDF(
   const { pageWidth, pageHeight, margin, fontSize, colors } = config;
   let currentY = margin;
 
-  // Buscar dados da empresa padrão
+  // Buscar dados da empresa padrão pelo ID fixo
   let empresaPadrao;
   try {
-    empresaPadrao = await buscarEmpresaPorCnpj("00.000.000/0000-00");
+    empresaPadrao = await buscarEmpresaPadrao();
   } catch (error) {
     console.warn("Erro ao buscar empresa padrão:", error);
     // Usar dados padrão como fallback
     empresaPadrao = {
-      razaoSocial: "Geraldinho Manutenções",
-      cnpj: "00.000.000/0000-00",
+      razaoSocial: "GM MANUTENÇÕES LTDA",
+      cnpj: "37.097.718/0001-58",
       logoUrl: "/relatorio-tecnico/logo.png"
     };
   }
@@ -40,8 +40,8 @@ export async function generateRelatorioPDF(
   // Garantir que empresaPadrao não seja null
   if (!empresaPadrao) {
     empresaPadrao = {
-      razaoSocial: "Geraldinho Manutenções",
-      cnpj: "00.000.000/0000-00",
+      razaoSocial: "GM MANUTENÇÕES LTDA",
+      cnpj: "37.097.718/0001-58",
       logoUrl: "/relatorio-tecnico/logo.png"
     };
   }
@@ -116,7 +116,7 @@ export async function generateRelatorioPDF(
   }
 
   // Título do relatório
-  currentY = addText("Relatório Técnico de Serviço", margin, currentY, pageWidth - 2 * margin, fontSize.title);
+  currentY = addText("RELATÓRIO TÉCNICO DE SERVIÇO", margin, currentY, pageWidth - 2 * margin, fontSize.title);
   currentY += 5;
 
   // Dados da empresa

@@ -38,6 +38,7 @@ export interface EmpresaWithRelatorios extends EmpresaData {
 export async function criarEmpresa(dados: EmpresaData): Promise<EmpresaWithRelatorios> {
   const empresa = await prisma.empresa.create({
     data: {
+      id: dados.id || crypto.randomUUID(), // Gerar ID se não fornecido
       razaoSocial: dados.razaoSocial,
       cnpj: dados.cnpj,
       logoUrl: dados.logoUrl,
@@ -246,21 +247,65 @@ export async function removerEmpresa(id: string): Promise<boolean> {
 }
 
 /**
+ * Busca a empresa padrão pelo ID fixo
+ */
+export async function buscarEmpresaPadrao(): Promise<EmpresaWithRelatorios | null> {
+  const EMPRESA_PADRAO_ID = "empresa-padrao";
+  
+  const empresa = await prisma.empresa.findUnique({
+    where: { id: EMPRESA_PADRAO_ID },
+    include: {
+      relatorios: {
+        orderBy: { dataUltimaUso: 'desc' }
+      }
+    }
+  });
+
+  if (!empresa) return null;
+
+  return {
+    id: empresa.id,
+    razaoSocial: empresa.razaoSocial,
+    cnpj: empresa.cnpj,
+    logoUrl: empresa.logoUrl || undefined,
+    relatorios: empresa.relatorios.map(relatorio => ({
+      id: relatorio.id,
+      nome: relatorio.nome,
+      contrato: relatorio.contrato,
+      valorInicial: relatorio.valorInicial,
+      rq: relatorio.rq,
+      os: relatorio.os,
+      pedido: relatorio.pedido,
+      descricaoEscopo: relatorio.descricaoEscopo,
+      imagemFundoUrl: relatorio.imagemFundoUrl || undefined,
+      dataCriacao: relatorio.dataCriacao,
+      dataUltimaUso: relatorio.dataUltimaUso,
+      usoCount: relatorio.usoCount
+    })),
+    dataCriacao: empresa.dataCriacao,
+    dataAtualizacao: empresa.dataAtualizacao
+  };
+}
+
+/**
  * Inicializa dados padrão da empresa
  */
 export async function inicializarEmpresaPadrao(): Promise<EmpresaWithRelatorios> {
-  // Verificar se já existe uma empresa padrão
-  const empresaExistente = await prisma.empresa.findFirst({
-    where: { cnpj: "37.097.718/0001-58" }
+  const EMPRESA_PADRAO_ID = "empresa-padrao";
+  
+  // Verificar se já existe a empresa padrão
+  const empresaExistente = await prisma.empresa.findUnique({
+    where: { id: EMPRESA_PADRAO_ID }
   });
 
   if (empresaExistente) {
-    return buscarEmpresaPorId(empresaExistente.id) as Promise<EmpresaWithRelatorios>;
+    return buscarEmpresaPorId(EMPRESA_PADRAO_ID) as Promise<EmpresaWithRelatorios>;
   }
 
-  // Criar empresa padrão
+  // Criar empresa padrão com ID fixo
   const empresa = await prisma.empresa.create({
     data: {
+      id: EMPRESA_PADRAO_ID,
       razaoSocial: "GM MANUTENÇÕES LTDA",
       cnpj: "37.097.718/0001-58",
       logoUrl: "/relatorio-tecnico/logo.png"

@@ -27,10 +27,10 @@ const atualizarRelatorioSchema = z.object({
 // GET /api/relatorios/[id] - Buscar relatório por ID
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
     
     if (!id) {
       return NextResponse.json(
@@ -61,10 +61,10 @@ export async function GET(
 // PUT /api/relatorios/[id] - Atualizar relatório
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
     
     if (!id) {
@@ -107,10 +107,10 @@ export async function PUT(
 // DELETE /api/relatorios/[id] - Remover relatório
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
     
     if (!id) {
       return NextResponse.json(

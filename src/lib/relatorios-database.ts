@@ -3,7 +3,7 @@
  */
 
 import { PrismaClient } from '@prisma/client';
-import { inicializarEmpresaPadrao } from './empresa-database';
+import { inicializarEmpresaPadrao, buscarEmpresaPadrao } from './empresa-database';
 
 const prisma = new PrismaClient();
 
@@ -39,10 +39,16 @@ export interface RelatorioModeloWithItens extends RelatorioModeloData {
  * Cria um novo modelo de relatório
  */
 export async function criarRelatorioModelo(dados: RelatorioModeloData): Promise<RelatorioModeloWithItens> {
-  // Se não foi fornecida empresaId, usar empresa padrão
+  // Se não foi fornecida empresaId, usar empresa padrão com ID fixo
   let empresaId = dados.empresaId;
   if (!empresaId) {
-    const empresaPadrao = await inicializarEmpresaPadrao();
+    let empresaPadrao = await buscarEmpresaPadrao();
+    
+    // Se não existir, inicializar
+    if (!empresaPadrao) {
+      empresaPadrao = await inicializarEmpresaPadrao();
+    }
+    
     empresaId = empresaPadrao.id;
   }
 
@@ -94,10 +100,21 @@ export async function criarRelatorioModelo(dados: RelatorioModeloData): Promise<
 }
 
 /**
- * Busca todos os modelos de relatórios
+ * Busca todos os modelos de relatórios da empresa padrão
  */
 export async function buscarTodosRelatorios(): Promise<RelatorioModeloWithItens[]> {
+  // Buscar empresa padrão pelo ID fixo
+  let empresaPadrao = await buscarEmpresaPadrao();
+  
+  // Se não existir, inicializar
+  if (!empresaPadrao) {
+    empresaPadrao = await inicializarEmpresaPadrao();
+  }
+  
   const relatorios = await prisma.relatorioModelo.findMany({
+    where: {
+      empresaId: empresaPadrao.id
+    },
     include: {
       itensRelatorio: {
         orderBy: { ordem: 'asc' }
