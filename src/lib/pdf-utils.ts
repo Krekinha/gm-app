@@ -22,6 +22,30 @@ export async function generateRelatorioPDF(
   const { pageWidth, pageHeight, margin, fontSize, colors } = config;
   let currentY = margin;
 
+  // Função auxiliar para aplicar imagem de fundo em uma página
+  const applyBackgroundImage = async (pageNumber: number) => {
+    if (data.imagemFundo) {
+      try {
+        // Aplicar imagem de fundo cobrindo toda a página
+        doc.addImage(
+          data.imagemFundo, 
+          "PNG", 
+          0, 
+          0, 
+          pageWidth, 
+          pageHeight,
+          undefined,
+          "FAST" // Modo rápido para melhor performance
+        );
+      } catch (error) {
+        console.warn(`Erro ao aplicar imagem de fundo na página ${pageNumber}:`, error);
+      }
+    }
+  };
+
+  // Aplicar imagem de fundo na primeira página
+  await applyBackgroundImage(1);
+
   // Função auxiliar para adicionar texto com quebra de linha
   const addText = (text: string, x: number, y: number, maxWidth: number, size: number = fontSize.normal) => {
     doc.setFontSize(size);
@@ -126,6 +150,7 @@ Pedido: ${data.pedido}
   // Verificar se precisa de nova página para fotos
   if (currentY > pageHeight - 100) {
     doc.addPage();
+    await applyBackgroundImage(doc.getNumberOfPages());
     currentY = margin;
   }
 
@@ -133,6 +158,7 @@ Pedido: ${data.pedido}
   for (const foto of fotos) {
     if (currentY > pageHeight - 50) {
       doc.addPage();
+      await applyBackgroundImage(doc.getNumberOfPages());
       currentY = margin;
     }
 
@@ -193,10 +219,15 @@ Email: ${data.email}
 Instagram: ${data.instagram}
   `.trim();
 
-  // Adicionar rodapé na última página
+  // Adicionar rodapé e fundo em todas as páginas
   const pageCount = doc.getNumberOfPages();
   for (let i = 1; i <= pageCount; i++) {
     doc.setPage(i);
+    
+    // Aplicar imagem de fundo se não foi aplicada ainda
+    if (data.imagemFundo && i > 1) {
+      await applyBackgroundImage(i);
+    }
     
     // Adicionar rodapé no final da página
     const footerY = pageHeight - margin;

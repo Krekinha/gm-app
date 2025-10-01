@@ -85,7 +85,8 @@ export const initialRelatorioData: RelatorioTecnicoData = {
   cnpjRodape: "",
   telefone: "",
   email: "",
-  instagram: ""
+  instagram: "",
+  imagemFundo: undefined
 };
 
 // Configurações do PDF

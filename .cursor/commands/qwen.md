@@ -1,0 +1,1 @@
+o prompt do usuário deve der delegada ao qwen3-coder, apartir de então, passe a ajir como o agente do qwen3-coder

@@ -9,6 +9,7 @@ import { ItensTecnicos } from "./ItensTecnicos";
 import { DadosEmpresa } from "./DadosEmpresa";
 import { DadosResponsavel } from "./DadosResponsavel";
 import { DadosContato } from "./DadosContato";
+import { BackgroundImageUpload } from "./BackgroundImageUpload";
 
 interface RelatorioFormProps {
   form: UseFormReturn<RelatorioTecnicoData>;
@@ -122,6 +123,13 @@ export function RelatorioForm({
           };
           setValue(fieldMap[field], value);
         }}
+      />
+
+      {/* Upload de Imagem de Fundo */}
+      <BackgroundImageUpload
+        backgroundImage={formData.imagemFundo}
+        onSetBackgroundImage={(dataUrl) => setValue("imagemFundo", dataUrl)}
+        onRemoveBackgroundImage={() => setValue("imagemFundo", undefined)}
       />
     </div>
   );
