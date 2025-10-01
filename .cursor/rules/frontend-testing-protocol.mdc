@@ -1,0 +1,142 @@
+---
+description: Establishes mandatory frontend testing protocol using MCP Chrome DevTools and fallback communication procedures when tools are unavailable.
+globs: []
+alwaysApply: true
+---
+
+# Frontend Testing Protocol
+
+## 1. Chrome DevTools Priority Rule
+
+**MANDATORY:** Always use MCP Chrome DevTools for frontend testing and validation.
+
+### Required Actions:
+- **NEVER** execute build commands (`pnpm build`, `npm run build`, `next build`) without explicit user permission
+- **ALWAYS** start with `pnpm dev` for development and testing
+- **ALWAYS** use Chrome DevTools for interactive frontend testing when available
+
+## 2. Fallback Communication Protocol
+
+When MCP Chrome DevTools is unavailable or unresponsive:
+
+### Detection and Communication:
+1. **Detect Unavailability:** Identify when Chrome DevTools fails to respond or times out
+2. **Immediate Communication:** Inform user clearly about tool unavailability
+3. **Present Alternatives:** List available alternative methods
+4. **Request Decision:** Ask user to choose how to proceed
+
+### Communication Template:
+```
+⚠️ Chrome DevTools Unavailable
+
+MCP Chrome DevTools is not responding, preventing direct frontend testing.
+
+Available options:
+1. 📋 Create detailed manual testing guide
+2. 🔍 Perform static code analysis
+3. ⏳ Wait for Chrome DevTools availability
+4. ❌ Abort current task
+
+Please choose how to proceed.
+```
+
+## 3. Build Permission Protocol
+
+### Before Any Build Command:
+1. **Request Permission:** Always ask for explicit user permission
+2. **Explain Necessity:** Clearly explain why the build is needed
+3. **Wait for Confirmation:** Never proceed without user approval
+
+### Permission Request Template:
+```
+🔨 Build Permission Request
+
+To test implemented functionality, I need to run:
+`pnpm build`
+
+May I proceed with the build? (Y/N)
+```
+
+## 4. Alternative Testing Methods
+
+When Chrome DevTools is unavailable, use these alternatives:
+
+### Manual Testing Guide:
+- Create step-by-step testing instructions
+- Include specific UI elements to verify
+- Provide expected behaviors and outcomes
+- Include troubleshooting steps
+
+### Static Code Analysis:
+- Analyze implemented code for correctness
+- Verify component structure and props
+- Check TypeScript types and interfaces
+- Validate data flow and state management
+
+### Documentation Creation:
+- Document implemented functionality
+- Create usage guides and examples
+- Provide integration instructions
+- Include testing criteria
+
+## 5. Compliance Checklist
+
+Before any frontend testing action:
+- [ ] Check Chrome DevTools availability
+- [ ] If unavailable, follow fallback protocol
+- [ ] Communicate limitations to user
+- [ ] Present alternative options
+- [ ] Wait for user decision
+- [ ] Execute according to user choice
+
+Before any build command:
+- [ ] Request explicit permission
+- [ ] Explain build necessity
+- [ ] Wait for user confirmation
+- [ ] Never proceed without permission
+
+## 6. Quality Standards
+
+### Communication Quality:
+- Clear and transparent about tool limitations
+- Proactive in presenting alternatives
+- Respectful of user decisions and preferences
+- Professional tone maintained throughout
+
+### Testing Quality:
+- Comprehensive when tools are available
+- Detailed documentation when tools are unavailable
+- Consistent validation criteria
+- User-focused testing approaches
+
+## 7. Exception Handling
+
+### Chrome DevTools Timeout:
+- Wait for reasonable timeout period
+- Attempt reconnection if appropriate
+- Communicate timeout to user
+- Follow fallback protocol
+
+### Build Permission Denied:
+- Accept user decision gracefully
+- Suggest alternative testing methods
+- Continue with available tools
+- Document limitations clearly
+
+## 8. Continuous Improvement
+
+### Regular Review:
+- Monitor Chrome DevTools availability patterns
+- Improve alternative testing methods
+- Refine communication templates
+- Update protocols based on user feedback
+
+### Tool Integration:
+- Stay updated on new MCP tools
+- Integrate additional testing capabilities
+- Maintain compatibility with existing workflows
+- Optimize testing efficiency
+
+---
+
+**Enforcement:** These rules are mandatory and must be followed in all frontend testing scenarios. Non-compliance is not acceptable as it impacts user experience and development workflow quality.
