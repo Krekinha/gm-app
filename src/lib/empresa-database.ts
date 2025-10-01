@@ -251,7 +251,7 @@ export async function removerEmpresa(id: string): Promise<boolean> {
 export async function inicializarEmpresaPadrao(): Promise<EmpresaWithRelatorios> {
   // Verificar se já existe uma empresa padrão
   const empresaExistente = await prisma.empresa.findFirst({
-    where: { cnpj: "00.000.000/0000-00" }
+    where: { cnpj: "37.097.718/0001-58" }
   });
 
   if (empresaExistente) {
@@ -261,8 +261,8 @@ export async function inicializarEmpresaPadrao(): Promise<EmpresaWithRelatorios>
   // Criar empresa padrão
   const empresa = await prisma.empresa.create({
     data: {
-      razaoSocial: "Geraldinho Manutenções",
-      cnpj: "00.000.000/0000-00",
+      razaoSocial: "GM MANUTENÇÕES LTDA",
+      cnpj: "37.097.718/0001-58",
       logoUrl: "/relatorio-tecnico/logo.png"
     },
     include: {

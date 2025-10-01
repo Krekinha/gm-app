@@ -5,64 +5,29 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Label } from "@/components/ui/label";
 import { 
   Search, 
   Clock, 
   Star, 
-  Plus,
-  Save,
-  Trash2,
-  Edit,
-  Check,
-  X
+  Trash2
 } from "lucide-react";
 import {
   RelatorioPredefinido,
   carregarRelatoriosSalvos,
-  buscarRelatorios,
-  obterRelatoriosMaisUsados,
-  obterRelatoriosRecentes,
   registrarUsoRelatorio,
-  adicionarRelatorio,
   removerRelatorio
 } from "@/lib/relatorios-api";
-import { ItemTecnico } from "@/lib/relatorio-types";
 
 interface RelatorioSelectorProps {
   onSelectRelatorio: (relatorio: RelatorioPredefinido) => void;
-  onSaveCurrentRelatorio: (dados: {
-    contrato: string;
-    valorInicial: string;
-    rq: string;
-    os: string;
-    pedido: string;
-    descricaoEscopo: string;
-    itensTecnicos: ItemTecnico[];
-    imagemFundoUrl?: string;
-  }) => void;
-  currentData?: {
-    contrato: string;
-    valorInicial: string;
-    rq: string;
-    os: string;
-    pedido: string;
-    descricaoEscopo: string;
-    itensTecnicos: ItemTecnico[];
-    imagemFundoUrl?: string;
-  };
 }
 
 export function RelatorioSelector({ 
-  onSelectRelatorio, 
-  onSaveCurrentRelatorio,
-  currentData 
+  onSelectRelatorio
 }: RelatorioSelectorProps) {
   const [relatorios, setRelatorios] = useState<RelatorioPredefinido[]>([]);
   const [busca, setBusca] = useState("");
   const [filtro, setFiltro] = useState<"todos" | "maisUsados" | "recentes">("todos");
-  const [mostrarSalvar, setMostrarSalvar] = useState(false);
-  const [nomeNovoRelatorio, setNomeNovoRelatorio] = useState("");
 
   // Carregar relatórios ao montar componente
   useEffect(() => {
@@ -120,24 +85,6 @@ export function RelatorioSelector({
     }
   };
 
-  const handleSaveRelatorio = async () => {
-    if (!currentData || !nomeNovoRelatorio.trim()) return;
-
-    try {
-      const novoRelatorio = await adicionarRelatorio({
-        nome: nomeNovoRelatorio.trim(),
-        ...currentData
-      });
-
-      setRelatorios(await carregarRelatoriosSalvos());
-      setNomeNovoRelatorio("");
-      setMostrarSalvar(false);
-    } catch (error) {
-      console.error('Erro ao salvar relatório:', error);
-      alert('Erro ao salvar relatório. Tente novamente.');
-    }
-  };
-
   const handleRemoveRelatorio = async (id: string) => {
     if (confirm("Tem certeza que deseja remover este modelo?")) {
       try {
@@ -154,34 +101,12 @@ export function RelatorioSelector({
     }
   };
 
-  const canSaveRelatorio = currentData && 
-    currentData.contrato.trim() && 
-    currentData.valorInicial.trim() && 
-    currentData.rq.trim() && 
-    currentData.os.trim() && 
-    currentData.pedido.trim();
-
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center justify-between">
-          <span className="flex items-center gap-2">
-            <Search className="h-5 w-5" />
-            Modelos Pré-definidos
-          </span>
-          <div className="flex gap-2">
-            {canSaveRelatorio && (
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => setMostrarSalvar(!mostrarSalvar)}
-                className="flex items-center gap-1"
-              >
-                <Save className="h-4 w-4" />
-                Salvar Atual
-              </Button>
-            )}
-          </div>
+        <CardTitle className="flex items-center gap-2">
+          <Search className="h-5 w-5" />
+          Modelos Pré-definidos
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -226,47 +151,6 @@ export function RelatorioSelector({
             Recentes
           </Button>
         </div>
-
-        {/* Formulário para salvar modelo atual */}
-        {mostrarSalvar && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-3">
-            <h4 className="font-medium text-blue-800">Salvar Modelo Atual</h4>
-            <div className="space-y-2">
-              <Label htmlFor="nomeNovoModelo">Nome do modelo *</Label>
-              <Input
-                id="nomeNovoModelo"
-                placeholder="Nome do modelo (ex: ATLAS BH - Instalação Tomadas)"
-                value={nomeNovoRelatorio}
-                onChange={(e) => setNomeNovoRelatorio(e.target.value)}
-              />
-              <div className="flex gap-2">
-                <Button
-                  type="button"
-                  size="sm"
-                  onClick={handleSaveRelatorio}
-                  disabled={!nomeNovoRelatorio.trim()}
-                  className="flex items-center gap-1"
-                >
-                  <Check className="h-4 w-4" />
-                  Salvar
-                </Button>
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="outline"
-                  onClick={() => {
-                    setMostrarSalvar(false);
-                    setNomeNovoRelatorio("");
-                  }}
-                  className="flex items-center gap-1"
-                >
-                  <X className="h-4 w-4" />
-                  Cancelar
-                </Button>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Lista de modelos */}
         <div className="space-y-2 max-h-64 overflow-y-auto">

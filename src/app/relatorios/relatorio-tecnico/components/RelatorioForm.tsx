@@ -3,6 +3,8 @@
 import React from "react";
 import { UseFormReturn } from "react-hook-form";
 import { RelatorioTecnicoData, FotoRelatorio } from "@/lib/relatorio-types";
+import { Button } from "@/components/ui/button";
+import { Save } from "lucide-react";
 import { DadosContrato } from "./DadosContrato";
 import { Escopo } from "./Escopo";
 import { ItensTecnicos } from "./ItensTecnicos";
@@ -21,6 +23,7 @@ interface RelatorioFormProps {
   onUnlinkPhoto: (fotoId: string) => void;
   onAddPhoto: (files: File[]) => void;
   onRemovePhoto: (fotoId: string) => void;
+  onSaveAsModel?: () => void;
 }
 
 export function RelatorioForm({
@@ -32,6 +35,7 @@ export function RelatorioForm({
   onUnlinkPhoto,
   onAddPhoto,
   onRemovePhoto,
+  onSaveAsModel,
 }: RelatorioFormProps) {
   const { watch, setValue } = form;
   const formData = watch();
@@ -147,6 +151,21 @@ export function RelatorioForm({
         onSetBackgroundImage={(dataUrl) => setValue("imagemFundo", dataUrl)}
         onRemoveBackgroundImage={() => setValue("imagemFundo", undefined)}
       />
+
+      {/* Botão Salvar como Modelo */}
+      {onSaveAsModel && (
+        <div className="flex justify-end pt-4 border-t">
+          <Button
+            type="button"
+            onClick={onSaveAsModel}
+            className="flex items-center gap-2"
+            variant="outline"
+          >
+            <Save className="h-4 w-4" />
+            Salvar como Modelo
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

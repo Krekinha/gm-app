@@ -8,6 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { 
   FileText, 
   Upload, 
@@ -16,7 +19,8 @@ import {
   Plus, 
   Trash2,
   Link as LinkIcon,
-  Unlink
+  Unlink,
+  Save
 } from "lucide-react";
 
 import { 
@@ -35,6 +39,7 @@ import {
   cleanupBlobURL
 } from "@/lib/image-utils";
 import { generateRelatorioPDF } from "@/lib/pdf-utils";
+import { adicionarRelatorio } from "@/lib/relatorios-api";
 
 // Componente para upload de imagens
 import { ImageUpload } from "./components/ImageUpload";
@@ -49,6 +54,8 @@ export default function RelatorioTecnicoPage() {
   const [pdfPreviewUrl, setPdfPreviewUrl] = useState<string>("");
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [activeTab, setActiveTab] = useState("formulario");
+  const [mostrarSalvarModelo, setMostrarSalvarModelo] = useState(false);
+  const [nomeNovoModelo, setNomeNovoModelo] = useState("");
 
   const form = useForm<RelatorioTecnicoData>({
     resolver: zodResolver(relatorioTecnicoSchema),
@@ -179,6 +186,44 @@ export default function RelatorioTecnicoPage() {
     }
   }, [getValues, fotos]);
 
+  // Função para salvar como modelo
+  const handleSaveAsModel = useCallback(async () => {
+    setMostrarSalvarModelo(true);
+  }, []);
+
+  const handleConfirmSaveModel = useCallback(async () => {
+    if (!nomeNovoModelo.trim()) {
+      alert("Por favor, digite um nome para o modelo");
+      return;
+    }
+
+    try {
+      const data = getValues();
+      await adicionarRelatorio({
+        nome: nomeNovoModelo.trim(),
+        contrato: data.contrato,
+        valorInicial: data.valorInicial,
+        rq: data.rq,
+        os: data.os,
+        pedido: data.pedido,
+        descricaoEscopo: data.descricaoEscopo,
+        itensRelatorio: data.itensTecnicos.map(item => ({
+          id: item.id,
+          descricao: item.descricao,
+          ordem: 0
+        })),
+        imagemFundoUrl: data.imagemFundo
+      });
+
+      alert("Modelo salvo com sucesso!");
+      setMostrarSalvarModelo(false);
+      setNomeNovoModelo("");
+    } catch (error) {
+      console.error("Erro ao salvar modelo:", error);
+      alert("Erro ao salvar modelo. Tente novamente.");
+    }
+  }, [nomeNovoModelo, getValues]);
+
   // Limpar URLs ao desmontar componente
   useEffect(() => {
     return () => {
@@ -266,6 +311,7 @@ export default function RelatorioTecnicoPage() {
                       onUnlinkPhoto={handleUnlinkPhoto}
                       onAddPhoto={handleAddPhoto}
                       onRemovePhoto={handleRemovePhoto}
+                      onSaveAsModel={handleSaveAsModel}
                     />
                   </TabsContent>
                   
@@ -313,20 +359,6 @@ export default function RelatorioTecnicoPage() {
                              // Voltar para a aba principal
                              setActiveTab("formulario");
                            }}
-                           onSaveCurrentRelatorio={(dados) => {
-                             // Implementar salvamento do relatório atual
-                             console.log("Salvando relatório:", dados);
-                           }}
-                           currentData={{
-                             contrato: formData.contrato,
-                             valorInicial: formData.valorInicial,
-                             rq: formData.rq,
-                             os: formData.os,
-                             pedido: formData.pedido,
-                             descricaoEscopo: formData.descricaoEscopo,
-                             itensTecnicos: formData.itensTecnicos,
-                             imagemFundoUrl: formData.imagemFundo
-                           }}
                          />
           </div>
                   </TabsContent>
@@ -354,6 +386,47 @@ export default function RelatorioTecnicoPage() {
           </div>
         </div>
       </div>
+
+      {/* Modal para salvar como modelo */}
+      <Dialog open={mostrarSalvarModelo} onOpenChange={setMostrarSalvarModelo}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Salvar como Modelo</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="nomeModelo">Nome do modelo *</Label>
+              <Input
+                id="nomeModelo"
+                placeholder="Ex: ATLAS BH - Instalação Tomadas"
+                value={nomeNovoModelo}
+                onChange={(e) => setNomeNovoModelo(e.target.value)}
+              />
+            </div>
+            <div className="flex gap-2 justify-end">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  setMostrarSalvarModelo(false);
+                  setNomeNovoModelo("");
+                }}
+              >
+                Cancelar
+              </Button>
+              <Button
+                type="button"
+                onClick={handleConfirmSaveModel}
+                disabled={!nomeNovoModelo.trim()}
+                className="flex items-center gap-2"
+              >
+                <Save className="h-4 w-4" />
+                Salvar Modelo
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
