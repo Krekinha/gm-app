@@ -11,29 +11,29 @@ graph TD
     
     E --> F["buscarEmpresaPorCnpj('37.097.718/0001-58')"]
     F --> G{"Empresa encontrada?"}
-    G -->|Não| H["Usar dados padrão como fallback"]
+    G -->|Não| H["❌ Lançar erro - Empresa obrigatória"]
     G -->|Sim| I["Usar dados da empresa do banco"]
-    H --> J["Criar documento PDF com jsPDF"]
-    I --> J
+    H --> J["❌ Falha na geração do PDF"]
+    I --> K["Criar documento PDF com jsPDF"]
     
-    J --> K["Aplicar imagem de fundo"]
-    K --> L["Adicionar cabeçalho com logo"]
-    L --> M["Adicionar dados do contrato"]
-    M --> N["Adicionar escopo"]
-    N --> O["Adicionar descrição técnica"]
-    O --> P["Adicionar fotos vinculadas"]
-    P --> Q["Adicionar fotos não vinculadas"]
-    Q --> R["Adicionar fotos reais"]
-    R --> S["Adicionar rodapé"]
-    S --> T["pdf.output('blob')"]
+    K --> L["Aplicar imagem de fundo"]
+    L --> M["Adicionar cabeçalho com logo"]
+    M --> N["Adicionar dados do contrato"]
+    N --> O["Adicionar escopo"]
+    O --> P["Adicionar descrição técnica"]
+    P --> Q["Adicionar fotos vinculadas"]
+    Q --> R["Adicionar fotos não vinculadas"]
+    R --> S["Adicionar fotos reais"]
+    S --> T["Adicionar rodapé"]
+    T --> U["pdf.output('blob')"]
     
-    T --> U["URL.createObjectURL(pdfBlob)"]
-    U --> V["cleanupBlobURL(pdfPreviewUrl) - limpar URL anterior"]
-    V --> W["setPdfPreviewUrl(previewUrl)"]
-    W --> X["setIsGeneratingPDF(false)"]
+    U --> V["URL.createObjectURL(pdfBlob)"]
+    V --> W["cleanupBlobURL(pdfPreviewUrl) - limpar URL anterior"]
+    W --> X["setPdfPreviewUrl(previewUrl)"]
+    X --> Y["setIsGeneratingPDF(false)"]
     
-    X --> Y["PDFPreview component recebe pdfUrl"]
-    Y --> Z["iframe exibe o PDF"]
+    Y --> Z["PDFPreview component recebe pdfUrl"]
+    Z --> AA["iframe exibe o PDF"]
     
     subgraph "Banco de Dados"
         DB1["Prisma - buscarEmpresaPorCnpj()"]
@@ -82,6 +82,7 @@ graph TD
 **Funcionamento**:
 - Cria um novo documento PDF usando jsPDF
 - **Busca dados da empresa**: Chama `buscarEmpresaPorCnpj('37.097.718/0001-58')` para obter informações da empresa
+- **Validação obrigatória**: Se empresa não for encontrada, lança erro (não usa fallback)
 - Aplica imagem de fundo se disponível
 - Adiciona cabeçalho com logo da empresa
 - Adiciona dados do contrato, escopo e descrição técnica
@@ -98,7 +99,7 @@ graph TD
 - Busca empresa com CNPJ fixo `"37.097.718/0001-58"`
 - Usa Prisma para consultar a tabela `empresa`
 - Retorna dados da empresa incluindo relatórios relacionados
-- Se não encontrar, retorna `null` (tratado no pdf-utils)
+- Se não encontrar, retorna `null` (causa erro na função chamadora)
 
 ### 4. Componente de Exibição: `PDFPreview`
 
@@ -120,7 +121,7 @@ graph TD
    ```
    - Executada em: `buscarEmpresaPorCnpj('37.097.718/0001-58')`
    - Propósito: Obter dados da empresa (razão social, CNPJ, logo)
-   - Fallback: Se não encontrar, usa dados hardcoded
+   - **Comportamento**: Se não encontrar, lança erro (dados obrigatórios)
 
 2. **Não há outras consultas diretas** durante o preview, pois:
    - Os dados do formulário vêm do estado local do React
@@ -132,12 +133,12 @@ graph TD
 - **Preview é local**: O preview não salva nada no banco, apenas gera o PDF em memória
 - **Dados da empresa**: Única consulta ao banco durante o preview
 - **Performance**: O preview é rápido pois não há múltiplas consultas
-- **Fallback robusto**: Se a empresa não for encontrada, usa dados padrão
+- **Validação rigorosa**: Se a empresa não for encontrada, falha com erro (não há fallback)
 
 ## Tratamento de Erros
 
 1. **Erro na geração do PDF**: Capturado no `try/catch` do `handleGeneratePreview`
-2. **Erro ao buscar empresa**: Capturado no `try/catch` do `generateRelatorioPDF`
+2. **Erro ao buscar empresa**: Lança erro se empresa não for encontrada (dados obrigatórios)
 3. **Erro ao carregar imagens**: Capturado individualmente para cada foto
 4. **Limpeza de recursos**: URLs de blob são limpas para evitar vazamentos de memória
 

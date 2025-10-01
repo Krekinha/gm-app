@@ -42,11 +42,10 @@ export async function criarRelatorioModelo(dados: RelatorioModeloData): Promise<
   // Se não foi fornecida empresaId, usar empresa padrão com CNPJ fixo
   let empresaId = dados.empresaId;
   if (!empresaId) {
-    let empresaPadrao = await buscarEmpresaPorCnpj("37.097.718/0001-58");
+    const empresaPadrao = await buscarEmpresaPorCnpj("37.097.718/0001-58");
     
-    // Se não existir, inicializar
     if (!empresaPadrao) {
-      empresaPadrao = await inicializarEmpresaPadrao();
+      throw new Error("Empresa padrão não encontrada no banco de dados. Verifique se os dados da empresa estão cadastrados corretamente.");
     }
     
     empresaId = empresaPadrao.id;
@@ -104,11 +103,10 @@ export async function criarRelatorioModelo(dados: RelatorioModeloData): Promise<
  */
 export async function buscarTodosRelatorios(): Promise<RelatorioModeloWithItens[]> {
   // Buscar empresa padrão pelo CNPJ fixo
-  let empresaPadrao = await buscarEmpresaPorCnpj("37.097.718/0001-58");
+  const empresaPadrao = await buscarEmpresaPorCnpj("37.097.718/0001-58");
   
-  // Se não existir, inicializar
   if (!empresaPadrao) {
-    empresaPadrao = await inicializarEmpresaPadrao();
+    throw new Error("Empresa padrão não encontrada no banco de dados. Verifique se os dados da empresa estão cadastrados corretamente.");
   }
   
   const relatorios = await prisma.relatorioModelo.findMany({

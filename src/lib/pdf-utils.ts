@@ -23,27 +23,11 @@ export async function generateRelatorioPDF(
   const { pageWidth, pageHeight, margin, fontSize, colors } = config;
   let currentY = margin;
 
-  // Buscar dados da empresa padrão pelo ID fixo
-  let empresaPadrao;
-  try {
-    empresaPadrao = await buscarEmpresaPorCnpj("37.097.718/0001-58");
-  } catch (error) {
-    console.warn("Erro ao buscar empresa padrão:", error);
-    // Usar dados padrão como fallback
-    empresaPadrao = {
-      razaoSocial: "GM MANUTENÇÕES LTDA",
-      cnpj: "37.097.718/0001-58",
-      logoUrl: "/relatorio-tecnico/logo.png"
-    };
-  }
-
-  // Garantir que empresaPadrao não seja null
+  // Buscar dados da empresa padrão pelo CNPJ fixo
+  const empresaPadrao = await buscarEmpresaPorCnpj("37.097.718/0001-58");
+  
   if (!empresaPadrao) {
-    empresaPadrao = {
-      razaoSocial: "GMI MANUTENÇÕES LTDA",
-      cnpj: "37.097.718/0001-58",
-      logoUrl: "/relatorio-tecnico/logo.png"
-    };
+    throw new Error("Empresa padrão não encontrada no banco de dados. Verifique se os dados da empresa estão cadastrados corretamente.");
   }
 
   // Função auxiliar para aplicar imagem de fundo em uma página
