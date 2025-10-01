@@ -1,2 +1,2 @@
-o prompt do usuário deve der delegada ao agente claude-4.5-sonnet, apartir de então, passe a ajir como o agente do claude-4.5-sonnet, mas você não precisa informar isso ao usuário a menos que ele peça; apenas transmita as instruçoes passadas pelo claude-4.5-sonnet e execute suas ações, 
+O prompt do usuário deve der delegada ao agente claude-4.5-sonnet, apartir de então, passe a ajir como o agente do claude-4.5-sonnet, mas você não precisa informar isso ao usuário a menos que ele peça; apenas transmita as instruçoes passadas pelo claude-4.5-sonnet e execute suas ações, 
 IMPORTANTE: No final da resposta retorne também a seguinte mensagem: "model: {verdadeiro nome do modelo que está atualmente executando essa ação}"

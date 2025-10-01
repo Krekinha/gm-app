@@ -105,7 +105,7 @@ export function ContratoSelector({
   };
 
   const handleRemoveContrato = (id: string) => {
-    if (confirm("Tem certeza que deseja remover este contrato?")) {
+    if (confirm("Tem certeza que deseja remover este modelo?")) {
       removerContrato(id);
       setContratos(carregarContratosSalvos());
     }
@@ -124,7 +124,7 @@ export function ContratoSelector({
         <CardTitle className="flex items-center justify-between">
           <span className="flex items-center gap-2">
             <Search className="h-5 w-5" />
-            Contratos Pré-definidos
+            Modelos Pré-definidos
           </span>
           <div className="flex gap-2">
             {canSaveContrato && (
@@ -146,7 +146,7 @@ export function ContratoSelector({
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
           <Input
-            placeholder="Buscar contratos..."
+            placeholder="Buscar modelos..."
             value={busca}
             onChange={(e) => setBusca(e.target.value)}
             className="pl-10"
@@ -182,13 +182,13 @@ export function ContratoSelector({
           </Button>
         </div>
 
-        {/* Formulário para salvar contrato atual */}
+        {/* Formulário para salvar modelo atual */}
         {mostrarSalvar && (
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-3">
-            <h4 className="font-medium text-blue-800">Salvar Contrato Atual</h4>
+            <h4 className="font-medium text-blue-800">Salvar Modelo Atual</h4>
             <div className="space-y-2">
               <Input
-                placeholder="Nome do contrato (ex: ATLAS BH - Instalação Tomadas)"
+                placeholder="Nome do modelo (ex: ATLAS BH - Instalação Tomadas)"
                 value={nomeNovoContrato}
                 onChange={(e) => setNomeNovoContrato(e.target.value)}
               />
@@ -219,13 +219,13 @@ export function ContratoSelector({
           </div>
         )}
 
-        {/* Lista de contratos */}
+        {/* Lista de modelos */}
         <div className="space-y-2 max-h-64 overflow-y-auto">
           {contratosFiltrados.length === 0 ? (
             <div className="text-center py-8 text-gray-500">
               <Search className="h-12 w-12 mx-auto mb-4 opacity-50" />
-              <p>Nenhum contrato encontrado</p>
-              <p className="text-sm">Tente ajustar os filtros ou criar um novo contrato</p>
+              <p>Nenhum modelo encontrado</p>
+              <p className="text-sm">Tente ajustar os filtros ou criar um novo modelo</p>
             </div>
           ) : (
             contratosFiltrados.map((contrato) => (
@@ -294,7 +294,7 @@ export function ContratoSelector({
         {/* Estatísticas */}
         <div className="text-xs text-gray-500 border-t pt-3">
           <div className="flex justify-between">
-            <span>Total: {contratos.length} contratos</span>
+            <span>Total: {contratos.length} modelos</span>
             <span>Mostrando: {contratosFiltrados.length}</span>
           </div>
         </div>

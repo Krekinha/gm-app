@@ -42,6 +42,7 @@ import { ImageUpload } from "./components/ImageUpload";
 import { RelatorioForm } from "./components/RelatorioForm";
 // Componente para preview do PDF
 import { PDFPreview } from "./components/PDFPreview";
+import { ContratoSelector } from "./components/ContratoSelector";
 
 export default function RelatorioTecnicoPage() {
   const [fotos, setFotos] = useState<FotoRelatorio[]>([]);
@@ -252,7 +253,7 @@ export default function RelatorioTecnicoPage() {
                 <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                   <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="formulario">Dados Principais</TabsTrigger>
-                    <TabsTrigger value="configuracoes">Configurações</TabsTrigger>
+                    <TabsTrigger value="contratos">Modelos Salvos</TabsTrigger>
                   </TabsList>
                   
                   <TabsContent value="formulario" className="space-y-6">
@@ -263,17 +264,48 @@ export default function RelatorioTecnicoPage() {
                       onRemoveItemTecnico={handleRemoveItemTecnico}
                       onLinkPhoto={handleLinkPhoto}
                       onUnlinkPhoto={handleUnlinkPhoto}
+                      onAddPhoto={handleAddPhoto}
+                      onRemovePhoto={handleRemovePhoto}
                     />
                   </TabsContent>
                   
-                  <TabsContent value="configuracoes" className="space-y-6">
+                  <TabsContent value="contratos" className="space-y-6">
                     <div className="space-y-4">
-                      <h3 className="text-lg font-semibold">Upload de Imagens</h3>
-                      <ImageUpload 
-                        onAddPhoto={handleAddPhoto}
-                        fotos={fotos}
-                        onRemovePhoto={handleRemovePhoto}
-                        maxPhotos={20}
+                      <h3 className="text-lg font-semibold">Gerenciar Modelos Salvos</h3>
+                      <ContratoSelector
+                        onSelectContrato={(contrato) => {
+                          // Carregar dados básicos do contrato
+                          setValue("contrato", contrato.contrato);
+                          setValue("valorInicial", contrato.valorInicial);
+                          setValue("rq", contrato.rq);
+                          setValue("os", contrato.os);
+                          setValue("pedido", contrato.pedido);
+                          
+                          // Carregar escopo e itens técnicos
+                          setValue("descricaoEscopo", contrato.descricaoEscopo || "");
+                          const itensTecnicos = contrato.itensTecnicos?.map(item => ({
+                            id: item.id,
+                            descricao: item.descricao,
+                            fotosVinculadas: []
+                          })) || [];
+                          setValue("itensTecnicos", itensTecnicos);
+                          
+                          // Voltar para a aba principal
+                          setActiveTab("formulario");
+                        }}
+                        onSaveCurrentContrato={(dados) => {
+                          // Implementar salvamento do contrato atual
+                          console.log("Salvando contrato:", dados);
+                        }}
+                        currentData={{
+                          contrato: formData.contrato,
+                          valorInicial: formData.valorInicial,
+                          rq: formData.rq,
+                          os: formData.os,
+                          pedido: formData.pedido,
+                          descricaoEscopo: formData.descricaoEscopo,
+                          itensTecnicos: formData.itensTecnicos
+                        }}
                       />
                     </div>
                   </TabsContent>

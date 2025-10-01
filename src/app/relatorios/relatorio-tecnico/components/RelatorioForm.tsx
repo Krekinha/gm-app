@@ -10,6 +10,7 @@ import { DadosEmpresa } from "./DadosEmpresa";
 import { DadosResponsavel } from "./DadosResponsavel";
 import { DadosContato } from "./DadosContato";
 import { BackgroundImageUpload } from "./BackgroundImageUpload";
+import { ImageUpload } from "./ImageUpload";
 
 interface RelatorioFormProps {
   form: UseFormReturn<RelatorioTecnicoData>;
@@ -18,6 +19,8 @@ interface RelatorioFormProps {
   onRemoveItemTecnico: (itemId: string) => void;
   onLinkPhoto: (fotoId: string, itemId: string) => void;
   onUnlinkPhoto: (fotoId: string) => void;
+  onAddPhoto: (files: File[]) => void;
+  onRemovePhoto: (fotoId: string) => void;
 }
 
 export function RelatorioForm({
@@ -26,7 +29,9 @@ export function RelatorioForm({
   onAddItemTecnico,
   onRemoveItemTecnico,
   onLinkPhoto,
-  onUnlinkPhoto
+  onUnlinkPhoto,
+  onAddPhoto,
+  onRemovePhoto,
 }: RelatorioFormProps) {
   const { watch, setValue } = form;
   const formData = watch();
@@ -54,18 +59,6 @@ export function RelatorioForm({
           pedido: formData.pedido
         }}
         onChange={(field, value) => setValue(field as keyof RelatorioTecnicoData, value)}
-        onLoadCompleteContrato={(contrato) => {
-          // Carregar escopo
-          setValue("descricaoEscopo", contrato.descricaoEscopo || "");
-          
-          // Carregar itens técnicos
-          const itensTecnicos = contrato.itensTecnicos?.map(item => ({
-            id: item.id,
-            descricao: item.descricao,
-            fotosVinculadas: []
-          })) || [];
-          setValue("itensTecnicos", itensTecnicos);
-        }}
       />
 
       {/* Escopo */}
@@ -135,6 +128,17 @@ export function RelatorioForm({
           };
           setValue(fieldMap[field], value);
         }}
+      />
+
+      {/* Upload de Imagens */}
+      <ImageUpload 
+        onAddPhoto={onAddPhoto}
+        fotos={fotos}
+        onRemovePhoto={onRemovePhoto}
+        onLinkPhoto={onLinkPhoto}
+        onUnlinkPhoto={onUnlinkPhoto}
+        maxPhotos={20}
+        itensTecnicos={formData.itensTecnicos}
       />
 
       {/* Upload de Imagem de Fundo */}
