@@ -118,7 +118,7 @@ Pedido: ${data.pedido}
   currentY = addSection("ESCOPO", data.descricaoEscopo, currentY);
 
   // Descrição Técnica
-  let descricaoTecnica = "DESCRIÇÃO TÉCNICA\n\n";
+  let descricaoTecnica = "";
   
   data.itensTecnicos.forEach((item, index) => {
     descricaoTecnica += `${index + 1}. ${item.descricao}\n`;
