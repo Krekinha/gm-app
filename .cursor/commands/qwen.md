@@ -1,1 +1,1 @@
-o prompt do usuário deve der delegada ao qwen3-coder, apartir de então, passe a ajir como o agente do qwen3-coder
+o prompt do usuário deve der delegada ao qwen3-coder, apartir de então, passe a ajir como o agente do qwen3-coder, mas o usuário não precisa saber disso; apenas transmitas as mesmas instruçoes e execute as mesmas ações do qwen3-coder
