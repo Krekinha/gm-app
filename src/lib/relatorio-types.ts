@@ -18,12 +18,6 @@ export interface FotoRelatorio {
 
 // Schema de validação Zod para o relatório técnico
 export const relatorioTecnicoSchema = z.object({
-  // Cabeçalho
-  nomeRelatorio: z.string().min(1, "Nome do relatório é obrigatório"),
-  logoEmpresa: z.string().optional(),
-  nomeEmpresa: z.string().min(1, "Nome da empresa é obrigatório"),
-  cnpjEmpresa: z.string().min(14, "CNPJ deve ter 14 dígitos"),
-  
   // Dados do Contrato
   contrato: z.string().min(1, "Contrato é obrigatório"),
   valorInicial: z.string().min(1, "Valor inicial é obrigatório"),
@@ -47,8 +41,6 @@ export const relatorioTecnicoSchema = z.object({
   dataElaboracao: z.string().min(1, "Data de elaboração é obrigatória"),
   
   // Rodapé
-  nomeEmpresaRodape: z.string().min(1, "Nome da empresa no rodapé é obrigatório"),
-  cnpjRodape: z.string().min(14, "CNPJ no rodapé deve ter 14 dígitos"),
   telefone: z.string().min(1, "Telefone é obrigatório"),
   email: z.string().email("Email deve ser válido"),
   instagram: z.string().min(1, "Instagram é obrigatório"),
@@ -62,9 +54,6 @@ export type RelatorioTecnicoData = z.infer<typeof relatorioTecnicoSchema>;
 
 // Dados iniciais padrão
 export const initialRelatorioData: RelatorioTecnicoData = {
-  nomeRelatorio: "Relatório Técnico de Serviço",
-  nomeEmpresa: "",
-  cnpjEmpresa: "",
   contrato: "",
   valorInicial: "",
   rq: "",
@@ -81,8 +70,6 @@ export const initialRelatorioData: RelatorioTecnicoData = {
   cargo1: "",
   cargo2: "",
   dataElaboracao: new Date().toLocaleDateString("pt-BR"),
-  nomeEmpresaRodape: "",
-  cnpjRodape: "",
   telefone: "",
   email: "",
   instagram: "",

@@ -56,7 +56,7 @@ export async function criarRelatorioModelo(dados: RelatorioModeloData): Promise<
       pedido: dados.pedido,
       descricaoEscopo: dados.descricaoEscopo,
       imagemFundoUrl: dados.imagemFundoUrl,
-      empresaId: empresaId,
+      empresaId: empresaId!,
       itensRelatorio: {
         create: dados.itensRelatorio?.map((item, index) => ({
           descricao: item.descricao,
@@ -80,7 +80,7 @@ export async function criarRelatorioModelo(dados: RelatorioModeloData): Promise<
     os: relatorio.os,
     pedido: relatorio.pedido,
     descricaoEscopo: relatorio.descricaoEscopo,
-    imagemFundoUrl: relatorio.imagemFundoUrl,
+    imagemFundoUrl: relatorio.imagemFundoUrl || undefined,
     empresaId: relatorio.empresaId,
     itensRelatorio: relatorio.itensRelatorio.map(item => ({
       id: item.id,
@@ -115,7 +115,8 @@ export async function buscarTodosRelatorios(): Promise<RelatorioModeloWithItens[
     os: relatorio.os,
     pedido: relatorio.pedido,
     descricaoEscopo: relatorio.descricaoEscopo,
-    imagemFundoUrl: relatorio.imagemFundoUrl,
+    imagemFundoUrl: relatorio.imagemFundoUrl || undefined,
+    empresaId: relatorio.empresaId,
     itensRelatorio: relatorio.itensRelatorio.map(item => ({
       id: item.id,
       descricao: item.descricao,
@@ -151,7 +152,8 @@ export async function buscarRelatorioPorId(id: string): Promise<RelatorioModeloW
     os: relatorio.os,
     pedido: relatorio.pedido,
     descricaoEscopo: relatorio.descricaoEscopo,
-    imagemFundoUrl: relatorio.imagemFundoUrl,
+    imagemFundoUrl: relatorio.imagemFundoUrl || undefined,
+    empresaId: relatorio.empresaId,
     itensRelatorio: relatorio.itensRelatorio.map(item => ({
       id: item.id,
       descricao: item.descricao,
@@ -194,7 +196,8 @@ export async function buscarRelatoriosPorTermo(termo: string): Promise<Relatorio
     os: relatorio.os,
     pedido: relatorio.pedido,
     descricaoEscopo: relatorio.descricaoEscopo,
-    imagemFundoUrl: relatorio.imagemFundoUrl,
+    imagemFundoUrl: relatorio.imagemFundoUrl || undefined,
+    empresaId: relatorio.empresaId,
     itensRelatorio: relatorio.itensRelatorio.map(item => ({
       id: item.id,
       descricao: item.descricao,
@@ -267,7 +270,8 @@ export async function atualizarRelatorioModelo(id: string, dados: Partial<Relato
       os: relatorioFinal.os,
       pedido: relatorioFinal.pedido,
       descricaoEscopo: relatorioFinal.descricaoEscopo,
-      imagemFundoUrl: relatorioFinal.imagemFundoUrl,
+      imagemFundoUrl: relatorioFinal.imagemFundoUrl || undefined,
+      empresaId: relatorioFinal.empresaId,
       itensRelatorio: relatorioFinal.itensRelatorio.map(item => ({
         id: item.id,
         descricao: item.descricao,
@@ -288,7 +292,8 @@ export async function atualizarRelatorioModelo(id: string, dados: Partial<Relato
     os: relatorioAtualizado.os,
     pedido: relatorioAtualizado.pedido,
     descricaoEscopo: relatorioAtualizado.descricaoEscopo,
-    imagemFundoUrl: relatorioAtualizado.imagemFundoUrl,
+    imagemFundoUrl: relatorioAtualizado.imagemFundoUrl || undefined,
+    empresaId: relatorioAtualizado.empresaId,
     itensRelatorio: relatorioAtualizado.itensRelatorio.map(item => ({
       id: item.id,
       descricao: item.descricao,
@@ -351,7 +356,8 @@ export async function obterRelatoriosMaisUsados(limite: number = 5): Promise<Rel
     os: relatorio.os,
     pedido: relatorio.pedido,
     descricaoEscopo: relatorio.descricaoEscopo,
-    imagemFundoUrl: relatorio.imagemFundoUrl,
+    imagemFundoUrl: relatorio.imagemFundoUrl || undefined,
+    empresaId: relatorio.empresaId,
     itensRelatorio: relatorio.itensRelatorio.map(item => ({
       id: item.id,
       descricao: item.descricao,
@@ -386,7 +392,8 @@ export async function obterRelatoriosRecentes(limite: number = 5): Promise<Relat
     os: relatorio.os,
     pedido: relatorio.pedido,
     descricaoEscopo: relatorio.descricaoEscopo,
-    imagemFundoUrl: relatorio.imagemFundoUrl,
+    imagemFundoUrl: relatorio.imagemFundoUrl || undefined,
+    empresaId: relatorio.empresaId,
     itensRelatorio: relatorio.itensRelatorio.map(item => ({
       id: item.id,
       descricao: item.descricao,

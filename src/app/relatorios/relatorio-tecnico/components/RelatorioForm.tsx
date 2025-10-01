@@ -8,7 +8,6 @@ import { Save } from "lucide-react";
 import { DadosContrato } from "./DadosContrato";
 import { Escopo } from "./Escopo";
 import { ItensTecnicos } from "./ItensTecnicos";
-import { DadosEmpresa } from "./DadosEmpresa";
 import { DadosResponsavel } from "./DadosResponsavel";
 import { DadosContato } from "./DadosContato";
 import { BackgroundImageUpload } from "./BackgroundImageUpload";
@@ -88,16 +87,6 @@ export function RelatorioForm({
         fotosVinculadas={fotosVinculadasMap}
       />
 
-      {/* Dados da Empresa */}
-      <DadosEmpresa
-        data={{
-          nomeRelatorio: formData.nomeRelatorio,
-          nomeEmpresa: formData.nomeEmpresa,
-          cnpjEmpresa: formData.cnpjEmpresa
-        }}
-        onChange={(field, value) => setValue(field as keyof RelatorioTecnicoData, value)}
-      />
-
       {/* Dados do Responsável */}
       <DadosResponsavel
         data={{
@@ -122,15 +111,17 @@ export function RelatorioForm({
         data={{
           telefone: formData.telefone,
           email: formData.email,
-          endereco: formData.nomeEmpresaRodape
+          endereco: "" // Campo removido - dados da empresa agora vêm do banco
         }}
         onChange={(field, value) => {
           const fieldMap: { [key: string]: keyof RelatorioTecnicoData } = {
             telefone: "telefone",
-            email: "email",
-            endereco: "nomeEmpresaRodape"
+            email: "email"
+            // endereco removido
           };
-          setValue(fieldMap[field], value);
+          if (fieldMap[field]) {
+            setValue(fieldMap[field], value);
+          }
         }}
       />
 
@@ -142,7 +133,6 @@ export function RelatorioForm({
         onLinkPhoto={onLinkPhoto}
         onUnlinkPhoto={onUnlinkPhoto}
         maxPhotos={20}
-        itensTecnicos={formData.itensTecnicos}
       />
 
       {/* Upload de Imagem de Fundo */}

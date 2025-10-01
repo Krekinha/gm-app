@@ -1,5 +1,6 @@
 import jsPDF from "jspdf";
 import { RelatorioTecnicoData, FotoRelatorio, PDFConfig, defaultPDFConfig } from "./relatorio-types";
+import { buscarEmpresaPorCnpj } from "./empresa-database";
 
 /**
  * Utilitários para geração de PDF do relatório técnico
@@ -21,6 +22,29 @@ export async function generateRelatorioPDF(
 
   const { pageWidth, pageHeight, margin, fontSize, colors } = config;
   let currentY = margin;
+
+  // Buscar dados da empresa padrão
+  let empresaPadrao;
+  try {
+    empresaPadrao = await buscarEmpresaPorCnpj("00.000.000/0000-00");
+  } catch (error) {
+    console.warn("Erro ao buscar empresa padrão:", error);
+    // Usar dados padrão como fallback
+    empresaPadrao = {
+      razaoSocial: "Geraldinho Manutenções",
+      cnpj: "00.000.000/0000-00",
+      logoUrl: "/relatorio-tecnico/logo.png"
+    };
+  }
+
+  // Garantir que empresaPadrao não seja null
+  if (!empresaPadrao) {
+    empresaPadrao = {
+      razaoSocial: "Geraldinho Manutenções",
+      cnpj: "00.000.000/0000-00",
+      logoUrl: "/relatorio-tecnico/logo.png"
+    };
+  }
 
   // Função auxiliar para aplicar imagem de fundo em uma página
   const applyBackgroundImage = async (pageNumber: number) => {
@@ -73,18 +97,18 @@ export async function generateRelatorioPDF(
   };
 
   // Cabeçalho
-  if (data.logoEmpresa) {
+  if (empresaPadrao.logoUrl) {
     try {
       // Adicionar logo se disponível
       const logoImg = new Image();
-      logoImg.src = data.logoEmpresa;
+      logoImg.src = empresaPadrao.logoUrl;
       await new Promise((resolve) => {
         logoImg.onload = resolve;
       });
       
       const logoWidth = 30;
       const logoHeight = (logoImg.height * logoWidth) / logoImg.width;
-      doc.addImage(data.logoEmpresa, "PNG", margin, currentY, logoWidth, logoHeight);
+      doc.addImage(empresaPadrao.logoUrl, "PNG", margin, currentY, logoWidth, logoHeight);
       currentY += logoHeight + 5;
     } catch (error) {
       console.warn("Erro ao carregar logo:", error);
@@ -92,12 +116,12 @@ export async function generateRelatorioPDF(
   }
 
   // Título do relatório
-  currentY = addText(data.nomeRelatorio, margin, currentY, pageWidth - 2 * margin, fontSize.title);
+  currentY = addText("Relatório Técnico de Serviço", margin, currentY, pageWidth - 2 * margin, fontSize.title);
   currentY += 5;
 
   // Dados da empresa
-  currentY = addText(data.nomeEmpresa, margin, currentY, pageWidth - 2 * margin, fontSize.subtitle);
-  currentY = addText(`CNPJ: ${data.cnpjEmpresa}`, margin, currentY, pageWidth - 2 * margin);
+  currentY = addText(empresaPadrao.razaoSocial, margin, currentY, pageWidth - 2 * margin, fontSize.subtitle);
+  currentY = addText(`CNPJ: ${empresaPadrao.cnpj}`, margin, currentY, pageWidth - 2 * margin);
   currentY += 10;
 
   addHorizontalLine(currentY);
@@ -212,8 +236,8 @@ Data: ${data.dataElaboracao}
 
   // Rodapé
   const rodape = `
-${data.nomeEmpresaRodape}
-CNPJ: ${data.cnpjRodape}
+${empresaPadrao.razaoSocial}
+CNPJ: ${empresaPadrao.cnpj}
 Telefone: ${data.telefone}
 Email: ${data.email}
 Instagram: ${data.instagram}

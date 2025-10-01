@@ -53,7 +53,7 @@ export async function criarEmpresa(dados: EmpresaData): Promise<EmpresaWithRelat
     id: empresa.id,
     razaoSocial: empresa.razaoSocial,
     cnpj: empresa.cnpj,
-    logoUrl: empresa.logoUrl,
+    logoUrl: empresa.logoUrl || undefined,
     relatorios: empresa.relatorios.map(relatorio => ({
       id: relatorio.id,
       nome: relatorio.nome,
@@ -63,7 +63,7 @@ export async function criarEmpresa(dados: EmpresaData): Promise<EmpresaWithRelat
       os: relatorio.os,
       pedido: relatorio.pedido,
       descricaoEscopo: relatorio.descricaoEscopo,
-      imagemFundoUrl: relatorio.imagemFundoUrl,
+      imagemFundoUrl: relatorio.imagemFundoUrl || undefined,
       dataCriacao: relatorio.dataCriacao,
       dataUltimaUso: relatorio.dataUltimaUso,
       usoCount: relatorio.usoCount
@@ -90,7 +90,7 @@ export async function buscarTodasEmpresas(): Promise<EmpresaWithRelatorios[]> {
     id: empresa.id,
     razaoSocial: empresa.razaoSocial,
     cnpj: empresa.cnpj,
-    logoUrl: empresa.logoUrl,
+    logoUrl: empresa.logoUrl || undefined,
     relatorios: empresa.relatorios.map(relatorio => ({
       id: relatorio.id,
       nome: relatorio.nome,
@@ -100,7 +100,7 @@ export async function buscarTodasEmpresas(): Promise<EmpresaWithRelatorios[]> {
       os: relatorio.os,
       pedido: relatorio.pedido,
       descricaoEscopo: relatorio.descricaoEscopo,
-      imagemFundoUrl: relatorio.imagemFundoUrl,
+      imagemFundoUrl: relatorio.imagemFundoUrl || undefined,
       dataCriacao: relatorio.dataCriacao,
       dataUltimaUso: relatorio.dataUltimaUso,
       usoCount: relatorio.usoCount
@@ -129,7 +129,7 @@ export async function buscarEmpresaPorId(id: string): Promise<EmpresaWithRelator
     id: empresa.id,
     razaoSocial: empresa.razaoSocial,
     cnpj: empresa.cnpj,
-    logoUrl: empresa.logoUrl,
+    logoUrl: empresa.logoUrl || undefined,
     relatorios: empresa.relatorios.map(relatorio => ({
       id: relatorio.id,
       nome: relatorio.nome,
@@ -139,7 +139,7 @@ export async function buscarEmpresaPorId(id: string): Promise<EmpresaWithRelator
       os: relatorio.os,
       pedido: relatorio.pedido,
       descricaoEscopo: relatorio.descricaoEscopo,
-      imagemFundoUrl: relatorio.imagemFundoUrl,
+      imagemFundoUrl: relatorio.imagemFundoUrl || undefined,
       dataCriacao: relatorio.dataCriacao,
       dataUltimaUso: relatorio.dataUltimaUso,
       usoCount: relatorio.usoCount
@@ -168,7 +168,7 @@ export async function buscarEmpresaPorCnpj(cnpj: string): Promise<EmpresaWithRel
     id: empresa.id,
     razaoSocial: empresa.razaoSocial,
     cnpj: empresa.cnpj,
-    logoUrl: empresa.logoUrl,
+    logoUrl: empresa.logoUrl || undefined,
     relatorios: empresa.relatorios.map(relatorio => ({
       id: relatorio.id,
       nome: relatorio.nome,
@@ -178,7 +178,7 @@ export async function buscarEmpresaPorCnpj(cnpj: string): Promise<EmpresaWithRel
       os: relatorio.os,
       pedido: relatorio.pedido,
       descricaoEscopo: relatorio.descricaoEscopo,
-      imagemFundoUrl: relatorio.imagemFundoUrl,
+      imagemFundoUrl: relatorio.imagemFundoUrl || undefined,
       dataCriacao: relatorio.dataCriacao,
       dataUltimaUso: relatorio.dataUltimaUso,
       usoCount: relatorio.usoCount
@@ -210,7 +210,7 @@ export async function atualizarEmpresa(id: string, dados: Partial<EmpresaData>):
     id: empresa.id,
     razaoSocial: empresa.razaoSocial,
     cnpj: empresa.cnpj,
-    logoUrl: empresa.logoUrl,
+    logoUrl: empresa.logoUrl || undefined,
     relatorios: empresa.relatorios.map(relatorio => ({
       id: relatorio.id,
       nome: relatorio.nome,
@@ -220,7 +220,7 @@ export async function atualizarEmpresa(id: string, dados: Partial<EmpresaData>):
       os: relatorio.os,
       pedido: relatorio.pedido,
       descricaoEscopo: relatorio.descricaoEscopo,
-      imagemFundoUrl: relatorio.imagemFundoUrl,
+      imagemFundoUrl: relatorio.imagemFundoUrl || undefined,
       dataCriacao: relatorio.dataCriacao,
       dataUltimaUso: relatorio.dataUltimaUso,
       usoCount: relatorio.usoCount
@@ -276,7 +276,7 @@ export async function inicializarEmpresaPadrao(): Promise<EmpresaWithRelatorios>
     id: empresa.id,
     razaoSocial: empresa.razaoSocial,
     cnpj: empresa.cnpj,
-    logoUrl: empresa.logoUrl,
+    logoUrl: empresa.logoUrl || undefined,
     relatorios: empresa.relatorios.map(relatorio => ({
       id: relatorio.id,
       nome: relatorio.nome,
@@ -286,7 +286,7 @@ export async function inicializarEmpresaPadrao(): Promise<EmpresaWithRelatorios>
       os: relatorio.os,
       pedido: relatorio.pedido,
       descricaoEscopo: relatorio.descricaoEscopo,
-      imagemFundoUrl: relatorio.imagemFundoUrl,
+      imagemFundoUrl: relatorio.imagemFundoUrl || undefined,
       dataCriacao: relatorio.dataCriacao,
       dataUltimaUso: relatorio.dataUltimaUso,
       usoCount: relatorio.usoCount
