@@ -3,6 +3,7 @@
  */
 
 import { PrismaClient } from '@prisma/client';
+import { inicializarEmpresaPadrao } from './empresa-database';
 
 const prisma = new PrismaClient();
 
@@ -22,11 +23,13 @@ export interface RelatorioModeloData {
   pedido: string;
   descricaoEscopo: string;
   imagemFundoUrl?: string;
+  empresaId?: string;
   itensRelatorio?: ItemRelatorioData[];
 }
 
 export interface RelatorioModeloWithItens extends RelatorioModeloData {
   itensRelatorio: ItemRelatorioData[];
+  empresaId: string;
   dataCriacao: Date;
   dataUltimaUso: Date;
   usoCount: number;
@@ -36,6 +39,13 @@ export interface RelatorioModeloWithItens extends RelatorioModeloData {
  * Cria um novo modelo de relatório
  */
 export async function criarRelatorioModelo(dados: RelatorioModeloData): Promise<RelatorioModeloWithItens> {
+  // Se não foi fornecida empresaId, usar empresa padrão
+  let empresaId = dados.empresaId;
+  if (!empresaId) {
+    const empresaPadrao = await inicializarEmpresaPadrao();
+    empresaId = empresaPadrao.id;
+  }
+
   const relatorio = await prisma.relatorioModelo.create({
     data: {
       nome: dados.nome,
@@ -46,6 +56,7 @@ export async function criarRelatorioModelo(dados: RelatorioModeloData): Promise<
       pedido: dados.pedido,
       descricaoEscopo: dados.descricaoEscopo,
       imagemFundoUrl: dados.imagemFundoUrl,
+      empresaId: empresaId,
       itensRelatorio: {
         create: dados.itensRelatorio?.map((item, index) => ({
           descricao: item.descricao,
@@ -70,6 +81,7 @@ export async function criarRelatorioModelo(dados: RelatorioModeloData): Promise<
     pedido: relatorio.pedido,
     descricaoEscopo: relatorio.descricaoEscopo,
     imagemFundoUrl: relatorio.imagemFundoUrl,
+    empresaId: relatorio.empresaId,
     itensRelatorio: relatorio.itensRelatorio.map(item => ({
       id: item.id,
       descricao: item.descricao,
@@ -393,6 +405,9 @@ export async function inicializarDadosPadrao(): Promise<void> {
   const relatoriosExistentes = await prisma.relatorioModelo.count();
   
   if (relatoriosExistentes === 0) {
+    // Inicializar empresa padrão primeiro
+    const empresaPadrao = await inicializarEmpresaPadrao();
+    
     const relatoriosPadrao = [
       {
         nome: "ATLAS BH - Instalação Tomadas",
@@ -403,6 +418,7 @@ export async function inicializarDadosPadrao(): Promise<void> {
         pedido: "OC10845507",
         descricaoEscopo: "Instalação de tomadas e pontos elétricos",
         imagemFundoUrl: "/relatorio-tecnico/fundo-pdf.jpg",
+        empresaId: empresaPadrao.id,
         itensRelatorio: [
           { descricao: "Módulo acrescentado TV", ordem: 0 },
           { descricao: "Ponto tomada condulete para cafeteira", ordem: 1 },
@@ -420,6 +436,7 @@ export async function inicializarDadosPadrao(): Promise<void> {
         pedido: "OC10845508",
         descricaoEscopo: "Manutenção preventiva e corretiva do sistema elétrico",
         imagemFundoUrl: "/relatorio-tecnico/fundo-pdf.jpg",
+        empresaId: empresaPadrao.id,
         itensRelatorio: [
           { descricao: "Substituição de disjuntores defeituosos", ordem: 0 },
           { descricao: "Verificação e ajuste de tensão nos quadros", ordem: 1 },
@@ -439,6 +456,7 @@ export async function inicializarDadosPadrao(): Promise<void> {
         pedido: "OC98765432",
         descricaoEscopo: "Projeto elétrico completo para nova construção",
         imagemFundoUrl: "/relatorio-tecnico/fundo-pdf.jpg",
+        empresaId: empresaPadrao.id,
         itensRelatorio: [
           { descricao: "Instalação do quadro de distribuição principal", ordem: 0 },
           { descricao: "Cabeamento estruturado para rede de dados", ordem: 1 },

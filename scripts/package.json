@@ -6,7 +6,7 @@
     "init-db": "bash scripts/init-database.sh",
     "db:migrate": "npx prisma migrate dev",
     "db:generate": "npx prisma generate",
-    "db:seed": "curl -X POST http://localhost:3001/api/relatorios/inicializar",
+    "db:seed": "curl -X POST http://localhost:3000/api/empresas/inicializar && curl -X POST http://localhost:3000/api/relatorios/inicializar",
     "db:studio": "npx prisma studio"
   }
 }

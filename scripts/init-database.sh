@@ -28,11 +28,12 @@ npx prisma generate
 
 # Inicializar dados padrão
 echo "📊 Inicializando dados padrão..."
-curl -X POST http://localhost:3001/api/relatorios/inicializar
+curl -X POST http://localhost:3000/api/empresas/inicializar
+curl -X POST http://localhost:3000/api/relatorios/inicializar
 
 echo "🎉 Banco de dados inicializado com sucesso!"
 echo ""
 echo "📋 Próximos passos:"
 echo "1. Configure as variáveis de ambiente no arquivo .env"
 echo "2. Execute: pnpm dev"
-echo "3. Acesse: http://localhost:3001/relatorios/relatorio-tecnico"
+echo "3. Acesse: http://localhost:3000/relatorios/relatorio-tecnico"

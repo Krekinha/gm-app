@@ -10,6 +10,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Modelo para dados da empresa
+model Empresa {
+  id              String   @id @default(cuid())
+  razaoSocial     String
+  cnpj            String   @unique
+  logoUrl         String?
+  dataCriacao     DateTime @default(now())
+  dataAtualizacao DateTime @updatedAt
+
+  // Relacionamento com relatórios
+  relatorios RelatorioModelo[]
+
+  @@map("empresas")
+}
+
 // Modelo para relatórios salvos
 model RelatorioModelo {
   id              String   @id @default(cuid())
@@ -24,6 +39,10 @@ model RelatorioModelo {
   dataCriacao     DateTime @default(now())
   dataUltimaUso   DateTime @default(now())
   usoCount        Int      @default(0)
+
+  // Relacionamento com empresa
+  empresaId String
+  empresa   Empresa @relation(fields: [empresaId], references: [id], onDelete: Cascade)
 
   // Relacionamento com itens técnicos
   itensRelatorio ItemRelatorio[]
