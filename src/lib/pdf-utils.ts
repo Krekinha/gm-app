@@ -3,16 +3,26 @@ import { RelatorioTecnicoData, FotoRelatorio, PDFConfig, defaultPDFConfig } from
 import { buscarEmpresaPadrao, buscarEmpresaPorCnpj } from "./empresa-database";
 
 /**
+ * Tipo para callback de notificação
+ */
+export type NotificationCallback = (type: "error" | "warning" | "success" | "info", message: string, title?: string) => void;
+
+/**
  * Utilitários para geração de PDF do relatório técnico
  */
 
 /**
  * Gera o PDF do relatório técnico
+ * @param data - Dados do relatório técnico
+ * @param fotos - Array de fotos do relatório
+ * @param config - Configurações do PDF (opcional)
+ * @param onNotification - Callback para notificações (opcional)
  */
 export async function generateRelatorioPDF(
   data: RelatorioTecnicoData,
   fotos: FotoRelatorio[],
-  config: PDFConfig = defaultPDFConfig
+  config: PDFConfig = defaultPDFConfig,
+  onNotification?: NotificationCallback
 ): Promise<jsPDF> {
   const doc = new jsPDF({
     orientation: "portrait",
@@ -24,10 +34,23 @@ export async function generateRelatorioPDF(
   let currentY = margin;
 
   // Buscar dados da empresa padrão pelo CNPJ fixo
-  const empresaPadrao = await buscarEmpresaPorCnpj("37.097.718/0001-58");
+  let empresaPadrao;
+  try {
+    empresaPadrao = await buscarEmpresaPorCnpj("37.097.718/0001-58");
+  } catch (error) {
+    const errorMessage = "Erro ao buscar empresa padrão no banco de dados";
+    if (onNotification) {
+      onNotification("error", errorMessage, "Erro de Conexão");
+    }
+    throw new Error(`${errorMessage}: ${error instanceof Error ? error.message : String(error)}`);
+  }
   
   if (!empresaPadrao) {
-    throw new Error("Empresa padrão não encontrada no banco de dados. Verifique se os dados da empresa estão cadastrados corretamente.");
+    const errorMessage = "Empresa padrão não encontrada no banco de dados. Verifique se os dados da empresa estão cadastrados corretamente.";
+    if (onNotification) {
+      onNotification("error", errorMessage, "Empresa não encontrada");
+    }
+    throw new Error(errorMessage);
   }
 
   // Função auxiliar para aplicar imagem de fundo em uma página
@@ -46,7 +69,11 @@ export async function generateRelatorioPDF(
           "FAST" // Modo rápido para melhor performance
         );
       } catch (error) {
-        console.warn(`Erro ao aplicar imagem de fundo na página ${pageNumber}:`, error);
+        const errorMessage = `Erro ao aplicar imagem de fundo na página ${pageNumber}`;
+        console.warn(errorMessage, error);
+        if (onNotification) {
+          onNotification("error", errorMessage, "Erro de Imagem de Fundo");
+        }
       }
     }
   };
@@ -95,7 +122,11 @@ export async function generateRelatorioPDF(
       doc.addImage(empresaPadrao.logoUrl, "PNG", margin, currentY, logoWidth, logoHeight);
       currentY += logoHeight + 5;
     } catch (error) {
-      console.warn("Erro ao carregar logo:", error);
+      const errorMessage = "Erro ao carregar logo da empresa";
+      console.warn(errorMessage, error);
+      if (onNotification) {
+        onNotification("error", errorMessage, "Erro de Logo");
+      }
     }
   }
 
@@ -204,7 +235,11 @@ Pedido: ${data.pedido}
       currentY += imgHeight + 10;
       
     } catch (error) {
-      console.warn(`Erro ao adicionar foto ${foto.id}:`, error);
+      const errorMessage = `Erro ao adicionar foto ${foto.id}`;
+      console.warn(errorMessage, error);
+      if (onNotification) {
+        onNotification("error", errorMessage, "Erro de Foto");
+      }
     }
   }
 
@@ -247,24 +282,49 @@ Instagram: ${data.instagram}
 
 /**
  * Gera preview do PDF como blob URL
+ * @param data - Dados do relatório técnico
+ * @param fotos - Array de fotos do relatório
+ * @param onError - Callback para tratamento de erros (opcional)
  */
 export async function generatePDFPreview(
   data: RelatorioTecnicoData,
-  fotos: FotoRelatorio[]
+  fotos: FotoRelatorio[],
+  onNotification?: NotificationCallback
 ): Promise<string> {
-  const pdf = await generateRelatorioPDF(data, fotos);
-  const pdfBlob = pdf.output("blob");
-  return URL.createObjectURL(pdfBlob);
+  try {
+    const pdf = await generateRelatorioPDF(data, fotos, defaultPDFConfig, onNotification);
+    const pdfBlob = pdf.output("blob");
+    return URL.createObjectURL(pdfBlob);
+  } catch (error) {
+    const errorMessage = "Erro ao gerar preview do PDF";
+    if (onNotification) {
+      onNotification("error", errorMessage, "Erro de Preview");
+    }
+    throw error;
+  }
 }
 
 /**
  * Baixa o PDF gerado
+ * @param data - Dados do relatório técnico
+ * @param fotos - Array de fotos do relatório
+ * @param filename - Nome do arquivo (opcional)
+ * @param onError - Callback para tratamento de erros (opcional)
  */
 export async function downloadPDF(
   data: RelatorioTecnicoData,
   fotos: FotoRelatorio[],
-  filename: string = "relatorio-tecnico.pdf"
+  filename: string = "relatorio-tecnico.pdf",
+  onNotification?: NotificationCallback
 ): Promise<void> {
-  const pdf = await generateRelatorioPDF(data, fotos);
-  pdf.save(filename);
+  try {
+    const pdf = await generateRelatorioPDF(data, fotos, defaultPDFConfig, onNotification);
+    pdf.save(filename);
+  } catch (error) {
+    const errorMessage = "Erro ao baixar PDF";
+    if (onNotification) {
+      onNotification("error", errorMessage, "Erro de Download");
+    }
+    throw error;
+  }
 }

@@ -40,6 +40,7 @@ import {
 } from "@/lib/image-utils";
 import { generateRelatorioPDF } from "@/lib/pdf-utils";
 import { adicionarRelatorio } from "@/lib/relatorios-api";
+import { useErrorHandler } from "@/hooks/use-error-handler";
 
 // Componente para upload de imagens
 import { ImageUpload } from "./components/ImageUpload";
@@ -57,6 +58,9 @@ export default function RelatorioTecnicoPage() {
   const [mostrarSalvarModelo, setMostrarSalvarModelo] = useState(false);
   const [nomeNovoModelo, setNomeNovoModelo] = useState("");
 
+  // Hook para tratamento de erros
+  const { showError, showSuccess } = useErrorHandler();
+
   const form = useForm<RelatorioTecnicoData>({
     resolver: zodResolver(relatorioTecnicoSchema),
     defaultValues: initialRelatorioData
@@ -72,7 +76,7 @@ export default function RelatorioTecnicoPage() {
     for (const file of files) {
       const validation = validateImageFile(file);
       if (!validation.valid) {
-        alert(validation.error);
+        showError(validation.error, "Erro na validação da imagem");
         continue;
       }
 
@@ -87,14 +91,14 @@ export default function RelatorioTecnicoPage() {
         newFotos.push(foto);
       } catch (error) {
         console.error("Erro ao processar arquivo:", error);
-        alert("Erro ao processar arquivo");
+        showError(error, "Erro ao processar arquivo");
       }
     }
 
     if (newFotos.length > 0) {
       setFotos(prev => [...prev, ...newFotos]);
     }
-  }, [fotos.length]);
+  }, [fotos.length, showError]);
 
   // Função para remover foto
   const handleRemovePhoto = useCallback((fotoId: string) => {
@@ -168,11 +172,11 @@ export default function RelatorioTecnicoPage() {
       setPdfPreviewUrl(previewUrl);
     } catch (error) {
       console.error("Erro ao gerar preview:", error);
-      alert("Erro ao gerar preview do PDF");
+      showError(error, "Erro ao gerar preview do PDF");
     } finally {
       setIsGeneratingPDF(false);
     }
-  }, [getValues, fotos, pdfPreviewUrl]);
+  }, [getValues, fotos, pdfPreviewUrl, showError]);
 
   // Função para baixar PDF
   const handleDownloadPDF = useCallback(async () => {
@@ -182,9 +186,9 @@ export default function RelatorioTecnicoPage() {
       pdf.save(`relatorio-tecnico-${data.contrato}-${new Date().toISOString().split('T')[0]}.pdf`);
     } catch (error) {
       console.error("Erro ao baixar PDF:", error);
-      alert("Erro ao baixar PDF");
+      showError(error, "Erro ao baixar PDF");
     }
-  }, [getValues, fotos]);
+  }, [getValues, fotos, showError]);
 
   // Função para salvar como modelo
   const handleSaveAsModel = useCallback(async () => {
@@ -193,7 +197,7 @@ export default function RelatorioTecnicoPage() {
 
   const handleConfirmSaveModel = useCallback(async () => {
     if (!nomeNovoModelo.trim()) {
-      alert("Por favor, digite um nome para o modelo");
+      showError("Por favor, digite um nome para o modelo", "Nome obrigatório");
       return;
     }
 
@@ -215,14 +219,14 @@ export default function RelatorioTecnicoPage() {
         imagemFundoUrl: data.imagemFundo
       });
 
-      alert("Modelo salvo com sucesso!");
+      showSuccess("Modelo salvo com sucesso!");
       setMostrarSalvarModelo(false);
       setNomeNovoModelo("");
     } catch (error) {
       console.error("Erro ao salvar modelo:", error);
-      alert("Erro ao salvar modelo. Tente novamente.");
+      showError(error, "Erro ao salvar modelo");
     }
-  }, [nomeNovoModelo, getValues]);
+  }, [nomeNovoModelo, getValues, showError, showSuccess]);
 
   // Limpar URLs ao desmontar componente
   useEffect(() => {

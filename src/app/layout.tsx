@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { AppSidebar } from "@/components/app-sidebar";
 import { AppTopbar } from "@/components/app-topbar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
 
 import "./globals.css";
 
@@ -43,6 +44,7 @@ export default function RootLayout({
               <main className="flex-1 overflow-auto p-4">{children}</main>
             </SidebarInset>
           </SidebarProvider>
+          <Toaster />
         </IgniterProvider>
       </body>
     </html>
