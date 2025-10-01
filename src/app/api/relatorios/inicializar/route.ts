@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { inicializarDadosPadrao } from '@/lib/contratos-database';
+import { inicializarDadosPadrao } from '@/lib/relatorios-database';
 
-// POST /api/contratos/inicializar - Inicializar dados padrão
+// POST /api/relatorios/inicializar - Inicializar dados padrão
 export async function POST(request: NextRequest) {
   try {
     await inicializarDadosPadrao();

@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
 import { 
   Search, 
   Clock, 
@@ -17,19 +18,20 @@ import {
   X
 } from "lucide-react";
 import {
-  ContratoPredefinido,
-  carregarContratosSalvos,
-  buscarContratos,
-  obterContratosMaisUsados,
-  obterContratosRecentes,
-  registrarUsoContrato,
-  adicionarContrato,
-  removerContrato
-} from "@/lib/contratos-api";
+  RelatorioPredefinido,
+  carregarRelatoriosSalvos,
+  buscarRelatorios,
+  obterRelatoriosMaisUsados,
+  obterRelatoriosRecentes,
+  registrarUsoRelatorio,
+  adicionarRelatorio,
+  removerRelatorio
+} from "@/lib/relatorios-api";
+import { ItemTecnico } from "@/lib/relatorio-types";
 
-interface ContratoSelectorProps {
-  onSelectContrato: (contrato: ContratoPredefinido) => void;
-  onSaveCurrentContrato: (dados: {
+interface RelatorioSelectorProps {
+  onSelectRelatorio: (relatorio: RelatorioPredefinido) => void;
+  onSaveCurrentRelatorio: (dados: {
     contrato: string;
     valorInicial: string;
     rq: string;
@@ -51,41 +53,41 @@ interface ContratoSelectorProps {
   };
 }
 
-export function ContratoSelector({ 
-  onSelectContrato, 
-  onSaveCurrentContrato,
+export function RelatorioSelector({ 
+  onSelectRelatorio, 
+  onSaveCurrentRelatorio,
   currentData 
-}: ContratoSelectorProps) {
-  const [contratos, setContratos] = useState<ContratoPredefinido[]>([]);
+}: RelatorioSelectorProps) {
+  const [relatorios, setRelatorios] = useState<RelatorioPredefinido[]>([]);
   const [busca, setBusca] = useState("");
   const [filtro, setFiltro] = useState<"todos" | "maisUsados" | "recentes">("todos");
   const [mostrarSalvar, setMostrarSalvar] = useState(false);
-  const [nomeNovoContrato, setNomeNovoContrato] = useState("");
+  const [nomeNovoRelatorio, setNomeNovoRelatorio] = useState("");
 
-  // Carregar contratos ao montar componente
+  // Carregar relatórios ao montar componente
   useEffect(() => {
-    const carregarContratos = async () => {
+    const carregarRelatorios = async () => {
       try {
-        const contratosCarregados = await carregarContratosSalvos();
-        setContratos(contratosCarregados);
+        const relatoriosCarregados = await carregarRelatoriosSalvos();
+        setRelatorios(relatoriosCarregados);
       } catch (error) {
-        console.error('Erro ao carregar contratos:', error);
-        setContratos([]);
+        console.error('Erro ao carregar relatórios:', error);
+        setRelatorios([]);
       }
     };
     
-    carregarContratos();
+    carregarRelatorios();
   }, []);
 
-  // Filtrar contratos baseado na busca e filtro
-  const contratosFiltrados = React.useMemo(() => {
-    let resultado = contratos;
+  // Filtrar relatórios baseado na busca e filtro
+  const relatoriosFiltrados = React.useMemo(() => {
+    let resultado = relatorios;
 
     // Aplicar filtro (agora usando os dados já carregados)
     if (filtro === "maisUsados") {
-      resultado = [...contratos].sort((a, b) => b.usoCount - a.usoCount).slice(0, 10);
+      resultado = [...relatorios].sort((a, b) => b.usoCount - a.usoCount).slice(0, 10);
     } else if (filtro === "recentes") {
-      resultado = [...contratos].sort((a, b) => 
+      resultado = [...relatorios].sort((a, b) => 
         new Date(b.dataUltimaUso).getTime() - new Date(a.dataUltimaUso).getTime()
       ).slice(0, 10);
     }
@@ -93,66 +95,66 @@ export function ContratoSelector({
     // Aplicar busca
     if (busca.trim()) {
       const termoLower = busca.toLowerCase();
-      resultado = resultado.filter(contrato => 
-        contrato.nome.toLowerCase().includes(termoLower) ||
-        contrato.contrato.toLowerCase().includes(termoLower) ||
-        contrato.rq.toLowerCase().includes(termoLower) ||
-        contrato.os.toLowerCase().includes(termoLower) ||
-        contrato.pedido.toLowerCase().includes(termoLower)
+      resultado = resultado.filter(relatorio => 
+        relatorio.nome.toLowerCase().includes(termoLower) ||
+        relatorio.contrato.toLowerCase().includes(termoLower) ||
+        relatorio.rq.toLowerCase().includes(termoLower) ||
+        relatorio.os.toLowerCase().includes(termoLower) ||
+        relatorio.pedido.toLowerCase().includes(termoLower)
       );
     }
 
     return resultado;
-  }, [contratos, busca, filtro]);
+  }, [relatorios, busca, filtro]);
 
-  const handleSelectContrato = async (contrato: ContratoPredefinido) => {
+  const handleSelectRelatorio = async (relatorio: RelatorioPredefinido) => {
     try {
-      await registrarUsoContrato(contrato.id);
-      onSelectContrato(contrato);
-      // Recarregar contratos para atualizar contadores
-      const contratosAtualizados = await carregarContratosSalvos();
-      setContratos(contratosAtualizados);
+      await registrarUsoRelatorio(relatorio.id);
+      onSelectRelatorio(relatorio);
+      // Recarregar relatórios para atualizar contadores
+      const relatoriosAtualizados = await carregarRelatoriosSalvos();
+      setRelatorios(relatoriosAtualizados);
     } catch (error) {
-      console.warn('Erro ao registrar uso do contrato:', error);
-      onSelectContrato(contrato);
+      console.warn('Erro ao registrar uso do relatório:', error);
+      onSelectRelatorio(relatorio);
     }
   };
 
-  const handleSaveContrato = async () => {
-    if (!currentData || !nomeNovoContrato.trim()) return;
+  const handleSaveRelatorio = async () => {
+    if (!currentData || !nomeNovoRelatorio.trim()) return;
 
     try {
-      const novoContrato = await adicionarContrato({
-        nome: nomeNovoContrato.trim(),
+      const novoRelatorio = await adicionarRelatorio({
+        nome: nomeNovoRelatorio.trim(),
         ...currentData
       });
 
-      setContratos(await carregarContratosSalvos());
-      setNomeNovoContrato("");
+      setRelatorios(await carregarRelatoriosSalvos());
+      setNomeNovoRelatorio("");
       setMostrarSalvar(false);
     } catch (error) {
-      console.error('Erro ao salvar contrato:', error);
-      alert('Erro ao salvar contrato. Tente novamente.');
+      console.error('Erro ao salvar relatório:', error);
+      alert('Erro ao salvar relatório. Tente novamente.');
     }
   };
 
-  const handleRemoveContrato = async (id: string) => {
+  const handleRemoveRelatorio = async (id: string) => {
     if (confirm("Tem certeza que deseja remover este modelo?")) {
       try {
-        const sucesso = await removerContrato(id);
+        const sucesso = await removerRelatorio(id);
         if (sucesso) {
-          setContratos(await carregarContratosSalvos());
+          setRelatorios(await carregarRelatoriosSalvos());
         } else {
           alert('Erro ao remover modelo.');
         }
       } catch (error) {
-        console.error('Erro ao remover contrato:', error);
+        console.error('Erro ao remover relatório:', error);
         alert('Erro ao remover modelo. Tente novamente.');
       }
     }
   };
 
-  const canSaveContrato = currentData && 
+  const canSaveRelatorio = currentData && 
     currentData.contrato.trim() && 
     currentData.valorInicial.trim() && 
     currentData.rq.trim() && 
@@ -168,7 +170,7 @@ export function ContratoSelector({
             Modelos Pré-definidos
           </span>
           <div className="flex gap-2">
-            {canSaveContrato && (
+            {canSaveRelatorio && (
               <Button
                 size="sm"
                 variant="outline"
@@ -200,7 +202,9 @@ export function ContratoSelector({
             size="sm"
             variant={filtro === "todos" ? "default" : "outline"}
             onClick={() => setFiltro("todos")}
+            className="flex items-center gap-1"
           >
+            <Search className="h-4 w-4" />
             Todos
           </Button>
           <Button
@@ -209,7 +213,7 @@ export function ContratoSelector({
             onClick={() => setFiltro("maisUsados")}
             className="flex items-center gap-1"
           >
-            <Star className="h-3 w-3" />
+            <Star className="h-4 w-4" />
             Mais Usados
           </Button>
           <Button
@@ -228,27 +232,31 @@ export function ContratoSelector({
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-3">
             <h4 className="font-medium text-blue-800">Salvar Modelo Atual</h4>
             <div className="space-y-2">
+              <Label htmlFor="nomeNovoModelo">Nome do modelo *</Label>
               <Input
+                id="nomeNovoModelo"
                 placeholder="Nome do modelo (ex: ATLAS BH - Instalação Tomadas)"
-                value={nomeNovoContrato}
-                onChange={(e) => setNomeNovoContrato(e.target.value)}
+                value={nomeNovoRelatorio}
+                onChange={(e) => setNomeNovoRelatorio(e.target.value)}
               />
               <div className="flex gap-2">
                 <Button
+                  type="button"
                   size="sm"
-                  onClick={handleSaveContrato}
-                  disabled={!nomeNovoContrato.trim()}
+                  onClick={handleSaveRelatorio}
+                  disabled={!nomeNovoRelatorio.trim()}
                   className="flex items-center gap-1"
                 >
                   <Check className="h-4 w-4" />
                   Salvar
                 </Button>
                 <Button
+                  type="button"
                   size="sm"
                   variant="outline"
                   onClick={() => {
                     setMostrarSalvar(false);
-                    setNomeNovoContrato("");
+                    setNomeNovoRelatorio("");
                   }}
                   className="flex items-center gap-1"
                 >
@@ -262,64 +270,64 @@ export function ContratoSelector({
 
         {/* Lista de modelos */}
         <div className="space-y-2 max-h-64 overflow-y-auto">
-          {contratosFiltrados.length === 0 ? (
+          {relatoriosFiltrados.length === 0 ? (
             <div className="text-center py-8 text-gray-500">
               <Search className="h-12 w-12 mx-auto mb-4 opacity-50" />
               <p>Nenhum modelo encontrado</p>
               <p className="text-sm">Tente ajustar os filtros ou criar um novo modelo</p>
             </div>
           ) : (
-            contratosFiltrados.map((contrato) => (
+            relatoriosFiltrados.map((relatorio) => (
               <div
-                key={contrato.id}
+                key={relatorio.id}
                 className="border rounded-lg p-3 hover:bg-gray-50 transition-colors cursor-pointer group"
-                onClick={() => handleSelectContrato(contrato)}
+                onClick={() => handleSelectRelatorio(relatorio)}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <h4 className="font-medium text-gray-900 mb-1">
-                      {contrato.nome}
+                      {relatorio.nome}
                     </h4>
                     <div className="grid grid-cols-2 gap-2 text-sm text-gray-600">
-                      <div><strong>Contrato:</strong> {contrato.contrato}</div>
-                      <div><strong>Valor:</strong> {contrato.valorInicial}</div>
-                      <div><strong>RQ:</strong> {contrato.rq}</div>
-                      <div><strong>OS:</strong> {contrato.os}</div>
-                      <div className="col-span-2"><strong>Pedido:</strong> {contrato.pedido}</div>
-                      <div className="col-span-2"><strong>Escopo:</strong> {contrato.descricaoEscopo}</div>
+                      <div><strong>Contrato:</strong> {relatorio.contrato}</div>
+                      <div><strong>Valor:</strong> {relatorio.valorInicial}</div>
+                      <div><strong>RQ:</strong> {relatorio.rq}</div>
+                      <div><strong>OS:</strong> {relatorio.os}</div>
+                      <div className="col-span-2"><strong>Pedido:</strong> {relatorio.pedido}</div>
+                      <div className="col-span-2"><strong>Escopo:</strong> {relatorio.descricaoEscopo}</div>
                       <div className="col-span-2">
                         <strong>Itens Técnicos:</strong>
                         <div className="mt-1 space-y-1">
-                          {contrato.itensTecnicos?.slice(0, 3).map((item, index) => (
+                          {relatorio.itensRelatorio?.slice(0, 3).map((item, index) => (
                             <div key={item.id} className="text-xs text-gray-500 flex items-start">
                               <span className="mr-2">•</span>
                               <span>{item.descricao}</span>
                             </div>
                           ))}
-                          {contrato.itensTecnicos && contrato.itensTecnicos.length > 3 && (
+                          {relatorio.itensRelatorio && relatorio.itensRelatorio.length > 3 && (
                             <div className="text-xs text-gray-400 italic">
-                              +{contrato.itensTecnicos.length - 3} itens adicionais...
+                              +{relatorio.itensRelatorio.length - 3} itens adicionais...
                             </div>
                           )}
                         </div>
                       </div>
                     </div>
                   </div>
-                  
-                  <div className="flex items-center gap-2 ml-4">
-                    {contrato.usoCount > 0 && (
+                  <div className="flex flex-col items-end gap-1 ml-4">
+                    {relatorio.usoCount > 0 && (
                       <Badge variant="secondary" className="text-xs">
                         <Star className="h-3 w-3 mr-1" />
-                        {contrato.usoCount}
+                        {relatorio.usoCount}
                       </Badge>
                     )}
                     
                     <Button
+                      type="button"
                       size="sm"
                       variant="ghost"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleRemoveContrato(contrato.id);
+                        handleRemoveRelatorio(relatorio.id);
                       }}
                       className="opacity-0 group-hover:opacity-100 transition-opacity"
                     >
@@ -335,8 +343,8 @@ export function ContratoSelector({
         {/* Estatísticas */}
         <div className="text-xs text-gray-500 border-t pt-3">
           <div className="flex justify-between">
-            <span>Total: {contratos.length} modelos</span>
-            <span>Mostrando: {contratosFiltrados.length}</span>
+            <span>Total: {relatorios.length} modelos</span>
+            <span>Mostrando: {relatoriosFiltrados.length}</span>
           </div>
         </div>
       </CardContent>

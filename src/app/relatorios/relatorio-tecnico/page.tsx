@@ -42,7 +42,7 @@ import { ImageUpload } from "./components/ImageUpload";
 import { RelatorioForm } from "./components/RelatorioForm";
 // Componente para preview do PDF
 import { PDFPreview } from "./components/PDFPreview";
-import { ContratoSelector } from "./components/ContratoSelector";
+import { RelatorioSelector } from "./components/RelatorioSelector";
 
 export default function RelatorioTecnicoPage() {
   const [fotos, setFotos] = useState<FotoRelatorio[]>([]);
@@ -272,62 +272,62 @@ export default function RelatorioTecnicoPage() {
                   <TabsContent value="contratos" className="space-y-6">
                     <div className="space-y-4">
                       <h3 className="text-lg font-semibold">Gerenciar Modelos Salvos</h3>
-                      <ContratoSelector
-                        onSelectContrato={(contrato) => {
-                          // Carregar dados básicos do contrato
-                          setValue("contrato", contrato.contrato);
-                          setValue("valorInicial", contrato.valorInicial);
-                          setValue("rq", contrato.rq);
-                          setValue("os", contrato.os);
-                          setValue("pedido", contrato.pedido);
-                          
-                          // Carregar escopo e itens técnicos
-                          setValue("descricaoEscopo", contrato.descricaoEscopo || "");
-                          const itensTecnicos = contrato.itensTecnicos?.map(item => ({
-                            id: item.id,
-                            descricao: item.descricao,
-                            fotosVinculadas: []
-                          })) || [];
-                          setValue("itensTecnicos", itensTecnicos);
-                          
-                          // Carregar imagem de fundo se disponível
-                          if (contrato.imagemFundoUrl) {
-                            // Converter URL para dataURL
-                            fetch(contrato.imagemFundoUrl)
-                              .then(response => response.blob())
-                              .then(blob => {
-                                return new Promise<string>((resolve) => {
-                                  const reader = new FileReader();
-                                  reader.onload = () => resolve(reader.result as string);
-                                  reader.readAsDataURL(blob);
-                                });
-                              })
-                              .then(dataUrl => {
-                                setValue("imagemFundo", dataUrl);
-                              })
-                              .catch(error => {
-                                console.warn("Erro ao carregar imagem de fundo:", error);
-                              });
-                          }
-                          
-                          // Voltar para a aba principal
-                          setActiveTab("formulario");
-                        }}
-                        onSaveCurrentContrato={(dados) => {
-                          // Implementar salvamento do contrato atual
-                          console.log("Salvando contrato:", dados);
-                        }}
-                        currentData={{
-                          contrato: formData.contrato,
-                          valorInicial: formData.valorInicial,
-                          rq: formData.rq,
-                          os: formData.os,
-                          pedido: formData.pedido,
-                          descricaoEscopo: formData.descricaoEscopo,
-                          itensTecnicos: formData.itensTecnicos,
-                          imagemFundoUrl: formData.imagemFundo
-                        }}
-                      />
+                         <RelatorioSelector
+                           onSelectRelatorio={(relatorio) => {
+                             // Carregar dados básicos do relatório
+                             setValue("contrato", relatorio.contrato);
+                             setValue("valorInicial", relatorio.valorInicial);
+                             setValue("rq", relatorio.rq);
+                             setValue("os", relatorio.os);
+                             setValue("pedido", relatorio.pedido);
+
+                             // Carregar escopo e itens técnicos
+                             setValue("descricaoEscopo", relatorio.descricaoEscopo || "");
+                             const itensTecnicos = relatorio.itensRelatorio?.map(item => ({
+                               id: item.id,
+                               descricao: item.descricao,
+                               fotosVinculadas: []
+                             })) || [];
+                             setValue("itensTecnicos", itensTecnicos);
+
+                             // Carregar imagem de fundo se disponível
+                             if (relatorio.imagemFundoUrl) {
+                               // Converter URL para dataURL
+                               fetch(relatorio.imagemFundoUrl)
+                                 .then(response => response.blob())
+                                 .then(blob => {
+                                   return new Promise<string>((resolve) => {
+                                     const reader = new FileReader();
+                                     reader.onload = () => resolve(reader.result as string);
+                                     reader.readAsDataURL(blob);
+                                   });
+                                 })
+                                 .then(dataUrl => {
+                                   setValue("imagemFundo", dataUrl);
+                                 })
+                                 .catch(error => {
+                                   console.warn("Erro ao carregar imagem de fundo:", error);
+                                 });
+                             }
+
+                             // Voltar para a aba principal
+                             setActiveTab("formulario");
+                           }}
+                           onSaveCurrentRelatorio={(dados) => {
+                             // Implementar salvamento do relatório atual
+                             console.log("Salvando relatório:", dados);
+                           }}
+                           currentData={{
+                             contrato: formData.contrato,
+                             valorInicial: formData.valorInicial,
+                             rq: formData.rq,
+                             os: formData.os,
+                             pedido: formData.pedido,
+                             descricaoEscopo: formData.descricaoEscopo,
+                             itensTecnicos: formData.itensTecnicos,
+                             imagemFundoUrl: formData.imagemFundo
+                           }}
+                         />
           </div>
                   </TabsContent>
                 </Tabs>

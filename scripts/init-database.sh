@@ -28,7 +28,7 @@ npx prisma generate
 
 # Inicializar dados padrão
 echo "📊 Inicializando dados padrão..."
-curl -X POST http://localhost:3001/api/contratos/inicializar
+curl -X POST http://localhost:3001/api/relatorios/inicializar
 
 echo "🎉 Banco de dados inicializado com sucesso!"
 echo ""

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { registrarUsoContrato } from '@/lib/contratos-database';
+import { registrarUsoRelatorio } from '@/lib/relatorios-database';
 
-// POST /api/contratos/[id]/uso - Registrar uso do contrato
+// POST /api/relatorios/[id]/uso - Registrar uso do relatório
 export async function POST(
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -11,16 +11,16 @@ export async function POST(
     
     if (!id) {
       return NextResponse.json(
-        { error: 'ID do contrato é obrigatório' },
+        { error: 'ID do relatório é obrigatório' },
         { status: 400 }
       );
     }
 
-    await registrarUsoContrato(id);
+    await registrarUsoRelatorio(id);
     
     return NextResponse.json({ message: 'Uso registrado com sucesso' });
   } catch (error) {
-    console.error('Erro ao registrar uso do contrato:', error);
+    console.error('Erro ao registrar uso do relatório:', error);
     return NextResponse.json(
       { error: 'Erro interno do servidor' },
       { status: 500 }

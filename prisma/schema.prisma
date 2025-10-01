@@ -10,8 +10,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Modelo para contratos salvos
-model ContratoModelo {
+// Modelo para relatórios salvos
+model RelatorioModelo {
   id              String   @id @default(cuid())
   nome            String
   contrato        String
@@ -26,20 +26,20 @@ model ContratoModelo {
   usoCount        Int      @default(0)
 
   // Relacionamento com itens técnicos
-  itensTecnicos ItemTecnico[]
+  itensRelatorio ItemRelatorio[]
 
-  @@map("contrato_modelos")
+  @@map("relatorio_modelos")
 }
 
-// Modelo para itens técnicos dos contratos
-model ItemTecnico {
+// Modelo para itens técnicos dos relatórios
+model ItemRelatorio {
   id        String @id @default(cuid())
   descricao String
   ordem     Int    @default(0)
 
-  // Relacionamento com contrato
-  contratoModeloId String
-  contratoModelo   ContratoModelo @relation(fields: [contratoModeloId], references: [id], onDelete: Cascade)
+  // Relacionamento com relatório
+  relatorioModeloId String
+  relatorioModelo   RelatorioModelo @relation(fields: [relatorioModeloId], references: [id], onDelete: Cascade)
 
-  @@map("item_tecnicos")
+  @@map("item_relatorios")
 }

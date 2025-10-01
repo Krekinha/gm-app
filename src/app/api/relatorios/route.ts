@@ -1,21 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import {
-  criarContratoModelo,
-  buscarTodosContratos,
-  buscarContratoPorId,
-  buscarContratosPorTermo,
-  atualizarContratoModelo,
-  removerContratoModelo,
-  registrarUsoContrato,
-  obterContratosMaisUsados,
-  obterContratosRecentes,
+  criarRelatorioModelo,
+  buscarTodosRelatorios,
+  buscarRelatorioPorId,
+  buscarRelatoriosPorTermo,
+  atualizarRelatorioModelo,
+  removerRelatorioModelo,
+  registrarUsoRelatorio,
+  obterRelatoriosMaisUsados,
+  obterRelatoriosRecentes,
   inicializarDadosPadrao,
-  type ContratoModeloData
-} from '@/lib/contratos-database';
+  type RelatorioModeloData
+} from '@/lib/relatorios-database';
 
-// Schema de validação para criação de contrato
-const criarContratoSchema = z.object({
+// Schema de validação para criação de relatório
+const criarRelatorioSchema = z.object({
   nome: z.string().min(1, 'Nome é obrigatório'),
   contrato: z.string().min(1, 'Contrato é obrigatório'),
   valorInicial: z.string().min(1, 'Valor inicial é obrigatório'),
@@ -24,34 +24,34 @@ const criarContratoSchema = z.object({
   pedido: z.string().min(1, 'Pedido é obrigatório'),
   descricaoEscopo: z.string().min(1, 'Descrição do escopo é obrigatória'),
   imagemFundoUrl: z.string().optional(),
-  itensTecnicos: z.array(z.object({
+  itensRelatorio: z.array(z.object({
     descricao: z.string().min(1, 'Descrição do item é obrigatória'),
     ordem: z.number().optional()
   })).optional()
 });
 
-// GET /api/contratos - Listar todos os contratos
+// GET /api/relatorios - Listar todos os relatórios
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const filtro = searchParams.get('filtro');
     const termo = searchParams.get('termo');
 
-    let contratos;
+    let relatorios;
 
     if (termo) {
-      contratos = await buscarContratosPorTermo(termo);
+      relatorios = await buscarRelatoriosPorTermo(termo);
     } else if (filtro === 'maisUsados') {
-      contratos = await obterContratosMaisUsados();
+      relatorios = await obterRelatoriosMaisUsados();
     } else if (filtro === 'recentes') {
-      contratos = await obterContratosRecentes();
+      relatorios = await obterRelatoriosRecentes();
     } else {
-      contratos = await buscarTodosContratos();
+      relatorios = await buscarTodosRelatorios();
     }
 
-    return NextResponse.json({ contratos });
+    return NextResponse.json({ relatorios });
   } catch (error) {
-    console.error('Erro ao buscar contratos:', error);
+    console.error('Erro ao buscar relatórios:', error);
     return NextResponse.json(
       { error: 'Erro interno do servidor' },
       { status: 500 }
@@ -59,18 +59,18 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST /api/contratos - Criar novo contrato
+// POST /api/relatorios - Criar novo relatório
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     
     // Validar dados
-    const dadosValidados = criarContratoSchema.parse(body);
+    const dadosValidados = criarRelatorioSchema.parse(body);
     
-    // Criar contrato
-    const contrato = await criarContratoModelo(dadosValidados);
+    // Criar relatório
+    const relatorio = await criarRelatorioModelo(dadosValidados);
     
-    return NextResponse.json({ contrato }, { status: 201 });
+    return NextResponse.json({ relatorio }, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    console.error('Erro ao criar contrato:', error);
+    console.error('Erro ao criar relatório:', error);
     return NextResponse.json(
       { error: 'Erro interno do servidor' },
       { status: 500 }

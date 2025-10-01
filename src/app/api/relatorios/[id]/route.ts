@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import {
-  buscarContratoPorId,
-  atualizarContratoModelo,
-  removerContratoModelo,
-  registrarUsoContrato,
-  type ContratoModeloData
-} from '@/lib/contratos-database';
+  buscarRelatorioPorId,
+  atualizarRelatorioModelo,
+  removerRelatorioModelo,
+  registrarUsoRelatorio,
+  type RelatorioModeloData
+} from '@/lib/relatorios-database';
 
-// Schema de validação para atualização de contrato
-const atualizarContratoSchema = z.object({
+// Schema de validação para atualização de relatório
+const atualizarRelatorioSchema = z.object({
   nome: z.string().min(1, 'Nome é obrigatório').optional(),
   contrato: z.string().min(1, 'Contrato é obrigatório').optional(),
   valorInicial: z.string().min(1, 'Valor inicial é obrigatório').optional(),
@@ -18,13 +18,13 @@ const atualizarContratoSchema = z.object({
   pedido: z.string().min(1, 'Pedido é obrigatório').optional(),
   descricaoEscopo: z.string().min(1, 'Descrição do escopo é obrigatória').optional(),
   imagemFundoUrl: z.string().optional(),
-  itensTecnicos: z.array(z.object({
+  itensRelatorio: z.array(z.object({
     descricao: z.string().min(1, 'Descrição do item é obrigatória'),
     ordem: z.number().optional()
   })).optional()
 });
 
-// GET /api/contratos/[id] - Buscar contrato por ID
+// GET /api/relatorios/[id] - Buscar relatório por ID
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -34,23 +34,23 @@ export async function GET(
     
     if (!id) {
       return NextResponse.json(
-        { error: 'ID do contrato é obrigatório' },
+        { error: 'ID do relatório é obrigatório' },
         { status: 400 }
       );
     }
 
-    const contrato = await buscarContratoPorId(id);
+    const relatorio = await buscarRelatorioPorId(id);
     
-    if (!contrato) {
+    if (!relatorio) {
       return NextResponse.json(
-        { error: 'Contrato não encontrado' },
+        { error: 'Relatório não encontrado' },
         { status: 404 }
       );
     }
 
-    return NextResponse.json({ contrato });
+    return NextResponse.json({ relatorio });
   } catch (error) {
-    console.error('Erro ao buscar contrato:', error);
+    console.error('Erro ao buscar relatório:', error);
     return NextResponse.json(
       { error: 'Erro interno do servidor' },
       { status: 500 }
@@ -58,7 +58,7 @@ export async function GET(
   }
 }
 
-// PUT /api/contratos/[id] - Atualizar contrato
+// PUT /api/relatorios/[id] - Atualizar relatório
 export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -69,25 +69,25 @@ export async function PUT(
     
     if (!id) {
       return NextResponse.json(
-        { error: 'ID do contrato é obrigatório' },
+        { error: 'ID do relatório é obrigatório' },
         { status: 400 }
       );
     }
 
     // Validar dados
-    const dadosValidados = atualizarContratoSchema.parse(body);
+    const dadosValidados = atualizarRelatorioSchema.parse(body);
     
-    // Atualizar contrato
-    const contrato = await atualizarContratoModelo(id, dadosValidados);
+    // Atualizar relatório
+    const relatorio = await atualizarRelatorioModelo(id, dadosValidados);
     
-    if (!contrato) {
+    if (!relatorio) {
       return NextResponse.json(
-        { error: 'Contrato não encontrado' },
+        { error: 'Relatório não encontrado' },
         { status: 404 }
       );
     }
 
-    return NextResponse.json({ contrato });
+    return NextResponse.json({ relatorio });
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -96,7 +96,7 @@ export async function PUT(
       );
     }
     
-    console.error('Erro ao atualizar contrato:', error);
+    console.error('Erro ao atualizar relatório:', error);
     return NextResponse.json(
       { error: 'Erro interno do servidor' },
       { status: 500 }
@@ -104,7 +104,7 @@ export async function PUT(
   }
 }
 
-// DELETE /api/contratos/[id] - Remover contrato
+// DELETE /api/relatorios/[id] - Remover relatório
 export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -114,23 +114,23 @@ export async function DELETE(
     
     if (!id) {
       return NextResponse.json(
-        { error: 'ID do contrato é obrigatório' },
+        { error: 'ID do relatório é obrigatório' },
         { status: 400 }
       );
     }
 
-    const sucesso = await removerContratoModelo(id);
+    const sucesso = await removerRelatorioModelo(id);
     
     if (!sucesso) {
       return NextResponse.json(
-        { error: 'Contrato não encontrado' },
+        { error: 'Relatório não encontrado' },
         { status: 404 }
       );
     }
 
-    return NextResponse.json({ message: 'Contrato removido com sucesso' });
+    return NextResponse.json({ message: 'Relatório removido com sucesso' });
   } catch (error) {
-    console.error('Erro ao remover contrato:', error);
+    console.error('Erro ao remover relatório:', error);
     return NextResponse.json(
       { error: 'Erro interno do servidor' },
       { status: 500 }

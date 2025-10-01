@@ -1,4 +1,4 @@
-# 📊 Implementação PostgreSQL - Modelos Salvos
+# 📊 Implementação PostgreSQL - Modelos de Relatórios
 
 ## 🎯 **Objetivo**
 Migrar a persistência dos modelos salvos do `localStorage` para PostgreSQL, mantendo toda a funcionalidade existente.
@@ -7,7 +7,7 @@ Migrar a persistência dos modelos salvos do `localStorage` para PostgreSQL, man
 
 ### **1. Schema do Banco (Prisma)**
 ```prisma
-model ContratoModelo {
+model RelatorioModelo {
   id                String   @id @default(cuid())
   nome              String
   contrato          String
@@ -21,50 +21,50 @@ model ContratoModelo {
   dataUltimaUso     DateTime @default(now())
   usoCount          Int      @default(0)
   
-  itensTecnicos     ItemTecnico[]
+  itensRelatorio    ItemRelatorio[]
   
-  @@map("contrato_modelos")
+  @@map("relatorio_modelos")
 }
 
-model ItemTecnico {
+model ItemRelatorio {
   id                String   @id @default(cuid())
   descricao         String
   ordem             Int      @default(0)
   
-  contratoModeloId  String
-  contratoModelo    ContratoModelo @relation(fields: [contratoModeloId], references: [id], onDelete: Cascade)
+  relatorioModeloId  String
+  relatorioModelo    RelatorioModelo @relation(fields: [relatorioModeloId], references: [id], onDelete: Cascade)
   
-  @@map("item_tecnicos")
+  @@map("item_relatorios")
 }
 ```
 
 ### **2. Camadas da Aplicação**
 
 #### **📁 Backend (API)**
-- **`src/lib/contratos-database.ts`** - Serviço de banco de dados
-- **`src/app/api/contratos/route.ts`** - CRUD principal
-- **`src/app/api/contratos/[id]/route.ts`** - Operações por ID
-- **`src/app/api/contratos/[id]/uso/route.ts`** - Registrar uso
-- **`src/app/api/contratos/inicializar/route.ts`** - Dados padrão
+- **`src/lib/relatorios-database.ts`** - Serviço de banco de dados
+- **`src/app/api/relatorios/route.ts`** - CRUD principal
+- **`src/app/api/relatorios/[id]/route.ts`** - Operações por ID
+- **`src/app/api/relatorios/[id]/uso/route.ts`** - Registrar uso
+- **`src/app/api/relatorios/inicializar/route.ts`** - Dados padrão
 
 #### **📁 Frontend (API Client)**
-- **`src/lib/contratos-api.ts`** - Cliente da API (substitui localStorage)
-- **`src/app/relatorios/relatorio-tecnico/components/ContratoSelector.tsx`** - Componente atualizado
+- **`src/lib/relatorios-api.ts`** - Cliente da API (substitui localStorage)
+- **`src/app/relatorios/relatorio-tecnico/components/RelatorioSelector.tsx`** - Componente atualizado
 
 ### **3. Endpoints da API**
 
 | Método | Endpoint | Descrição |
 |--------|----------|-----------|
-| `GET` | `/api/contratos` | Listar todos os contratos |
-| `GET` | `/api/contratos?filtro=maisUsados` | Contratos mais usados |
-| `GET` | `/api/contratos?filtro=recentes` | Contratos recentes |
-| `GET` | `/api/contratos?termo=busca` | Buscar por termo |
-| `POST` | `/api/contratos` | Criar novo contrato |
-| `GET` | `/api/contratos/[id]` | Buscar contrato por ID |
-| `PUT` | `/api/contratos/[id]` | Atualizar contrato |
-| `DELETE` | `/api/contratos/[id]` | Remover contrato |
-| `POST` | `/api/contratos/[id]/uso` | Registrar uso |
-| `POST` | `/api/contratos/inicializar` | Inicializar dados padrão |
+| `GET` | `/api/relatorios` | Listar todos os relatórios |
+| `GET` | `/api/relatorios?filtro=maisUsados` | Relatórios mais usados |
+| `GET` | `/api/relatorios?filtro=recentes` | Relatórios recentes |
+| `GET` | `/api/relatorios?termo=busca` | Buscar por termo |
+| `POST` | `/api/relatorios` | Criar novo relatório |
+| `GET` | `/api/relatorios/[id]` | Buscar relatório por ID |
+| `PUT` | `/api/relatorios/[id]` | Atualizar relatório |
+| `DELETE` | `/api/relatorios/[id]` | Remover relatório |
+| `POST` | `/api/relatorios/[id]/uso` | Registrar uso |
+| `POST` | `/api/relatorios/inicializar` | Inicializar dados padrão |
 
 ## 🚀 **Como Usar**
 
@@ -83,7 +83,7 @@ npx prisma migrate dev --name init
 npx prisma generate
 
 # 5. Inicializar dados padrão
-curl -X POST http://localhost:3001/api/contratos/inicializar
+curl -X POST http://localhost:3001/api/relatorios/inicializar
 ```
 
 ### **2. Desenvolvimento**
@@ -106,21 +106,21 @@ bash scripts/init-database.sh
 ### **Antes (localStorage)**
 ```typescript
 // Armazenamento local
-const contratos = JSON.parse(localStorage.getItem('contratos') || '[]');
-localStorage.setItem('contratos', JSON.stringify(contratos));
+const relatorios = JSON.parse(localStorage.getItem('relatorios') || '[]');
+localStorage.setItem('relatorios', JSON.stringify(relatorios));
 ```
 
 ### **Depois (PostgreSQL)**
 ```typescript
 // API REST
-const contratos = await fetch('/api/contratos').then(r => r.json());
-await fetch('/api/contratos', { method: 'POST', body: JSON.stringify(dados) });
+const relatorios = await fetch('/api/relatorios').then(r => r.json());
+await fetch('/api/relatorios', { method: 'POST', body: JSON.stringify(dados) });
 ```
 
 ## 📊 **Funcionalidades Implementadas**
 
 ### **✅ Operações CRUD Completas**
-- **Create**: Criar novos modelos
+- **Create**: Criar novos modelos de relatório
 - **Read**: Listar, buscar e filtrar modelos
 - **Update**: Atualizar modelos existentes
 - **Delete**: Remover modelos
@@ -130,7 +130,7 @@ await fetch('/api/contratos', { method: 'POST', body: JSON.stringify(dados) });
 - **Filtros**: Mais usados, recentes, todos
 - **Contador de uso**: Rastrear frequência de uso
 - **Data de uso**: Última vez que foi usado
-- **Relacionamentos**: Itens técnicos vinculados aos contratos
+- **Relacionamentos**: Itens técnicos vinculados aos relatórios
 
 ### **✅ Dados Padrão**
 - **3 modelos pré-configurados** carregados automaticamente
@@ -141,7 +141,7 @@ await fetch('/api/contratos', { method: 'POST', body: JSON.stringify(dados) });
 
 ### **Validação com Zod**
 ```typescript
-const criarContratoSchema = z.object({
+const criarRelatorioSchema = z.object({
   nome: z.string().min(1, 'Nome é obrigatório'),
   contrato: z.string().min(1, 'Contrato é obrigatório'),
   // ... outros campos
@@ -207,11 +207,11 @@ DB_PASSWORD=postgres
 
 ### **Teste de API**
 ```bash
-# Listar contratos
-curl http://localhost:3001/api/contratos
+# Listar relatórios
+curl http://localhost:3001/api/relatorios
 
-# Criar contrato
-curl -X POST http://localhost:3001/api/contratos \
+# Criar relatório
+curl -X POST http://localhost:3001/api/relatorios \
   -H "Content-Type: application/json" \
   -d '{"nome":"Teste","contrato":"TEST","valorInicial":"R$ 100","rq":"RQ123","os":"OS123","pedido":"PED123","descricaoEscopo":"Teste"}'
 ```
