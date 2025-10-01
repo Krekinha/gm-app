@@ -28,7 +28,8 @@ import {
   RelatorioTecnicoData, 
   initialRelatorioData,
   FotoRelatorio,
-  ItemTecnico
+  ItemTecnico,
+  defaultPDFConfig
 } from "@/lib/relatorio-types";
 import { 
   validateImageFile, 
@@ -59,7 +60,7 @@ export default function RelatorioTecnicoPage() {
   const [nomeNovoModelo, setNomeNovoModelo] = useState("");
 
   // Hook para tratamento de erros
-  const { showError, showSuccess } = useErrorHandler();
+  const { showError, showSuccess, showNotification } = useErrorHandler();
 
   const form = useForm<RelatorioTecnicoData>({
     resolver: zodResolver(relatorioTecnicoSchema),
@@ -160,7 +161,7 @@ export default function RelatorioTecnicoPage() {
     setIsGeneratingPDF(true);
     try {
       const data = getValues();
-      const pdf = await generateRelatorioPDF(data, fotos);
+      const pdf = await generateRelatorioPDF(data, fotos, defaultPDFConfig, showNotification);
       const pdfBlob = pdf.output("blob");
       const previewUrl = URL.createObjectURL(pdfBlob);
       
@@ -176,19 +177,19 @@ export default function RelatorioTecnicoPage() {
     } finally {
       setIsGeneratingPDF(false);
     }
-  }, [getValues, fotos, pdfPreviewUrl, showError]);
+  }, [getValues, fotos, pdfPreviewUrl, showError, showNotification]);
 
   // Função para baixar PDF
   const handleDownloadPDF = useCallback(async () => {
     try {
       const data = getValues();
-      const pdf = await generateRelatorioPDF(data, fotos);
+      const pdf = await generateRelatorioPDF(data, fotos, defaultPDFConfig, showNotification);
       pdf.save(`relatorio-tecnico-${data.contrato}-${new Date().toISOString().split('T')[0]}.pdf`);
     } catch (error) {
       console.error("Erro ao baixar PDF:", error);
       showError(error, "Erro ao baixar PDF");
     }
-  }, [getValues, fotos, showError]);
+  }, [getValues, fotos, showError, showNotification]);
 
   // Função para salvar como modelo
   const handleSaveAsModel = useCallback(async () => {

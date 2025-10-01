@@ -1,11 +1,24 @@
 import jsPDF from "jspdf";
 import { RelatorioTecnicoData, FotoRelatorio, PDFConfig, defaultPDFConfig } from "./relatorio-types";
-import { buscarEmpresaPadrao, buscarEmpresaPorCnpj } from "./empresa-database";
 
 /**
  * Tipo para callback de notificação
  */
 export type NotificationCallback = (type: "error" | "warning" | "success" | "info", message: string, title?: string) => void;
+
+/**
+ * Busca empresa por CNPJ via API
+ */
+async function buscarEmpresaPorCnpjAPI(cnpj: string): Promise<any> {
+  const response = await fetch(`/api/empresas/buscar?cnpj=${encodeURIComponent(cnpj)}`);
+  
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.error || "Erro ao buscar empresa");
+  }
+  
+  return response.json();
+}
 
 /**
  * Utilitários para geração de PDF do relatório técnico
@@ -36,7 +49,7 @@ export async function generateRelatorioPDF(
   // Buscar dados da empresa padrão pelo CNPJ fixo
   let empresaPadrao;
   try {
-    empresaPadrao = await buscarEmpresaPorCnpj("37.097.718/0001-58");
+    empresaPadrao = await buscarEmpresaPorCnpjAPI("37.097.718/0001-58");
   } catch (error) {
     const errorMessage = "Erro ao buscar empresa padrão no banco de dados";
     if (onNotification) {
