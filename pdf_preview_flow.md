@@ -9,7 +9,7 @@ graph TD
     C --> D["getValues() - obtém dados do formulário"]
     D --> E["generateRelatorioPDF(data, fotos)"]
     
-    E --> F["buscarEmpresaPadrao()"]
+    E --> F["buscarEmpresaPorCnpj('37.097.718/0001-58')"]
     F --> G{"Empresa encontrada?"}
     G -->|Não| H["Usar dados padrão como fallback"]
     G -->|Sim| I["Usar dados da empresa do banco"]
@@ -36,9 +36,9 @@ graph TD
     Y --> Z["iframe exibe o PDF"]
     
     subgraph "Banco de Dados"
-        DB1["Prisma - buscarEmpresaPadrao()"]
+        DB1["Prisma - buscarEmpresaPorCnpj()"]
         DB2["Tabela: empresa"]
-        DB3["ID fixo: 'empresa-padrao'"]
+        DB3["CNPJ fixo: '37.097.718/0001-58'"]
         DB1 --> DB2
         DB2 --> DB3
     end
@@ -81,7 +81,7 @@ graph TD
 
 **Funcionamento**:
 - Cria um novo documento PDF usando jsPDF
-- **Busca dados da empresa**: Chama `buscarEmpresaPadrao()` para obter informações da empresa
+- **Busca dados da empresa**: Chama `buscarEmpresaPorCnpj('37.097.718/0001-58')` para obter informações da empresa
 - Aplica imagem de fundo se disponível
 - Adiciona cabeçalho com logo da empresa
 - Adiciona dados do contrato, escopo e descrição técnica
@@ -90,12 +90,12 @@ graph TD
 - Adiciona rodapé com informações da empresa
 - Retorna o documento PDF completo
 
-### 3. Função de Banco de Dados: `buscarEmpresaPadrao`
+### 3. Função de Banco de Dados: `buscarEmpresaPorCnpj`
 
-**Localização**: `src/lib/empresa-database.ts` (linhas 252-288)
+**Localização**: `src/lib/empresa-database.ts` (linhas 156-190)
 
 **Funcionamento**:
-- Busca empresa com ID fixo `"empresa-padrao"`
+- Busca empresa com CNPJ fixo `"37.097.718/0001-58"`
 - Usa Prisma para consultar a tabela `empresa`
 - Retorna dados da empresa incluindo relatórios relacionados
 - Se não encontrar, retorna `null` (tratado no pdf-utils)
@@ -116,9 +116,9 @@ graph TD
 
 1. **Consulta à Empresa Padrão**:
    ```sql
-   SELECT * FROM empresa WHERE id = 'empresa-padrao'
+   SELECT * FROM empresa WHERE cnpj = '37.097.718/0001-58'
    ```
-   - Executada em: `buscarEmpresaPadrao()`
+   - Executada em: `buscarEmpresaPorCnpj('37.097.718/0001-58')`
    - Propósito: Obter dados da empresa (razão social, CNPJ, logo)
    - Fallback: Se não encontrar, usa dados hardcoded
 

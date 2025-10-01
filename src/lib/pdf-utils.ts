@@ -1,6 +1,6 @@
 import jsPDF from "jspdf";
 import { RelatorioTecnicoData, FotoRelatorio, PDFConfig, defaultPDFConfig } from "./relatorio-types";
-import { buscarEmpresaPadrao } from "./empresa-database";
+import { buscarEmpresaPadrao, buscarEmpresaPorCnpj } from "./empresa-database";
 
 /**
  * Utilitários para geração de PDF do relatório técnico
@@ -26,7 +26,7 @@ export async function generateRelatorioPDF(
   // Buscar dados da empresa padrão pelo ID fixo
   let empresaPadrao;
   try {
-    empresaPadrao = await buscarEmpresaPadrao();
+    empresaPadrao = await buscarEmpresaPorCnpj("37.097.718/0001-58");
   } catch (error) {
     console.warn("Erro ao buscar empresa padrão:", error);
     // Usar dados padrão como fallback
@@ -40,7 +40,7 @@ export async function generateRelatorioPDF(
   // Garantir que empresaPadrao não seja null
   if (!empresaPadrao) {
     empresaPadrao = {
-      razaoSocial: "GM MANUTENÇÕES LTDA",
+      razaoSocial: "GMI MANUTENÇÕES LTDA",
       cnpj: "37.097.718/0001-58",
       logoUrl: "/relatorio-tecnico/logo.png"
     };

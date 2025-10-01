@@ -3,7 +3,7 @@
  */
 
 import { PrismaClient } from '@prisma/client';
-import { inicializarEmpresaPadrao, buscarEmpresaPadrao } from './empresa-database';
+import { inicializarEmpresaPadrao, buscarEmpresaPorCnpj } from './empresa-database';
 
 const prisma = new PrismaClient();
 
@@ -39,10 +39,10 @@ export interface RelatorioModeloWithItens extends RelatorioModeloData {
  * Cria um novo modelo de relatório
  */
 export async function criarRelatorioModelo(dados: RelatorioModeloData): Promise<RelatorioModeloWithItens> {
-  // Se não foi fornecida empresaId, usar empresa padrão com ID fixo
+  // Se não foi fornecida empresaId, usar empresa padrão com CNPJ fixo
   let empresaId = dados.empresaId;
   if (!empresaId) {
-    let empresaPadrao = await buscarEmpresaPadrao();
+    let empresaPadrao = await buscarEmpresaPorCnpj("37.097.718/0001-58");
     
     // Se não existir, inicializar
     if (!empresaPadrao) {
@@ -103,8 +103,8 @@ export async function criarRelatorioModelo(dados: RelatorioModeloData): Promise<
  * Busca todos os modelos de relatórios da empresa padrão
  */
 export async function buscarTodosRelatorios(): Promise<RelatorioModeloWithItens[]> {
-  // Buscar empresa padrão pelo ID fixo
-  let empresaPadrao = await buscarEmpresaPadrao();
+  // Buscar empresa padrão pelo CNPJ fixo
+  let empresaPadrao = await buscarEmpresaPorCnpj("37.097.718/0001-58");
   
   // Se não existir, inicializar
   if (!empresaPadrao) {
