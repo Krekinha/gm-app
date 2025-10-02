@@ -325,6 +325,10 @@ export default function RelatorioTecnicoPage() {
                       <h3 className="text-lg font-semibold">Gerenciar Modelos Salvos</h3>
                          <RelatorioSelector
                            onSelectRelatorio={(relatorio) => {
+                             // Esta função não é mais usada, mas mantida para compatibilidade
+                             console.log("onSelectRelatorio chamada:", relatorio.nome);
+                           }}
+                           onLoadDataToForm={(relatorio) => {
                              // Carregar dados básicos do relatório
                              setValue("contrato", relatorio.contrato);
                              setValue("valorInicial", relatorio.valorInicial);
@@ -361,9 +365,10 @@ export default function RelatorioTecnicoPage() {
                                  });
                              }
 
-                             // Voltar para a aba principal
+                             // Navegar automaticamente para a aba do formulário
                              setActiveTab("formulario");
                            }}
+                           onShowSuccess={showSuccess}
                          />
           </div>
                   </TabsContent>

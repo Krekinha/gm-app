@@ -22,11 +22,13 @@ import {
 interface RelatorioSelectorProps {
   onSelectRelatorio: (relatorio: RelatorioPredefinido) => void;
   onLoadDataToForm: (relatorio: RelatorioPredefinido) => void;
+  onShowSuccess: (message: string, title?: string) => void;
 }
 
 export function RelatorioSelector({ 
   onSelectRelatorio,
-  onLoadDataToForm
+  onLoadDataToForm,
+  onShowSuccess
 }: RelatorioSelectorProps) {
   const [relatorios, setRelatorios] = useState<RelatorioPredefinido[]>([]);
   const [busca, setBusca] = useState("");
@@ -75,16 +77,18 @@ export function RelatorioSelector({
     return resultado;
   }, [relatorios, busca, filtro]);
 
-  const handleSelectRelatorio = async (relatorio: RelatorioPredefinido) => {
+  const handleLoadDataToForm = async (relatorio: RelatorioPredefinido) => {
     try {
       await registrarUsoRelatorio(relatorio.id);
-      onSelectRelatorio(relatorio);
+      onLoadDataToForm(relatorio);
+      onShowSuccess(`Dados do modelo "${relatorio.nome}" carregados com sucesso!`, "Modelo Carregado");
       // Recarregar relatórios para atualizar contadores
       const relatoriosAtualizados = await carregarRelatoriosSalvos();
       setRelatorios(relatoriosAtualizados);
     } catch (error) {
       console.warn('Erro ao registrar uso do relatório:', error);
-      onSelectRelatorio(relatorio);
+      onLoadDataToForm(relatorio);
+      onShowSuccess(`Dados do modelo "${relatorio.nome}" carregados!`, "Modelo Carregado");
     }
   };
 
@@ -167,8 +171,7 @@ export function RelatorioSelector({
             relatoriosFiltrados.map((relatorio) => (
               <div
                 key={relatorio.id}
-                className="border rounded-lg p-3 hover:bg-gray-50 transition-colors cursor-pointer group"
-                onClick={() => handleSelectRelatorio(relatorio)}
+                className="border rounded-lg p-3 hover:bg-gray-50 transition-colors group"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
@@ -200,7 +203,7 @@ export function RelatorioSelector({
                       </div>
                     </div>
                   </div>
-                  <div className="flex flex-col items-end gap-1 ml-4">
+                  <div className="flex flex-col items-end gap-2 ml-4">
                     {relatorio.usoCount > 0 && (
                       <Badge variant="secondary" className="text-xs">
                         <Star className="h-3 w-3 mr-1" />
@@ -208,18 +211,28 @@ export function RelatorioSelector({
                       </Badge>
                     )}
                     
-                    <Button
-                      type="button"
-                      size="sm"
-                      variant="ghost"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleRemoveRelatorio(relatorio.id);
-                      }}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <Trash2 className="h-4 w-4 text-red-500" />
-                    </Button>
+                    <div className="flex gap-1">
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="default"
+                        onClick={() => handleLoadDataToForm(relatorio)}
+                        className="flex items-center gap-1"
+                      >
+                        <Download className="h-4 w-4" />
+                        Carregar
+                      </Button>
+                      
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => handleRemoveRelatorio(relatorio.id)}
+                        className="opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <Trash2 className="h-4 w-4 text-red-500" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
