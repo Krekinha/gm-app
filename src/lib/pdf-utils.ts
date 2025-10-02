@@ -187,16 +187,9 @@ Pedido: ${data.pedido}
 
   currentY = addSection("DESCRIÇÃO TÉCNICA", descricaoTecnica, currentY);
 
-  // Adicionar fotos não vinculadas
-  const fotosNaoVinculadas = fotos.filter(foto => !foto.vinculadaA);
-  if (fotosNaoVinculadas.length > 0) {
-    let fotosSection = "FOTOS ADICIONAIS\n\n";
-    
-    fotosNaoVinculadas.forEach((foto, index) => {
-      fotosSection += `Fig. ${foto.numeroFigura || index + 1}: [Foto adicional]\n`;
-    });
-
-    currentY = addSection("FOTOS ADICIONAIS", fotosSection, currentY);
+  // Adicionar seção de fotos apenas se houver fotos para renderizar
+  if (fotos.length > 0) {
+    currentY = addSection("FOTOS DO SERVIÇO", "", currentY);
   }
 
   // Verificar se precisa de nova página para fotos
@@ -207,7 +200,16 @@ Pedido: ${data.pedido}
   }
 
   // Adicionar fotos reais
+  console.log(`Renderizando ${fotos.length} fotos no PDF`);
+  
   for (const foto of fotos) {
+    console.log(`Processando foto ${foto.id}:`, {
+      hasDataUrl: !!foto.dataUrl,
+      dataUrlLength: foto.dataUrl?.length || 0,
+      numeroFigura: foto.numeroFigura,
+      vinculadaA: foto.vinculadaA
+    });
+    
     if (currentY > pageHeight - 50) {
       doc.addPage();
       await applyBackgroundImage(doc.getNumberOfPages());
@@ -215,12 +217,22 @@ Pedido: ${data.pedido}
     }
 
     try {
+      if (!foto.dataUrl) {
+        console.warn(`Foto ${foto.id} não possui dataUrl`);
+        const fallbackText = `Fig. ${foto.numeroFigura || fotos.indexOf(foto) + 1}: [Foto sem dados]`;
+        currentY = addText(fallbackText, margin, currentY, pageWidth - 2 * margin, fontSize.small);
+        currentY += 10;
+        continue;
+      }
+      
       const img = new Image();
       img.src = foto.dataUrl;
       
       await new Promise((resolve) => {
         img.onload = resolve;
       });
+
+      console.log(`Imagem carregada com sucesso: ${img.width}x${img.height}`);
 
       // Calcular dimensões da imagem
       const maxWidth = pageWidth - 2 * margin;
@@ -239,20 +251,29 @@ Pedido: ${data.pedido}
         imgHeight = maxHeight;
       }
 
+      console.log(`Dimensões calculadas: ${imgWidth}x${imgHeight}`);
+
       // Adicionar legenda
       const legenda = `Fig. ${foto.numeroFigura || fotos.indexOf(foto) + 1}`;
       currentY = addText(legenda, margin, currentY, maxWidth, fontSize.small);
       
       // Adicionar imagem
+      console.log(`Adicionando imagem na posição Y: ${currentY}`);
       doc.addImage(foto.dataUrl, "JPEG", margin, currentY, imgWidth, imgHeight);
       currentY += imgHeight + 10;
+      console.log(`Imagem adicionada com sucesso. Nova posição Y: ${currentY}`);
       
     } catch (error) {
-      const errorMessage = `Erro ao adicionar foto ${foto.id}`;
-      console.warn(errorMessage, error);
+      const errorMessage = `Erro ao adicionar foto ${foto.id}: ${error instanceof Error ? error.message : String(error)}`;
+      console.error(errorMessage, error);
       if (onNotification) {
         onNotification("error", errorMessage, "Erro de Foto");
       }
+      
+      // Adicionar texto de fallback para a foto que falhou
+      const fallbackText = `Fig. ${foto.numeroFigura || fotos.indexOf(foto) + 1}: [Erro ao carregar imagem]`;
+      currentY = addText(fallbackText, margin, currentY, pageWidth - 2 * margin, fontSize.small);
+      currentY += 10;
     }
   }
 

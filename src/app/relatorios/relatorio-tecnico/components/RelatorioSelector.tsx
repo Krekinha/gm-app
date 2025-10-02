@@ -9,7 +9,8 @@ import {
   Search, 
   Clock, 
   Star, 
-  Trash2
+  Trash2,
+  Download
 } from "lucide-react";
 import {
   RelatorioPredefinido,
@@ -20,10 +21,12 @@ import {
 
 interface RelatorioSelectorProps {
   onSelectRelatorio: (relatorio: RelatorioPredefinido) => void;
+  onLoadDataToForm: (relatorio: RelatorioPredefinido) => void;
 }
 
 export function RelatorioSelector({ 
-  onSelectRelatorio
+  onSelectRelatorio,
+  onLoadDataToForm
 }: RelatorioSelectorProps) {
   const [relatorios, setRelatorios] = useState<RelatorioPredefinido[]>([]);
   const [busca, setBusca] = useState("");
