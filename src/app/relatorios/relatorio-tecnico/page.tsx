@@ -42,6 +42,7 @@ import {
 import { generateRelatorioPDF } from "@/lib/pdf-utils";
 import { adicionarRelatorio } from "@/lib/relatorios-api";
 import { useErrorHandler } from "@/hooks/use-error-handler";
+import { jsPDF } from "jspdf";
 
 // Componente para upload de imagens
 import { ImageUpload } from "./components/ImageUpload";
@@ -179,6 +180,322 @@ export default function RelatorioTecnicoPage() {
     }
   }, [getValues, fotos, pdfPreviewUrl, showError, showNotification]);
 
+  // Função para gerar preview automático com dados de teste
+  const handleTestPreview = useCallback(async () => {
+    setIsGeneratingPDF(true);
+    try {
+      // Dados de teste baseados na imagem fornecida (Geraldinho Manutenções)
+      const testData: RelatorioTecnicoData = {
+        contrato: "GM-2024-001",
+        valorInicial: "R$ 15.000,00",
+        rq: "RQ-2024-001",
+        os: "OS-2024-001",
+        pedido: "PED-2024-001",
+        descricaoEscopo: "Instalação e manutenção de sistemas elétricos conforme especificações técnicas. Inclui instalação de tomadas, interruptores, iluminação e verificação de toda a infraestrutura elétrica do local.",
+        itensTecnicos: [
+          {
+            id: "item-1",
+            descricao: "Instalação de 15 tomadas elétricas padrão brasileiro (NBR 14136) em pontos estratégicos conforme projeto elétrico."
+          },
+          {
+            id: "item-2", 
+            descricao: "Substituição de 8 interruptores simples por interruptores de duas seções com dimmer para controle de iluminação."
+          },
+          {
+            id: "item-3",
+            descricao: "Instalação de 12 pontos de iluminação LED com suporte para lâmpadas de 9W, incluindo fiação e caixas de passagem."
+          },
+          {
+            id: "item-4",
+            descricao: "Verificação e manutenção do quadro de distribuição principal, incluindo teste de disjuntores e aterramento."
+          },
+          {
+            id: "item-5",
+            descricao: "Instalação de sistema de aterramento conforme NBR 5410, com medição de resistência de aterramento."
+          }
+        ],
+        nomeElaborador: "João Silva",
+        cargo1: "Técnico em Eletrotécnica",
+        cargo2: "Responsável Técnico",
+        dataElaboracao: new Date().toLocaleDateString('pt-BR'),
+        telefone: "(31) 99999-9999",
+        email: "contato@geraldinhomanutencoes.com.br",
+        instagram: "@geraldinhomanutencoes",
+        // Dados fictícios da empresa
+        razaoSocial: "Geraldinho Manutenções Ltda",
+        cnpj: "12.345.678/0001-90",
+        logoUrl: "/relatorio-tecnico/logo-empresa.png", // Logo fictício
+        imagemFundo: "/relatorio-tecnico/fundo-pdf.jpg"
+      };
+
+      // Carregar imagens de teste automaticamente
+      const testFotos: FotoRelatorio[] = [];
+      const imageFiles = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg'];
+      
+      for (let i = 0; i < imageFiles.length; i++) {
+        try {
+          const response = await fetch(`/relatorio-tecnico/img-test/${imageFiles[i]}`);
+          const blob = await response.blob();
+          const file = new File([blob], imageFiles[i], { type: 'image/jpeg' });
+          
+          const dataUrl = await new Promise<string>((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.readAsDataURL(file);
+          });
+
+          testFotos.push({
+            id: `test-foto-${i + 1}`,
+            file,
+            dataUrl,
+            numeroFigura: i + 1
+          });
+        } catch (error) {
+          console.warn(`Erro ao carregar imagem ${imageFiles[i]}:`, error);
+        }
+      }
+
+      // Gerar PDF diretamente sem chamar generateRelatorioPDF
+      const doc = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4"
+      });
+
+      const { pageWidth, pageHeight, margin, fontSize, colors } = defaultPDFConfig;
+      let currentY = margin;
+
+      // Função auxiliar para aplicar imagem de fundo
+      const applyBackgroundImage = async (pageNumber: number) => {
+        if (testData.imagemFundo) {
+          try {
+            doc.addImage(
+              testData.imagemFundo, 
+              "PNG", 
+              0, 
+              0, 
+              pageWidth, 
+              pageHeight,
+              undefined,
+              "FAST"
+            );
+            console.log(`Imagem de fundo aplicada na página ${pageNumber}`);
+          } catch (error) {
+            console.warn(`Erro ao aplicar imagem de fundo na página ${pageNumber}:`, error);
+          }
+        }
+      };
+
+      // Aplicar imagem de fundo na primeira página
+      await applyBackgroundImage(1);
+
+      // Função auxiliar para adicionar texto com quebra de linha
+      const addText = (text: string, x: number, y: number, maxWidth: number, size: number = fontSize.normal) => {
+        doc.setFontSize(size);
+        doc.setTextColor(colors.text);
+        
+        const lines = doc.splitTextToSize(text, maxWidth);
+        doc.text(lines, x, y);
+        return y + (lines.length * (size * 0.35));
+      };
+
+      // Função auxiliar para adicionar linha horizontal
+      const addHorizontalLine = (y: number) => {
+        doc.setDrawColor(colors.border);
+        doc.line(margin, y, pageWidth - margin, y);
+      };
+
+      // Função auxiliar para adicionar seção
+      const addSection = (title: string, content: string, y: number): number => {
+        let newY = addText(title, margin, y, pageWidth - 2 * margin, fontSize.subtitle);
+        newY += 2;
+        newY = addText(content, margin, newY, pageWidth - 2 * margin);
+        newY += 5;
+        addHorizontalLine(newY);
+        return newY + 3;
+      };
+
+      // Cabeçalho com logo da empresa (se disponível)
+      if (testData.logoUrl) {
+        try {
+          const logoImg = new Image();
+          logoImg.src = testData.logoUrl;
+          await new Promise((resolve) => {
+            logoImg.onload = resolve;
+          });
+          
+          const logoWidth = 30;
+          const logoHeight = (logoImg.height * logoWidth) / logoImg.width;
+          doc.addImage(testData.logoUrl, "PNG", margin, currentY, logoWidth, logoHeight);
+          currentY += logoHeight + 5;
+        } catch (error) {
+          console.warn("Erro ao carregar logo da empresa:", error);
+        }
+      }
+
+      // Título do relatório
+      currentY = addText("RELATÓRIO TÉCNICO DE SERVIÇO", margin, currentY, pageWidth - 2 * margin, fontSize.title);
+      currentY += 5;
+
+      // Dados da empresa
+      currentY = addText(testData.razaoSocial || "Geraldinho Manutenções Ltda", margin, currentY, pageWidth - 2 * margin, fontSize.subtitle);
+      currentY = addText(`CNPJ: ${testData.cnpj || "12.345.678/0001-90"}`, margin, currentY, pageWidth - 2 * margin);
+      currentY += 10;
+
+      addHorizontalLine(currentY);
+      currentY += 5;
+
+      // Dados do Contrato
+      const dadosContrato = `
+Contrato: ${testData.contrato}
+Valor Inicial: ${testData.valorInicial}
+RQ: ${testData.rq}
+OS: ${testData.os}
+Pedido: ${testData.pedido}
+      `.trim();
+
+      currentY = addSection("DADOS DO CONTRATO", dadosContrato, currentY);
+
+      // Escopo
+      currentY = addSection("ESCOPO", testData.descricaoEscopo, currentY);
+
+      // Descrição Técnica
+      let descricaoTecnica = "";
+      
+      testData.itensTecnicos.forEach((item, index) => {
+        descricaoTecnica += `${index + 1}. ${item.descricao}\n`;
+        
+        // Adicionar fotos vinculadas ao item
+        const fotosItem = testFotos.filter(foto => foto.vinculadaA === item.id);
+        if (fotosItem.length > 0) {
+          fotosItem.forEach((foto, fotoIndex) => {
+            descricaoTecnica += `   Fig. ${foto.numeroFigura || fotoIndex + 1}: [Foto vinculada]\n`;
+          });
+        }
+        descricaoTecnica += "\n";
+      });
+
+      currentY = addSection("DESCRIÇÃO TÉCNICA", descricaoTecnica, currentY);
+
+      // Adicionar seção de fotos apenas se houver fotos para renderizar
+      if (testFotos.length > 0) {
+        currentY = addSection("FOTOS DO SERVIÇO", "", currentY);
+      }
+
+      // Verificar se precisa de nova página para fotos
+      if (currentY > pageHeight - 100) {
+        doc.addPage();
+        await applyBackgroundImage(doc.getNumberOfPages());
+        currentY = margin;
+      }
+
+      // Adicionar fotos reais
+      console.log(`Renderizando ${testFotos.length} fotos no PDF`);
+      
+      for (const foto of testFotos) {
+        console.log(`Processando foto ${foto.id}:`, {
+          hasDataUrl: !!foto.dataUrl,
+          dataUrlLength: foto.dataUrl?.length || 0,
+          numeroFigura: foto.numeroFigura,
+          vinculadaA: foto.vinculadaA
+        });
+        
+        if (currentY > pageHeight - 50) {
+          doc.addPage();
+          await applyBackgroundImage(doc.getNumberOfPages());
+          currentY = margin;
+        }
+
+        try {
+          if (!foto.dataUrl) {
+            console.warn(`Foto ${foto.id} não possui dataUrl`);
+            const fallbackText = `Fig. ${foto.numeroFigura || testFotos.indexOf(foto) + 1}: [Foto sem dados]`;
+            currentY = addText(fallbackText, margin, currentY, pageWidth - 2 * margin, fontSize.small);
+            currentY += 10;
+            continue;
+          }
+          
+          const img = new Image();
+          img.src = foto.dataUrl;
+          
+          await new Promise((resolve) => {
+            img.onload = resolve;
+          });
+
+          console.log(`Imagem carregada com sucesso: ${img.width}x${img.height}`);
+
+          // Calcular dimensões da imagem
+          const maxWidth = pageWidth - 2 * margin;
+          const maxHeight = 80;
+          
+          let imgWidth = img.width;
+          let imgHeight = img.height;
+          
+          if (imgWidth > maxWidth) {
+            imgHeight = (imgHeight * maxWidth) / imgWidth;
+            imgWidth = maxWidth;
+          }
+          
+          if (imgHeight > maxHeight) {
+            imgWidth = (imgWidth * maxHeight) / imgHeight;
+            imgHeight = maxHeight;
+          }
+
+          // Adicionar legenda da foto
+          const legenda = `Fig. ${foto.numeroFigura || testFotos.indexOf(foto) + 1}: Foto do serviço`;
+          currentY = addText(legenda, margin, currentY, pageWidth - 2 * margin, fontSize.small);
+          currentY += 2;
+
+          // Adicionar a imagem
+          doc.addImage(foto.dataUrl, "JPEG", margin, currentY, imgWidth, imgHeight);
+          currentY += imgHeight + 10;
+
+        } catch (error) {
+          console.error(`Erro ao processar foto ${foto.id}:`, error);
+          const fallbackText = `Fig. ${foto.numeroFigura || testFotos.indexOf(foto) + 1}: [Erro ao carregar foto]`;
+          currentY = addText(fallbackText, margin, currentY, pageWidth - 2 * margin, fontSize.small);
+          currentY += 10;
+        }
+      }
+
+      // Rodapé com informações do elaborador
+      if (currentY > pageHeight - 60) {
+        doc.addPage();
+        await applyBackgroundImage(doc.getNumberOfPages());
+        currentY = margin;
+      }
+
+      currentY = addSection("ELABORADO POR", `
+${testData.nomeElaborador}
+${testData.cargo1}
+${testData.cargo2}
+Data: ${testData.dataElaboracao}
+
+Contato:
+Telefone: ${testData.telefone}
+Email: ${testData.email}
+Instagram: ${testData.instagram}
+      `.trim(), currentY);
+
+      // Gerar blob e URL do preview
+      const pdfBlob = doc.output("blob");
+      const previewUrl = URL.createObjectURL(pdfBlob);
+      
+      // Limpar URL anterior
+      if (pdfPreviewUrl) {
+        cleanupBlobURL(pdfPreviewUrl);
+      }
+      
+      setPdfPreviewUrl(previewUrl);
+      showSuccess("Preview de teste gerado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao gerar preview de teste:", error);
+      showError(error, "Erro ao gerar preview de teste");
+    } finally {
+      setIsGeneratingPDF(false);
+    }
+  }, [pdfPreviewUrl, showError, showNotification, showSuccess]);
+
   // Função para baixar PDF
   const handleDownloadPDF = useCallback(async () => {
     try {
@@ -295,7 +612,7 @@ export default function RelatorioTecnicoPage() {
                 <CardTitle>Ações</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-          <div className="flex gap-2">
+                <div className="flex gap-2">
                   <Button 
                     onClick={handleGeneratePreview}
                     disabled={isGeneratingPDF}
@@ -303,6 +620,16 @@ export default function RelatorioTecnicoPage() {
                   >
                     <Eye className="h-4 w-4 mr-2" />
                     {isGeneratingPDF ? "Gerando..." : "Gerar Preview"}
+                  </Button>
+                  
+                  <Button 
+                    onClick={handleTestPreview}
+                    disabled={isGeneratingPDF}
+                    variant="secondary"
+                    className="flex-1"
+                  >
+                    <Eye className="h-4 w-4 mr-2" />
+                    {isGeneratingPDF ? "Gerando..." : "Testar Preview"}
                   </Button>
                   
                   <Button 

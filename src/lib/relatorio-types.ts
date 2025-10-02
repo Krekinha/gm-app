@@ -45,6 +45,11 @@ export const relatorioTecnicoSchema = z.object({
   email: z.string().email("Email deve ser válido"),
   instagram: z.string().min(1, "Instagram é obrigatório"),
   
+  // Dados da Empresa (opcionais para compatibilidade)
+  razaoSocial: z.string().optional(),
+  cnpj: z.string().optional(),
+  logoUrl: z.string().optional(),
+  
   // Configurações
   imagemFundo: z.string().optional()
 });
