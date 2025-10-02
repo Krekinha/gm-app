@@ -229,6 +229,38 @@ export default function RelatorioTecnicoPage() {
     }
   }, [nomeNovoModelo, getValues, showError, showSuccess]);
 
+  // Carregar imagem de fundo padrão automaticamente
+  useEffect(() => {
+    const loadDefaultBackgroundImage = async () => {
+      // Verificar se já existe uma imagem de fundo carregada
+      const currentImageFundo = getValues("imagemFundo");
+      if (currentImageFundo) {
+        return; // Já existe uma imagem carregada
+      }
+
+      try {
+        // Carregar a imagem de fundo padrão
+        const response = await fetch("/relatorio-tecnico/fundo-pdf.jpg");
+        if (response.ok) {
+          const blob = await response.blob();
+          const dataUrl = await new Promise<string>((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.readAsDataURL(blob);
+          });
+          
+          // Definir a imagem de fundo padrão
+          setValue("imagemFundo", dataUrl);
+        }
+      } catch (error) {
+        console.warn("Erro ao carregar imagem de fundo padrão:", error);
+        // Não mostrar erro para o usuário, pois é uma funcionalidade opcional
+      }
+    };
+
+    loadDefaultBackgroundImage();
+  }, [getValues, setValue]);
+
   // Limpar URLs ao desmontar componente
   useEffect(() => {
     return () => {

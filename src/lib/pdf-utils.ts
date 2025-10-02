@@ -70,7 +70,8 @@ export async function generateRelatorioPDF(
   const applyBackgroundImage = async (pageNumber: number) => {
     if (data.imagemFundo) {
       try {
-        // Aplicar imagem de fundo cobrindo toda a página
+        // IMPORTANTE: A imagem de fundo deve ser aplicada PRIMEIRO para ficar atrás de todos os elementos
+        // O jsPDF renderiza elementos na ordem em que são adicionados
         doc.addImage(
           data.imagemFundo, 
           "PNG", 
@@ -81,6 +82,9 @@ export async function generateRelatorioPDF(
           undefined,
           "FAST" // Modo rápido para melhor performance
         );
+        
+        // Log para debug (pode ser removido em produção)
+        console.log(`Imagem de fundo aplicada na página ${pageNumber} - posição: (0,0) até (${pageWidth},${pageHeight})`);
       } catch (error) {
         const errorMessage = `Erro ao aplicar imagem de fundo na página ${pageNumber}`;
         console.warn(errorMessage, error);
@@ -361,4 +365,65 @@ export async function downloadPDF(
     }
     throw error;
   }
+}
+
+/**
+ * Função de teste para verificar se a imagem de fundo está sendo renderizada corretamente
+ * Esta função gera um PDF simples com apenas a imagem de fundo e alguns elementos de teste
+ */
+export async function testBackgroundImageRendering(
+  backgroundImageDataUrl: string,
+  config: PDFConfig = defaultPDFConfig
+): Promise<jsPDF> {
+  const { pageWidth, pageHeight, margin, fontSize } = config;
+  
+  const doc = new jsPDF({
+    orientation: "portrait",
+    unit: "mm",
+    format: "a4"
+  });
+
+  // 1. PRIMEIRO: Aplicar imagem de fundo (deve ficar atrás de tudo)
+  if (backgroundImageDataUrl) {
+    try {
+      doc.addImage(
+        backgroundImageDataUrl,
+        "PNG",
+        0,
+        0,
+        pageWidth,
+        pageHeight,
+        undefined,
+        "FAST"
+      );
+      console.log("✅ Imagem de fundo aplicada PRIMEIRO - deve ficar atrás de todos os elementos");
+    } catch (error) {
+      console.error("❌ Erro ao aplicar imagem de fundo:", error);
+    }
+  }
+
+  // 2. SEGUNDO: Adicionar elementos de teste (devem ficar na frente da imagem)
+  doc.setFontSize(fontSize.title);
+  doc.setTextColor(255, 0, 0); // Texto vermelho para destacar
+  doc.text("TESTE DE RENDERIZAÇÃO", margin, margin + 20);
+  
+  doc.setFontSize(fontSize.normal);
+  doc.setTextColor(0, 0, 255); // Texto azul
+  doc.text("Este texto deve aparecer NA FRENTE da imagem de fundo", margin, margin + 40);
+  
+  // Adicionar um retângulo colorido para teste
+  doc.setFillColor(255, 255, 0); // Amarelo
+  doc.rect(margin, margin + 60, 50, 20, "F");
+  
+  doc.setTextColor(0, 0, 0); // Texto preto
+  doc.text("Retângulo amarelo", margin + 5, margin + 75);
+
+  console.log("✅ Elementos de teste adicionados DEPOIS da imagem de fundo");
+  console.log("📋 Ordem de renderização:");
+  console.log("   1. Imagem de fundo (atrás)");
+  console.log("   2. Texto vermelho (frente)");
+  console.log("   3. Texto azul (frente)");
+  console.log("   4. Retângulo amarelo (frente)");
+
+  return doc;
 }
