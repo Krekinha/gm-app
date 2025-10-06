@@ -1,6 +1,6 @@
 "use client";
 
-import { Download, Eye, FileText } from "lucide-react";
+import { Eye, FileText, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Field,
@@ -32,52 +32,31 @@ function FormComponent() {
 
         <FieldSet>
           <FieldGroup>
-            <Field>
-              <FieldLabel>Tipo de Relatório</FieldLabel>
-              <FieldContent>
-                <Select>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Selecione o tipo de relatório" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="produtividade">
-                      Relatório de Produtividade
-                    </SelectItem>
-                    <SelectItem value="financeiro">
-                      Relatório Financeiro
-                    </SelectItem>
-                    <SelectItem value="qualidade">
-                      Relatório de Qualidade
-                    </SelectItem>
-                    <SelectItem value="rh">
-                      Relatório de Recursos Humanos
-                    </SelectItem>
-                    <SelectItem value="vendas">Relatório de Vendas</SelectItem>
-                    <SelectItem value="operacoes">
-                      Relatório de Operações
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-                <FieldDescription>
-                  Escolha o tipo de relatório que deseja gerar
-                </FieldDescription>
-              </FieldContent>
-            </Field>
+            <div className="flex gap-3">
+              <Button className="flex-1">
+                <Eye className="h-4 w-4 mr-2" />
+                Visualizar Relatório
+              </Button>
+              <Button variant="outline" className="flex-1">
+                <Upload className="h-4 w-4 mr-2" />
+                Importar Modelo
+              </Button>
+            </div>
 
             <Field>
-              <FieldLabel>Período</FieldLabel>
+              <FieldLabel>Dados do contrato</FieldLabel>
               <FieldContent>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-sm font-medium text-muted-foreground mb-1 block">
+                    <FieldLabel className="text-sm font-medium text-muted-foreground mb-1 block">
                       Data Inicial
-                    </label>
+                    </FieldLabel>
                     <Input type="date" placeholder="Data inicial" />
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-muted-foreground mb-1 block">
+                    <FieldLabel className="text-sm font-medium text-muted-foreground mb-1 block">
                       Data Final
-                    </label>
+                    </FieldLabel>
                     <Input type="date" placeholder="Data final" />
                   </div>
                 </div>
@@ -144,17 +123,6 @@ function FormComponent() {
                 </FieldDescription>
               </FieldContent>
             </Field>
-
-            <div className="flex flex-col gap-3 pt-4">
-              <Button className="w-full">
-                <Eye className="h-4 w-4 mr-2" />
-                Visualizar Relatório
-              </Button>
-              <Button variant="outline" className="w-full">
-                <Download className="h-4 w-4 mr-2" />
-                Gerar e Baixar
-              </Button>
-            </div>
           </FieldGroup>
         </FieldSet>
       </div>
