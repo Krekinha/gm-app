@@ -33,12 +33,12 @@ function FormComponent() {
         <FieldSet>
           <FieldGroup>
             <div className="flex gap-3">
-              <Button className="flex-1">
-                <Eye className="h-4 w-4 mr-2" />
+              <Button variant="outline" className="flex-1">
+                <Eye className="h-4 w-4 mr-2 text-blue-500" />
                 Visualizar Relatório
               </Button>
               <Button variant="outline" className="flex-1">
-                <Upload className="h-4 w-4 mr-2" />
+                <Upload className="h-4 w-4 mr-2 text-green-500" />
                 Importar Modelo
               </Button>
             </div>
@@ -47,82 +47,30 @@ function FormComponent() {
               <FieldLabel>Dados do contrato</FieldLabel>
               <FieldContent>
                 <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <FieldLabel className="text-sm font-medium text-muted-foreground mb-1 block">
-                      Data Inicial
-                    </FieldLabel>
-                    <Input type="date" placeholder="Data inicial" />
-                  </div>
-                  <div>
-                    <FieldLabel className="text-sm font-medium text-muted-foreground mb-1 block">
-                      Data Final
-                    </FieldLabel>
-                    <Input type="date" placeholder="Data final" />
-                  </div>
+                  <Field>
+                    <FieldLabel>Empres/Contrato</FieldLabel>
+                    <FieldContent>
+                      <Select>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Selecione a empresa/contrato" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="vendas">MANSERV/ATLAS-UBERLANDIA</SelectItem>
+                          <SelectItem value="operacoes">MANSERV/HUAWEI-BH</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FieldContent>
+                  </Field>
+                  <Field>
+                    <FieldLabel htmlFor="valor">Valor inicial</FieldLabel>
+                    <Input type="text" placeholder="ex: 1.500,00" />
+
+                  </Field>
                 </div>
-                <FieldDescription>
-                  Defina o período para análise dos dados
-                </FieldDescription>
               </FieldContent>
             </Field>
 
-            <Field>
-              <FieldLabel>Departamento</FieldLabel>
-              <FieldContent>
-                <Select>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Selecione o departamento" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="todos">
-                      Todos os Departamentos
-                    </SelectItem>
-                    <SelectItem value="vendas">Vendas</SelectItem>
-                    <SelectItem value="marketing">Marketing</SelectItem>
-                    <SelectItem value="ti">Tecnologia da Informação</SelectItem>
-                    <SelectItem value="rh">Recursos Humanos</SelectItem>
-                    <SelectItem value="financeiro">Financeiro</SelectItem>
-                    <SelectItem value="operacoes">Operações</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FieldDescription>
-                  Filtre por departamento específico ou todos
-                </FieldDescription>
-              </FieldContent>
-            </Field>
 
-            <Field>
-              <FieldLabel>Formato de Saída</FieldLabel>
-              <FieldContent>
-                <Select>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Selecione o formato" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="pdf">PDF</SelectItem>
-                    <SelectItem value="excel">Excel (XLSX)</SelectItem>
-                    <SelectItem value="csv">CSV</SelectItem>
-                    <SelectItem value="html">HTML</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FieldDescription>
-                  Escolha o formato do arquivo de saída
-                </FieldDescription>
-              </FieldContent>
-            </Field>
-
-            <Field>
-              <FieldLabel>Observações Adicionais</FieldLabel>
-              <FieldContent>
-                <Textarea
-                  placeholder="Digite observações ou comentários adicionais para o relatório..."
-                  className="min-h-[100px] resize-none"
-                />
-                <FieldDescription>
-                  Adicione comentários ou observações específicas
-                </FieldDescription>
-              </FieldContent>
-            </Field>
           </FieldGroup>
         </FieldSet>
       </div>
