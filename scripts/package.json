@@ -1,0 +1,9 @@
+{
+  "name": "linux-scripts",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "kill:3000": "./kill-port-3000.sh",
+    "kill:port": "./kill-port.sh"
+  }
+}

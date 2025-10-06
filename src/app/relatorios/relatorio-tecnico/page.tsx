@@ -1,157 +1,216 @@
-import { BarChart3, ClipboardList, TrendingUp } from "lucide-react";
+"use client";
 
-export default function RelatoriosTecnicoPage() {
+import { Download, Eye, FileText } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+
+// Componente do Formulário
+function FormComponent() {
   return (
-    <div className="space-y-4">
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-          <div className="flex items-center gap-2 mb-2">
-            <BarChart3 className="h-5 w-5 text-blue-600" />
-            <h3 className="text-lg font-semibold">
-              Relatório de Produtividade
-            </h3>
-          </div>
-          <p className="text-sm text-muted-foreground mb-4">
-            Análise de produtividade por funcionário e departamento
-          </p>
-          <div className="flex gap-2">
-            <button
-              type="button"
-              className="text-sm text-primary hover:underline"
-            >
-              Visualizar →
-            </button>
-            <button
-              type="button"
-              className="text-sm text-green-600 hover:underline"
-            >
-              Download PDF
-            </button>
-          </div>
+    <div className="bg-white/95 dark:bg-card/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-white/20 dark:border-border max-h-[80vh] overflow-y-auto lg:max-h-none">
+      <div className="space-y-6">
+        <div className="flex items-center gap-2 mb-6">
+          <FileText className="h-6 w-6 text-primary" />
+          <h2 className="text-xl font-semibold">Configurações do Relatório</h2>
         </div>
 
-        <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-          <div className="flex items-center gap-2 mb-2">
-            <TrendingUp className="h-5 w-5 text-green-600" />
-            <h3 className="text-lg font-semibold">Relatório Financeiro</h3>
-          </div>
-          <p className="text-sm text-muted-foreground mb-4">
-            Análise financeira e indicadores de performance
-          </p>
-          <div className="flex gap-2">
-            <button
-              type="button"
-              className="text-sm text-primary hover:underline"
-            >
-              Visualizar →
-            </button>
-            <button
-              type="button"
-              className="text-sm text-green-600 hover:underline"
-            >
-              Download PDF
-            </button>
-          </div>
-        </div>
+        <FieldSet>
+          <FieldGroup>
+            <Field>
+              <FieldLabel>Tipo de Relatório</FieldLabel>
+              <FieldContent>
+                <Select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Selecione o tipo de relatório" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="produtividade">
+                      Relatório de Produtividade
+                    </SelectItem>
+                    <SelectItem value="financeiro">
+                      Relatório Financeiro
+                    </SelectItem>
+                    <SelectItem value="qualidade">
+                      Relatório de Qualidade
+                    </SelectItem>
+                    <SelectItem value="rh">
+                      Relatório de Recursos Humanos
+                    </SelectItem>
+                    <SelectItem value="vendas">Relatório de Vendas</SelectItem>
+                    <SelectItem value="operacoes">
+                      Relatório de Operações
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+                <FieldDescription>
+                  Escolha o tipo de relatório que deseja gerar
+                </FieldDescription>
+              </FieldContent>
+            </Field>
 
-        <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-          <div className="flex items-center gap-2 mb-2">
-            <ClipboardList className="h-5 w-5 text-purple-600" />
-            <h3 className="text-lg font-semibold">Relatório de Qualidade</h3>
-          </div>
-          <p className="text-sm text-muted-foreground mb-4">
-            Métricas de qualidade e conformidade
-          </p>
-          <div className="flex gap-2">
-            <button
-              type="button"
-              className="text-sm text-primary hover:underline"
-            >
-              Visualizar →
-            </button>
-            <button
-              type="button"
-              className="text-sm text-green-600 hover:underline"
-            >
-              Download PDF
-            </button>
-          </div>
-        </div>
+            <Field>
+              <FieldLabel>Período</FieldLabel>
+              <FieldContent>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground mb-1 block">
+                      Data Inicial
+                    </label>
+                    <Input type="date" placeholder="Data inicial" />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground mb-1 block">
+                      Data Final
+                    </label>
+                    <Input type="date" placeholder="Data final" />
+                  </div>
+                </div>
+                <FieldDescription>
+                  Defina o período para análise dos dados
+                </FieldDescription>
+              </FieldContent>
+            </Field>
 
-        <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-          <div className="flex items-center gap-2 mb-2">
-            <BarChart3 className="h-5 w-5 text-orange-600" />
-            <h3 className="text-lg font-semibold">
-              Relatório de Recursos Humanos
-            </h3>
-          </div>
-          <p className="text-sm text-muted-foreground mb-4">
-            Análise de RH, turnover e satisfação dos funcionários
-          </p>
-          <div className="flex gap-2">
-            <button
-              type="button"
-              className="text-sm text-primary hover:underline"
-            >
-              Visualizar →
-            </button>
-            <button
-              type="button"
-              className="text-sm text-green-600 hover:underline"
-            >
-              Download PDF
-            </button>
-          </div>
-        </div>
+            <Field>
+              <FieldLabel>Departamento</FieldLabel>
+              <FieldContent>
+                <Select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Selecione o departamento" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="todos">
+                      Todos os Departamentos
+                    </SelectItem>
+                    <SelectItem value="vendas">Vendas</SelectItem>
+                    <SelectItem value="marketing">Marketing</SelectItem>
+                    <SelectItem value="ti">Tecnologia da Informação</SelectItem>
+                    <SelectItem value="rh">Recursos Humanos</SelectItem>
+                    <SelectItem value="financeiro">Financeiro</SelectItem>
+                    <SelectItem value="operacoes">Operações</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FieldDescription>
+                  Filtre por departamento específico ou todos
+                </FieldDescription>
+              </FieldContent>
+            </Field>
 
-        <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-          <div className="flex items-center gap-2 mb-2">
-            <TrendingUp className="h-5 w-5 text-red-600" />
-            <h3 className="text-lg font-semibold">Relatório de Vendas</h3>
-          </div>
-          <p className="text-sm text-muted-foreground mb-4">
-            Performance de vendas e análise de mercado
-          </p>
-          <div className="flex gap-2">
-            <button
-              type="button"
-              className="text-sm text-primary hover:underline"
-            >
-              Visualizar →
-            </button>
-            <button
-              type="button"
-              className="text-sm text-green-600 hover:underline"
-            >
-              Download PDF
-            </button>
-          </div>
-        </div>
+            <Field>
+              <FieldLabel>Formato de Saída</FieldLabel>
+              <FieldContent>
+                <Select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Selecione o formato" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="pdf">PDF</SelectItem>
+                    <SelectItem value="excel">Excel (XLSX)</SelectItem>
+                    <SelectItem value="csv">CSV</SelectItem>
+                    <SelectItem value="html">HTML</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FieldDescription>
+                  Escolha o formato do arquivo de saída
+                </FieldDescription>
+              </FieldContent>
+            </Field>
 
-        <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
-          <div className="flex items-center gap-2 mb-2">
-            <ClipboardList className="h-5 w-5 text-indigo-600" />
-            <h3 className="text-lg font-semibold">Relatório de Operações</h3>
+            <Field>
+              <FieldLabel>Observações Adicionais</FieldLabel>
+              <FieldContent>
+                <Textarea
+                  placeholder="Digite observações ou comentários adicionais para o relatório..."
+                  className="min-h-[100px] resize-none"
+                />
+                <FieldDescription>
+                  Adicione comentários ou observações específicas
+                </FieldDescription>
+              </FieldContent>
+            </Field>
+
+            <div className="flex flex-col gap-3 pt-4">
+              <Button className="w-full">
+                <Eye className="h-4 w-4 mr-2" />
+                Visualizar Relatório
+              </Button>
+              <Button variant="outline" className="w-full">
+                <Download className="h-4 w-4 mr-2" />
+                Gerar e Baixar
+              </Button>
+            </div>
+          </FieldGroup>
+        </FieldSet>
+      </div>
+    </div>
+  );
+}
+
+// Componente de Preview
+function PreviewComponent() {
+  return (
+    <div className="bg-white/95 dark:bg-card/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-white/20 dark:border-border flex flex-col">
+      <div className="flex items-center gap-3 pb-4 border-b-2 border-gray-200 dark:border-border mb-6">
+        <FileText className="h-6 w-6 text-primary" />
+        <h2 className="text-xl font-semibold">Relatório Técnico</h2>
+      </div>
+
+      {/* Skeleton do Preview */}
+      <div className="flex-1 space-y-4">
+        <div className="animate-pulse">
+          {/* Header Skeleton */}
+          <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mb-4"></div>
+
+          {/* Content Skeleton */}
+          <div className="space-y-3">
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-4/6"></div>
           </div>
-          <p className="text-sm text-muted-foreground mb-4">
-            Análise operacional e eficiência dos processos
-          </p>
-          <div className="flex gap-2">
-            <button
-              type="button"
-              className="text-sm text-primary hover:underline"
-            >
-              Visualizar →
-            </button>
-            <button
-              type="button"
-              className="text-sm text-green-600 hover:underline"
-            >
-              Download PDF
-            </button>
+
+          <div className="mt-6 space-y-3">
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-2/3"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
+          </div>
+
+          <div className="mt-8">
+            <div className="h-32 bg-gray-200 dark:bg-gray-700 rounded"></div>
+          </div>
+
+          <div className="mt-6 space-y-3">
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-2/3"></div>
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+export default function RelatoriosTecnicoPage() {
+  return (
+    <div className="flex-1 grid grid-cols-[30%_70%] xl:grid-cols-[35%_65%] lg:grid-cols-1 gap-8 p-8 max-w-7xl mx-auto w-full">
+      <FormComponent />
+      <PreviewComponent />
     </div>
   );
 }
