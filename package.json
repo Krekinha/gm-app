@@ -10,10 +10,7 @@
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
     "check": "biome check .",
-    "check:fix": "biome check --write .",
-    "kill:3000": "./scripts/kill-port-3000.sh",
-    "kill:port": "./scripts/kill-port.sh",
-    "dev:clean": "pnpm kill:3000 && pnpm dev"
+    "check:fix": "biome check --write ."
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
