@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import {
   Field,
   FieldContent,
-  FieldDescription,
   FieldGroup,
   FieldLabel,
   FieldSet,
@@ -19,11 +18,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-
 // Componente do Formulário
 function FormComponent() {
   return (
-    <div className="bg-white/95 dark:bg-card/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-white/20 dark:border-border max-h-[80vh] overflow-y-auto lg:max-h-none">
+    <div className="bg-white/95 dark:bg-card/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-white/20 dark:border-border max-h-[80vh] overflow-y-auto overflow-x-hidden lg:max-h-none">
       <div className="space-y-6">
         <div className="flex items-center gap-2 mb-6">
           <FileText className="h-6 w-6 text-primary" />
@@ -32,21 +30,25 @@ function FormComponent() {
 
         <FieldSet>
           <FieldGroup>
-            <div className="flex gap-3">
-              <Button variant="outline" className="flex-1">
-                <Eye className="h-4 w-4 mr-2 text-blue-500" />
-                Visualizar Relatório
-              </Button>
-              <Button variant="outline" className="flex-1">
-                <Upload className="h-4 w-4 mr-2 text-green-500" />
-                Importar Modelo
-              </Button>
-            </div>
+            <Field>
+              <FieldContent>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <Button variant="outline" className="w-full">
+                    <Eye className="h-4 w-4 mr-2 text-blue-500" />
+                    Visualizar Relatório
+                  </Button>
+                  <Button variant="outline" className="w-full">
+                    <Upload className="h-4 w-4 mr-2 text-green-500" />
+                    Importar Modelo
+                  </Button>
+                </div>
+              </FieldContent>
+            </Field>
 
             <Field>
               <FieldLabel>Dados do contrato</FieldLabel>
               <FieldContent>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <Field>
                     <FieldLabel>Empres/Contrato</FieldLabel>
                     <FieldContent>
@@ -124,7 +126,7 @@ function PreviewComponent() {
 
 export default function RelatoriosTecnicoPage() {
   return (
-    <div className="flex-1 grid grid-cols-[30%_70%] xl:grid-cols-[35%_65%] lg:grid-cols-1 gap-8 p-8 max-w-7xl mx-auto w-full">
+    <div className="flex-1 grid grid-cols-1 lg:grid-cols-[35%_65%] xl:grid-cols-[30%_70%] gap-8 p-4 lg:p-8 max-w-7xl mx-auto w-full">
       <FormComponent />
       <PreviewComponent />
     </div>
