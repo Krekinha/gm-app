@@ -17,27 +17,37 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
+
 // Componente do Formulário
 function FormComponent() {
   return (
-    <div className="bg-white/95 dark:bg-card/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-white/20 dark:border-border max-h-[80vh] overflow-y-auto overflow-x-hidden lg:max-h-none">
+    <div
+      className="bg-white/95 dark:bg-card/95 backdrop-blur-sm rounded-2xl 
+      p-8 shadow-2xl border border-white/20 dark:border-border max-h-[80vh] 
+      overflow-y-auto overflow-x-hidden "
+    >
       <div className="space-y-6">
         <div className="flex items-center gap-2 mb-6">
           <FileText className="h-6 w-6 text-primary" />
-          <h2 className="text-xl font-semibold">Configurações do Relatório</h2>
+          <h2 className="text-xl font-semibold">Configurações</h2>
         </div>
 
         <FieldSet>
           <FieldGroup>
             <Field>
               <FieldContent>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <Button variant="outline" className="w-full">
+                <div className="flex flex-col sm:flex-row lg:flex-col gap-3">
+                  <Button
+                    variant="outline"
+                    className="w-full sm:flex-1 lg:w-full justify-start"
+                  >
                     <Eye className="h-4 w-4 mr-2 text-blue-500" />
                     Visualizar Relatório
                   </Button>
-                  <Button variant="outline" className="w-full">
+                  <Button
+                    variant="outline"
+                    className="w-full sm:flex-1 lg:w-full justify-start"
+                  >
                     <Upload className="h-4 w-4 mr-2 text-green-500" />
                     Importar Modelo
                   </Button>
@@ -48,7 +58,7 @@ function FormComponent() {
             <Field>
               <FieldLabel>Dados do contrato</FieldLabel>
               <FieldContent>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
                   <Field>
                     <FieldLabel>Empres/Contrato</FieldLabel>
                     <FieldContent>
@@ -57,8 +67,12 @@ function FormComponent() {
                           <SelectValue placeholder="Selecione a empresa/contrato" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="vendas">MANSERV/ATLAS-UBERLANDIA</SelectItem>
-                          <SelectItem value="operacoes">MANSERV/HUAWEI-BH</SelectItem>
+                          <SelectItem value="vendas">
+                            MANSERV/ATLAS-UBERLANDIA
+                          </SelectItem>
+                          <SelectItem value="operacoes">
+                            MANSERV/HUAWEI-BH
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </FieldContent>
@@ -66,13 +80,10 @@ function FormComponent() {
                   <Field>
                     <FieldLabel htmlFor="valor">Valor inicial</FieldLabel>
                     <Input type="text" placeholder="ex: 1.500,00" />
-
                   </Field>
                 </div>
               </FieldContent>
             </Field>
-
-
           </FieldGroup>
         </FieldSet>
       </div>
@@ -126,7 +137,7 @@ function PreviewComponent() {
 
 export default function RelatoriosTecnicoPage() {
   return (
-    <div className="flex-1 grid grid-cols-1 lg:grid-cols-[35%_65%] xl:grid-cols-[30%_70%] gap-8 p-4 lg:p-8 max-w-7xl mx-auto w-full">
+    <div className="flex-1 grid grid-cols-1 lg:grid-cols-[40%_60%] xl:grid-cols-[35%_65%] gap-8 p-4 lg:p-8 max-w-7xl mx-auto w-full">
       <FormComponent />
       <PreviewComponent />
     </div>
