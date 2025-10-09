@@ -28,8 +28,8 @@ function FormComponent() {
     >
       <div className="space-y-6">
         <div className="flex items-center gap-2 mb-6">
-          <FileText className="h-6 w-6 text-primary" />
-          <h2 className="text-xl font-semibold">Configurações</h2>
+          <FileText className="h-6 w-6 text-primary flex-shrink-0" />
+          <h2 className="text-xl font-semibold truncate">Configurações</h2>
         </div>
 
         <FieldSet>
@@ -96,8 +96,8 @@ function PreviewComponent() {
   return (
     <div className="bg-white/95 dark:bg-card/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-white/20 dark:border-border flex flex-col">
       <div className="flex items-center gap-3 pb-4 border-b-2 border-gray-200 dark:border-border mb-6">
-        <FileText className="h-6 w-6 text-primary" />
-        <h2 className="text-xl font-semibold">Relatório Técnico</h2>
+        <FileText className="h-6 w-6 text-primary flex-shrink-0" />
+        <h2 className="text-xl font-semibold truncate">Relatório Técnico</h2>
       </div>
 
       {/* Skeleton do Preview */}
