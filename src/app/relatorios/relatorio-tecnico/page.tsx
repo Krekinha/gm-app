@@ -24,7 +24,7 @@ function FormComponent() {
     <div
       className="bg-white/95 dark:bg-card/95 backdrop-blur-sm rounded-2xl 
       p-8 shadow-2xl border border-white/20 dark:border-border max-h-[80vh] 
-      overflow-y-auto overflow-x-hidden "
+      overflow-y-auto overflow-x-hidden min-w-fit"
     >
       <div className="space-y-6">
         <div className="flex items-center gap-2 mb-6">
@@ -63,7 +63,7 @@ function FormComponent() {
                     <FieldLabel>Empres/Contrato</FieldLabel>
                     <FieldContent>
                       <Select>
-                        <SelectTrigger className="w-full">
+                        <SelectTrigger className="w-full min-w-[160px]">
                           <SelectValue placeholder="Selecione a empresa/contrato" />
                         </SelectTrigger>
                         <SelectContent>
