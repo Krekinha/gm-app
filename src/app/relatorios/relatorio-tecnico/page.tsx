@@ -63,7 +63,7 @@ function FormComponent() {
                     <FieldLabel>Empres/Contrato</FieldLabel>
                     <FieldContent>
                       <Select>
-                        <SelectTrigger className="w-full min-w-[160px]">
+                        <SelectTrigger className="w-full min-w-48">
                           <SelectValue placeholder="Selecione a empresa/contrato" />
                         </SelectTrigger>
                         <SelectContent>
