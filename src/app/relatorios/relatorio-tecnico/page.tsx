@@ -39,16 +39,16 @@ function FormComponent() {
                 <div className="flex flex-row flex-wrap gap-3">
                   <Button
                     variant="outline"
-                    className="min-w-fit flex-1 justify-start whitespace-nowrap"
+                    className="min-w-fit flex-1 justify-center whitespace-nowrap"
                   >
-                    <Eye className="h-4 w-4 mr-2 text-blue-500" />
+                    <Eye className="h-4 w-4 mr-1 text-blue-500" />
                     Visualizar Relatório
                   </Button>
                   <Button
                     variant="outline"
-                    className="min-w-fit flex-1 justify-start whitespace-nowrap"
+                    className="min-w-fit flex-1 justify-center whitespace-nowrap"
                   >
-                    <Upload className="h-4 w-4 mr-2 text-green-500" />
+                    <Upload className="h-4 w-4 mr-1 text-green-500" />
                     Importar Modelo
                   </Button>
                 </div>
