@@ -36,17 +36,17 @@ function FormComponent() {
           <FieldGroup>
             <Field>
               <FieldContent>
-                <div className="flex flex-col sm:flex-row sm:flex-wrap lg:flex-col gap-3">
+                <div className="flex flex-row flex-wrap gap-3">
                   <Button
                     variant="outline"
-                    className="w-full sm:min-w-fit sm:flex-1 lg:w-full justify-start whitespace-nowrap"
+                    className="min-w-fit flex-1 justify-start whitespace-nowrap"
                   >
                     <Eye className="h-4 w-4 mr-2 text-blue-500" />
                     Visualizar Relatório
                   </Button>
                   <Button
                     variant="outline"
-                    className="w-full sm:min-w-fit sm:flex-1 lg:w-full justify-start whitespace-nowrap"
+                    className="min-w-fit flex-1 justify-start whitespace-nowrap"
                   >
                     <Upload className="h-4 w-4 mr-2 text-green-500" />
                     Importar Modelo
