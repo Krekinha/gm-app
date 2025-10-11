@@ -51,12 +51,12 @@ function FormComponent() {
 
             <Field>
               <FieldLabel>Dados do contrato</FieldLabel>
-              <FieldContent className="flex flex-row flex-wrap gap-3 bg-blue-400/30">
-                <Field>
+              <FieldContent className="flex flex-col sm:flex-row gap-3">
+                <Field className="flex-1 sm:w-[60%]">
                   <FieldLabel>Empres/Contrato</FieldLabel>
                   <FieldContent>
                     <Select>
-                      <SelectTrigger className="min-w-3/5">
+                      <SelectTrigger className="w-full">
                         <SelectValue placeholder="Selecione a empresa/contrato" />
                       </SelectTrigger>
                       <SelectContent>
@@ -70,10 +70,10 @@ function FormComponent() {
                     </Select>
                   </FieldContent>
                 </Field>
-                <Field>
+                <Field className="flex-1 sm:w-[40%]">
                   <FieldLabel htmlFor="valor">Valor inicial</FieldLabel>
                   <Input
-                    className="min-w-2/5"
+                    className="w-full"
                     type="text"
                     placeholder="ex: 1.500,00"
                   />
