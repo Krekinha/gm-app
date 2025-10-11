@@ -36,18 +36,12 @@ function FormComponent() {
           <FieldGroup>
             <Field>
               <FieldContent>
-                <div className="flex flex-row flex-wrap gap-3">
-                  <Button
-                    variant="outline"
-                    className="min-w-fit flex-1 justify-center whitespace-nowrap"
-                  >
+                <div className="flex flex-row flex-wrap gap-3 bg-blue-400/30">
+                  <Button variant="outline" className="min-w-fit flex-1">
                     <Eye className="h-4 w-4 mr-1 text-blue-500" />
                     Visualizar Relatório
                   </Button>
-                  <Button
-                    variant="outline"
-                    className="min-w-fit flex-1 justify-center whitespace-nowrap"
-                  >
+                  <Button variant="outline" className="min-w-fit flex-1">
                     <Upload className="h-4 w-4 mr-1 text-green-500" />
                     Importar Modelo
                   </Button>
@@ -57,31 +51,33 @@ function FormComponent() {
 
             <Field>
               <FieldLabel>Dados do contrato</FieldLabel>
-              <FieldContent>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-                  <Field>
-                    <FieldLabel>Empres/Contrato</FieldLabel>
-                    <FieldContent>
-                      <Select>
-                        <SelectTrigger className="w-full min-w-48">
-                          <SelectValue placeholder="Selecione a empresa/contrato" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="vendas">
-                            MANSERV/ATLAS-UBERLANDIA
-                          </SelectItem>
-                          <SelectItem value="operacoes">
-                            MANSERV/HUAWEI-BH
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FieldContent>
-                  </Field>
-                  <Field>
-                    <FieldLabel htmlFor="valor">Valor inicial</FieldLabel>
-                    <Input type="text" placeholder="ex: 1.500,00" />
-                  </Field>
-                </div>
+              <FieldContent className="flex flex-row flex-wrap gap-3 bg-blue-400/30">
+                <Field>
+                  <FieldLabel>Empres/Contrato</FieldLabel>
+                  <FieldContent>
+                    <Select>
+                      <SelectTrigger className="min-w-3/5">
+                        <SelectValue placeholder="Selecione a empresa/contrato" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="vendas">
+                          MANSERV/ATLAS-UBERLANDIA
+                        </SelectItem>
+                        <SelectItem value="operacoes">
+                          MANSERV/HUAWEI-BH
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FieldContent>
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="valor">Valor inicial</FieldLabel>
+                  <Input
+                    className="min-w-2/5"
+                    type="text"
+                    placeholder="ex: 1.500,00"
+                  />
+                </Field>
               </FieldContent>
             </Field>
           </FieldGroup>
