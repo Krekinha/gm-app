@@ -36,7 +36,7 @@ function FormComponent() {
           <FieldGroup>
             <Field>
               <FieldContent>
-                <div className="flex flex-row flex-wrap gap-3 bg-blue-400/30">
+                <div className="flex flex-row flex-wrap gap-3">
                   <Button variant="outline" className="min-w-fit flex-1">
                     <Eye className="h-4 w-4 mr-1 text-blue-500" />
                     Visualizar Relatório
