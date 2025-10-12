@@ -37,26 +37,36 @@ function FormComponent() {
             <Field>
               <FieldContent>
                 <div className="flex flex-row flex-wrap gap-3">
-                  <Button variant="outline" className="min-w-fit flex-1">
-                    <Eye className="h-4 w-4 mr-1 text-blue-500" />
-                    Visualizar Relatório
-                  </Button>
-                  <Button variant="outline" className="min-w-fit flex-1">
+                  <Button
+                    variant="outline"
+                    className="min-w-fit flex-1 text-secondary-foreground"
+                  >
                     <Upload className="h-4 w-4 mr-1 text-green-500" />
                     Importar Modelo
+                  </Button>
+                  <Button
+                    variant="default"
+                    className="min-w-fit flex-1 text-primary-foreground bg-primary"
+                  >
+                    <Eye className="h-4 w-4 mr-1" />
+                    Visualizar Relatório
                   </Button>
                 </div>
               </FieldContent>
             </Field>
 
             <Field>
-              <FieldLabel>Dados do contrato</FieldLabel>
+              <FieldLabel className="text-secondary-foreground">
+                Dados do contrato
+              </FieldLabel>
               <FieldContent className="flex flex-col sm:flex-row gap-3">
                 <Field className="flex-1 sm:w-[60%]">
-                  <FieldLabel>Empres/Contrato</FieldLabel>
+                  <FieldLabel className="text-muted-foreground">
+                    Empres/Contrato
+                  </FieldLabel>
                   <FieldContent>
                     <Select>
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger className="w-full bg-input text-foreground">
                         <SelectValue placeholder="Selecione a empresa/contrato" />
                       </SelectTrigger>
                       <SelectContent>
@@ -71,9 +81,11 @@ function FormComponent() {
                   </FieldContent>
                 </Field>
                 <Field className="flex-1 sm:w-[40%]">
-                  <FieldLabel htmlFor="valor">Valor inicial</FieldLabel>
+                  <FieldLabel htmlFor="valor" className="text-muted-foreground">
+                    Valor inicial
+                  </FieldLabel>
                   <Input
-                    className="w-full"
+                    className="w-full bg-input text-foreground"
                     type="text"
                     placeholder="ex: 1.500,00"
                   />
@@ -90,7 +102,7 @@ function FormComponent() {
 // Componente de Preview
 function PreviewComponent() {
   return (
-    <div className="bg-white/95 dark:bg-card/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-white/20 dark:border-border flex flex-col">
+    <div className="bg-white/95 dark:bg-card/95 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border border-white/20 dark:border-border/50 flex flex-col">
       <div className="flex items-center gap-3 pb-4 border-b-2 border-gray-200 dark:border-border mb-6">
         <FileText className="h-6 w-6 text-primary flex-shrink-0" />
         <h2 className="text-xl font-semibold truncate">Relatório Técnico</h2>

@@ -40,6 +40,67 @@
 }
 
 .dark {
+  /* 1. Cores de Fundo (para o "card" e o "background" da tela) */
+  --background: oklch(0.12 0 0); /* Fundo da tela/body: Cinza muito escuro, quase preto */
+  --card: oklch(0.18 0.005 280); /* Cor de fundo do card: Cinza escuro, ligeiramente mais claro que o background */
+
+  /* 2. Cores de Borda */
+  --border: oklch(0.28 0.005 280); /* Borda do card e inputs: Cinza médio escuro para um contorno sutil */
+  
+  /* 3. Cores de Título e Texto Principal */
+  --foreground: oklch(0.90 0.002 285.823); /* Cor de título da sessão (Configurações) e texto principal: Cinza muito claro, mas não branco puro */
+  --card-foreground: var(--foreground); /* Mantém o foreground para texto dentro do card */
+
+  /* 4. Cor dos Ícones */
+  --primary-foreground: oklch(0.985 0 0); /* Cor do ícone no botão primário (será branco puro) */
+  --secondary-foreground: var(--foreground); /* Cor do ícone no botão secundário (será o foreground) */
+  
+  /* 5. Cor do Texto do Grupo (ex: "Dados do contrato") */
+  --muted-foreground: oklch(0.65 0.008 285.938); /* Cor do texto do grupo e labels: Cinza médio, criando hierarquia */
+
+  /* 6. Cor das Labels */
+  /* Já definido por muted-foreground acima */
+
+  /* 7. Cores de Input (Fundo, Borda, Fonte) */
+  --input: oklch(0.24 0.005 280); /* Cor de fundo dos inputs: Cinza um pouco mais claro que a borda, mas mais escuro que o card */
+  /* --border já define a borda dos inputs */
+  /* --foreground já define a cor da fonte dos inputs */
+
+  /* 8. Cor do Separador (Linha) */
+  /* Já definido por --border, pode ser usado com opacidade: border-border/50 */
+
+  /* 9. Cor de Destaque (Accent) */
+  --primary: oklch(0.5 0.2 280); /* Cor de destaque/principal: Roxo/Magenta vibrante (para botão primário, anel de foco) */
+  --ring: var(--primary); /* Anel de foco: Usa a cor primary */
+  --accent: oklch(0.35 0.01 280); /* Cor para hover/seleção de itens (ex: SelectItem): Cinza ligeiramente mais claro que o input */
+  --accent-foreground: var(--foreground); /* Texto sobre o accent: Cinza muito claro */
+
+
+  /* --- Outras variáveis (mantidas do seu original, ou ajustadas para consistência) --- */
+  --popover: var(--card); /* Fundo do popover/select content */
+  --popover-foreground: var(--foreground); /* Texto do popover */
+  --secondary: oklch(0.24 0.005 280); /* Fundo do botão secundário: Usando a mesma cor do input */
+  
+  --destructive: oklch(0.704 0.191 22.216); /* Cores de erro/destrutivo */
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  
+  /* Mantendo variáveis de chart, sidebar, etc. se existirem */
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.21 0.006 285.885);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.274 0.006 286.033);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.552 0.016 285.938);
+}
+
+/*.dark {
   --background: oklch(0.141 0.005 285.823);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
@@ -73,6 +134,8 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.552 0.016 285.938);
 }
+*/
+  
 
 @theme inline {
   --color-background: var(--background);
