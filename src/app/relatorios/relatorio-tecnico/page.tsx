@@ -36,8 +36,7 @@ interface CampoPersonalizado {
   valor: string;
 }
 
-const _contratoItems = () => {
-  return [
+const contratoItems: Tomador[] =  [
     {
       id: "1",
       empresa: {
@@ -79,7 +78,7 @@ const _contratoItems = () => {
       ],
     },
   ];
-};
+
 
 // Componente do Formulário
 function FormComponent() {
@@ -125,7 +124,7 @@ function FormComponent() {
               <FieldContent className="flex flex-col sm:flex-row gap-3">
                 <Field className="flex-1 sm:w-[60%]">
                   <FieldLabel className="text-muted-foreground">
-                    Empres/Contrato
+                    Empresa/Contrato
                   </FieldLabel>
                   <FieldContent>
                     <Select>
