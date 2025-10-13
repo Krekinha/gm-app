@@ -28,12 +28,12 @@ interface Tomador {
   id: string;
   empresa: Empresa;
   unidade: Empresa;
-  camposPersonalizados: CampoPersonalizado[];
+  camposPersonalizados?: CampoPersonalizado[];
 }
 
 interface CampoPersonalizado {
   id: string;
-  nome: string;
+  label: string;
   valor: string;
 }
 
@@ -53,8 +53,13 @@ const contratoItems: Tomador[] = [
     camposPersonalizados: [
       {
         id: "1",
-        nome: "RQ",
-        valor: "RQ123456",
+        label: "OC",
+        valor: "",
+      },
+      {
+        id: "2",
+        label: "RQ",
+        valor: "",
       },
     ],
   },
@@ -72,11 +77,30 @@ const contratoItems: Tomador[] = [
     },
     camposPersonalizados: [
       {
+        id: "1",
+        label: "OC",
+        valor: "",
+      },
+      {
         id: "2",
-        nome: "OC",
-        valor: "OC123456",
+        label: "RQ",
+        valor: "",
       },
     ],
+  },
+  {
+    id: "3",
+    empresa: {
+      id: "3",
+      razaoNome: "EMPRESA SEM CAMPOS",
+      cnpjCpf: "9876543210",
+    },
+    unidade: {
+      id: "3",
+      razaoNome: "UNIDADE SIMPLES",
+      cnpjCpf: "1122334455",
+    },
+    // Este contrato não tem campos personalizados
   },
 ];
 
@@ -86,9 +110,12 @@ function FormComponent() {
   const [selectedContratoId, setSelectedContratoId] = useState<
     string | undefined
   >();
-  const [_selectedTomador, setSelectedTomador] = useState<
-    Tomador | undefined
-  >();
+  const [selectedTomador, setSelectedTomador] = useState<Tomador | undefined>();
+
+  // Estado para controlar os valores dos campos personalizados
+  const [camposPersonalizadosValues, setCamposPersonalizadosValues] = useState<
+    Record<string, string>
+  >({});
 
   // Função para gerar opções do Select baseadas nos dados de contratoItems
   const generateContratoOptions = () => {
@@ -108,6 +135,52 @@ function FormComponent() {
     const tomador = contratoItems.find((item) => item.id === value);
     setSelectedContratoId(value);
     setSelectedTomador(tomador);
+
+    // Inicializar campos personalizados com valores padrão
+    if (tomador?.camposPersonalizados) {
+      const initialValues: Record<string, string> = {};
+      tomador.camposPersonalizados.forEach((campo) => {
+        initialValues[campo.id] = campo.valor;
+      });
+      setCamposPersonalizadosValues(initialValues);
+    } else {
+      // Limpar campos se não houver campos personalizados
+      setCamposPersonalizadosValues({});
+    }
+  };
+
+  // Função para atualizar valores dos campos personalizados
+  const handleCampoPersonalizadoChange = (campoId: string, value: string) => {
+    setCamposPersonalizadosValues((prev) => ({
+      ...prev,
+      [campoId]: value,
+    }));
+  };
+
+  // Função para renderizar campos personalizados dinamicamente
+  const renderCamposPersonalizados = () => {
+    if (
+      !selectedTomador?.camposPersonalizados ||
+      selectedTomador.camposPersonalizados.length === 0
+    )
+      return null;
+
+    return selectedTomador.camposPersonalizados.map((campo) => (
+      <Field key={campo.id} className="flex-1">
+        <FieldLabel className="text-muted-foreground">{campo.label}</FieldLabel>
+        <FieldContent>
+          <Input
+            className="w-full bg-input text-foreground"
+            type="text"
+            value={camposPersonalizadosValues[campo.id] || campo.valor}
+            onChange={(e) =>
+              handleCampoPersonalizadoChange(campo.id, e.target.value)
+            }
+            placeholder={`Digite o valor para ${campo.label}`}
+          />
+        </FieldContent>
+      </Field>
+    ));
   };
 
   // Gerar opções dinâmicas
@@ -187,6 +260,19 @@ function FormComponent() {
                 </Field>
               </FieldContent>
             </Field>
+
+            {/* Seção de Campos Personalizados */}
+            {selectedTomador?.camposPersonalizados &&
+              selectedTomador.camposPersonalizados.length > 0 && (
+                <Field>
+                  <FieldLabel className="text-secondary-foreground">
+                    Campos Personalizados
+                  </FieldLabel>
+                  <FieldContent className="flex flex-col sm:flex-row gap-3">
+                    {renderCamposPersonalizados()}
+                  </FieldContent>
+                </Field>
+              )}
           </FieldGroup>
         </FieldSet>
       </div>
