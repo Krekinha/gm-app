@@ -18,6 +18,69 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+interface Empresa {
+  id: string;
+  razaoNome: string;
+  cnpjCpf: string;
+}
+interface Tomador {
+  id: string;
+  empresa: Empresa;
+  unidade: Empresa;
+  camposPersonalizados: CampoPersonalizado[];
+}
+
+interface CampoPersonalizado {
+  id: string;
+  nome: string;
+  valor: string;
+}
+
+const _contratoItems = () => {
+  return [
+    {
+      id: "1",
+      empresa: {
+        id: "1",
+        razaoNome: "MANSERV",
+        cnpjCpf: "1234567890",
+      },
+      unidade: {
+        id: "2",
+        razaoNome: "ATLAS-UBERLANDIA",
+        cnpjCpf: "45678985489",
+      },
+      camposPersonalizados: [
+        {
+          id: "1",
+          nome: "RQ",
+          valor: "RQ123456",
+        },
+      ],
+    },
+    {
+      id: "2",
+      empresa: {
+        id: "1",
+        razaoNome: "MANSERV",
+        cnpjCpf: "1234567890",
+      },
+      unidade: {
+        id: "2",
+        razaoNome: "HUAWEI-BH",
+        cnpjCpf: "3214567890",
+      },
+      camposPersonalizados: [
+        {
+          id: "2",
+          nome: "OC",
+          valor: "OC123456",
+        },
+      ],
+    },
+  ];
+};
+
 // Componente do Formulário
 function FormComponent() {
   return (
