@@ -1,6 +1,7 @@
 "use client";
 
 import { Eye, FileText, Upload } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Field,
@@ -36,52 +37,82 @@ interface CampoPersonalizado {
   valor: string;
 }
 
-const contratoItems: Tomador[] =  [
-    {
+const contratoItems: Tomador[] = [
+  {
+    id: "1",
+    empresa: {
       id: "1",
-      empresa: {
-        id: "1",
-        razaoNome: "MANSERV",
-        cnpjCpf: "1234567890",
-      },
-      unidade: {
-        id: "2",
-        razaoNome: "ATLAS-UBERLANDIA",
-        cnpjCpf: "45678985489",
-      },
-      camposPersonalizados: [
-        {
-          id: "1",
-          nome: "RQ",
-          valor: "RQ123456",
-        },
-      ],
+      razaoNome: "MANSERV",
+      cnpjCpf: "1234567890",
     },
-    {
+    unidade: {
       id: "2",
-      empresa: {
-        id: "1",
-        razaoNome: "MANSERV",
-        cnpjCpf: "1234567890",
-      },
-      unidade: {
-        id: "2",
-        razaoNome: "HUAWEI-BH",
-        cnpjCpf: "3214567890",
-      },
-      camposPersonalizados: [
-        {
-          id: "2",
-          nome: "OC",
-          valor: "OC123456",
-        },
-      ],
+      razaoNome: "ATLAS-UBERLANDIA",
+      cnpjCpf: "45678985489",
     },
-  ];
-
+    camposPersonalizados: [
+      {
+        id: "1",
+        nome: "RQ",
+        valor: "RQ123456",
+      },
+    ],
+  },
+  {
+    id: "2",
+    empresa: {
+      id: "1",
+      razaoNome: "MANSERV",
+      cnpjCpf: "1234567890",
+    },
+    unidade: {
+      id: "2",
+      razaoNome: "HUAWEI-BH",
+      cnpjCpf: "3214567890",
+    },
+    camposPersonalizados: [
+      {
+        id: "2",
+        nome: "OC",
+        valor: "OC123456",
+      },
+    ],
+  },
+];
 
 // Componente do Formulário
 function FormComponent() {
+  // Estados para controlar a seleção do contrato
+  const [selectedContratoId, setSelectedContratoId] = useState<
+    string | undefined
+  >();
+  const [_selectedTomador, setSelectedTomador] = useState<
+    Tomador | undefined
+  >();
+
+  // Função para gerar opções do Select baseadas nos dados de contratoItems
+  const generateContratoOptions = () => {
+    return contratoItems.map((item) => ({
+      value: item.id,
+      label: `${item.empresa.razaoNome}/${item.unidade.razaoNome}`,
+    }));
+  };
+
+  // Função para formatar o texto de exibição
+  const _formatContratoLabel = (tomador: Tomador) => {
+    return `${tomador.empresa.razaoNome}/${tomador.unidade.razaoNome}`;
+  };
+
+  // Função para capturar o tomador selecionado e seus dados
+  const handleContratoChange = (value: string) => {
+    const tomador = contratoItems.find((item) => item.id === value);
+    setSelectedContratoId(value);
+    setSelectedTomador(tomador);
+  };
+
+  // Gerar opções dinâmicas
+  const contratoOptions = generateContratoOptions();
+
   return (
     <div
       className="bg-white/95 dark:bg-card/95 backdrop-blur-sm rounded-2xl 
@@ -127,17 +158,19 @@ function FormComponent() {
                     Empresa/Contrato
                   </FieldLabel>
                   <FieldContent>
-                    <Select>
+                    <Select
+                      value={selectedContratoId}
+                      onValueChange={handleContratoChange}
+                    >
                       <SelectTrigger className="w-full bg-input text-foreground">
                         <SelectValue placeholder="Selecione a empresa/contrato" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="vendas">
-                          MANSERV/ATLAS-UBERLANDIA
-                        </SelectItem>
-                        <SelectItem value="operacoes">
-                          MANSERV/HUAWEI-BH
-                        </SelectItem>
+                        {contratoOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </FieldContent>
